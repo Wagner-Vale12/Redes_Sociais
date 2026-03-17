@@ -4,13 +4,12 @@ Projeto desenvolvido em React para apresentar meus perfis profissionais e sociai
 
 ## Preview
 
-Em breve: adicione aqui o link do deploy na Vercel.
+O link do deploy na Vercel.
 
-Exemplo:
+https://redes-sociais-orcin-chi.vercel.app/
 
-```md
-https://seu-projeto.vercel.app
-```
+<img width="1896" height="942" alt="image" src="https://github.com/user-attachments/assets/ec459b7b-9ac6-4318-8a4f-17784a2d91e2" />
+
 
 ## Sobre o projeto
 
