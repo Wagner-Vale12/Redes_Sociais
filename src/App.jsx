@@ -1,101 +1,157 @@
-import { useState } from 'react';
-
-const profiles = [
-  {
-    id: 'home',
-    name: 'Home',
-    icon: '/imagens/logo-home.jpg',
-    preview: '/imagens/tela-home.jpg',
-    href: '',
-    cta: ''
-  },
-  {
-    id: 'github',
-    name: 'GitHub',
-    icon: '/imagens/logo-github.jpg',
-    preview: '/imagens/github.jpg',
-    href: 'https://github.com/Wagner-Vale12',
-    cta: 'Acesse meu GitHub'
-  },
-  {
-    id: 'instagram',
-    name: 'Instagram',
-    icon: '/imagens/logo-instagram.jpg',
-    preview: '/imagens/instagram.jpg',
-    href: 'https://www.instagram.com/wagner12jesus/',
-    cta: 'Veja meu Instagram'
-  },
-  {
-    id: 'twitter',
-    name: 'Twitter',
-    icon: '/imagens/logo-twitter.jpg',
-    preview: '/imagens/twitter.jpg',
-    href: 'https://twitter.com/Wagner5422/',
-    cta: 'Abrir perfil no Twitter'
-  },
-  {
-    id: 'linkedin',
-    name: 'LinkedIn',
-    icon: '/imagens/logo-linkedin.png',
-    preview: '/imagens/tela-linkedin.jpg',
-    href: 'https://www.linkedin.com/in/wagner12',
-    cta: 'Abrir perfil no LinkedIn'
-  }
-];
+import { useEffect, useRef, useState } from 'react';
+import Navbar from './componentes/Navbar';
+import PortfolioHero, { getPortfolioHeroContent } from './componentes/PortfolioHero';
+import SpecialtiesSection, { getSpecialtiesContent } from './componentes/SpecialtiesSection';
+import CertificationsSection, { getCertificationsContent } from './componentes/CertificationsSection';
+import ExperienceSection, { getExperienceContent } from './componentes/ExperienceSection';
+import EducationSection, { getEducationContent } from './componentes/EducationSection';
+import LanguagesSection, { getLanguagesContent } from './componentes/LanguagesSection';
+import ProjectsSection, { getProjectsContent } from './componentes/ProjectsSection';
+import PersonalProjectsSection, { getPersonalProjectsContent } from './componentes/PersonalProjectsSection';
+import CoursesSection, { getCoursesContent } from './componentes/CoursesSection';
+import FooterSection, { getFooterContent } from './componentes/FooterSection';
+import ScrollTopButton from './componentes/ScrollTopButton';
+import { getNavbarContent, languagesMenu } from './componentes/Navbar';
 
 export default function App() {
   const [selectedId, setSelectedId] = useState('home');
-  const activeProfile = profiles.find((profile) => profile.id === selectedId) ?? profiles[0];
+  const [isExperienceVisible, setIsExperienceVisible] = useState(false);
+  const [isEducationVisible, setIsEducationVisible] = useState(false);
+  const [isLightTheme, setIsLightTheme] = useState(false);
+  const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState(languagesMenu[0]);
+  const navbarContent = getNavbarContent(selectedLanguage.code);
+  const heroContent = getPortfolioHeroContent(selectedLanguage.code);
+  const specialtiesContent = getSpecialtiesContent(selectedLanguage.code);
+  const certificationsContent = getCertificationsContent(selectedLanguage.code);
+  const experienceContent = getExperienceContent(selectedLanguage.code);
+  const educationContent = getEducationContent(selectedLanguage.code);
+  const languagesContent = getLanguagesContent(selectedLanguage.code);
+  const projectsContent = getProjectsContent(selectedLanguage.code);
+  const personalProjectsContent = getPersonalProjectsContent(selectedLanguage.code);
+  const coursesContent = getCoursesContent(selectedLanguage.code);
+  const footerContent = getFooterContent(selectedLanguage.code);
+  const introLinks = heroContent.profiles.filter((profile) => profile.href);
+  const activeProfile =
+    heroContent.profiles.find((profile) => profile.id === selectedId) ?? heroContent.profiles[0];
+  const experienceRef = useRef(null);
+  const educationRef = useRef(null);
+  const languageMenuRef = useRef(null);
+
+  useEffect(() => {
+    const section = experienceRef.current;
+
+    if (!section) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsExperienceVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.28 }
+    );
+
+    observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const section = educationRef.current;
+
+    if (!section) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsEducationVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.28 }
+    );
+
+    observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = isLightTheme ? 'light' : 'dark';
+  }, [isLightTheme]);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (languageMenuRef.current && !languageMenuRef.current.contains(event.target)) {
+        setIsLanguageMenuOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  function handleScrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   return (
     <main className="app-shell">
-      <header className="hero-copy">
-        <h1>Conecte-se comigo</h1>
-        <span>Desenvolvedor de Software Pleno | Criando aplicações modernas e soluções com IA</span>
-      </header>
+      <Navbar
+        content={navbarContent}
+        isLightTheme={isLightTheme}
+        isLanguageMenuOpen={isLanguageMenuOpen}
+        isMobileMenuOpen={isMobileMenuOpen}
+        selectedLanguage={selectedLanguage}
+        languageMenuRef={languageMenuRef}
+        languagesMenu={languagesMenu}
+        onToggleTheme={() => setIsLightTheme((current) => !current)}
+        onToggleLanguageMenu={() => setIsLanguageMenuOpen((current) => !current)}
+        onToggleMobileMenu={() => setIsMobileMenuOpen((current) => !current)}
+        onCloseMobileMenu={() => setIsMobileMenuOpen(false)}
+        onSelectLanguage={(language) => {
+          setSelectedLanguage(language);
+          setIsLanguageMenuOpen(false);
+        }}
+      />
 
-      <section className="portfolio-layout">
-        <div className="phone-frame" aria-live="polite">
-          <div className="phone-screen">
-            <div key={activeProfile.id} className="screen-content">
-              <img
-                className="screen-image"
-                src={activeProfile.preview}
-                alt={`Preview da tela ${activeProfile.name}`}
-              />
+      <PortfolioHero
+        activeProfile={activeProfile}
+        content={heroContent}
+        selectedId={selectedId}
+        onSelectProfile={setSelectedId}
+      />
 
-              {activeProfile.href ? (
-                <a
-                  className="screen-link"
-                  href={activeProfile.href}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <span>{activeProfile.cta}</span>
-                  <span className="screen-link-arrow" aria-hidden="true">
-                    ↗
-                  </span>
-                </a>
-              ) : null}
-            </div>
-          </div>
-        </div>
-
-        <nav className="social-nav" aria-label="Redes sociais">
-          {profiles.map((profile) => (
-            <button
-              key={profile.id}
-              type="button"
-              className={`social-button ${profile.id === selectedId ? 'is-active' : ''}`}
-              onClick={() => setSelectedId(profile.id)}
-              aria-pressed={profile.id === selectedId}
-            >
-              <img src={profile.icon} alt="" />
-              <span>{profile.name}</span>
-            </button>
-          ))}
-        </nav>
-      </section>
+      <SpecialtiesSection content={specialtiesContent} />
+      <CertificationsSection content={certificationsContent} />
+      <ExperienceSection
+        content={experienceContent}
+        experienceRef={experienceRef}
+        isVisible={isExperienceVisible}
+      />
+      <EducationSection
+        content={educationContent}
+        educationRef={educationRef}
+        isVisible={isEducationVisible}
+      />
+      <LanguagesSection content={languagesContent} />
+      <ProjectsSection content={projectsContent} />
+      <PersonalProjectsSection content={personalProjectsContent} />
+      <CoursesSection content={coursesContent} />
+      <FooterSection
+        footer={footerContent.footer}
+        hobbies={footerContent.hobbies}
+        introLinks={introLinks}
+        onSelectProfile={setSelectedId}
+      />
+      <ScrollTopButton onClick={handleScrollToTop} />
     </main>
   );
 }
