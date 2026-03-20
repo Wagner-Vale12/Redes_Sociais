@@ -592,6 +592,16 @@ img {
   color: var(--green);
 }
 
+.section-heading-animated {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.experience-section.is-visible .section-heading-animated,
+.education-section.is-visible .section-heading-animated {
+  animation: sectionHeadingFadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 .section-heading-icon {
   display: inline-flex;
   align-items: center;
@@ -600,10 +610,25 @@ img {
   line-height: 1;
 }
 
+.section-heading-icon svg {
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .section-heading-icon-certificate {
   width: 32px;
   height: 32px;
   font-size: 1.9rem;
+}
+
+.section-heading-icon-certificate svg {
+  fill: currentColor;
+  stroke: none;
 }
 
 .section-heading-icon-layers {
@@ -808,6 +833,10 @@ img {
   display: flex;
   flex-direction: column;
   gap: 34px;
+  scroll-margin-top: 110px;
+  transition:
+    filter 220ms ease,
+    transform 220ms ease;
 }
 
 .education-section {
@@ -816,6 +845,21 @@ img {
   display: flex;
   flex-direction: column;
   gap: 34px;
+  scroll-margin-top: 110px;
+  transition:
+    filter 220ms ease,
+    transform 220ms ease;
+}
+
+.experience-section.is-active-section,
+.education-section.is-active-section {
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.08));
+  transform: translateY(-2px);
+}
+
+.experience-section.is-active-section .section-heading,
+.education-section.is-active-section .section-heading {
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.12);
 }
 
 .experience-timeline {
@@ -829,20 +873,14 @@ img {
 }
 
 .experience-track {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 56.5%;
-  width: 4px;
-  transform: translateX(-50%);
-  background: rgba(0, 255, 102, 0.65);
+  display: none;
 }
 
 .experience-item {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(280px, 520px) 92px minmax(180px, 1fr);
-  align-items: start;
+  grid-template-columns: minmax(280px, 520px) minmax(220px, 1fr);
+  align-items: center;
   gap: 18px;
 }
 
@@ -853,33 +891,34 @@ img {
   background: #f3f3f3;
   color: #111111;
   box-shadow: 0 18px 34px rgba(0, 0, 0, 0.2);
-  transform: translateX(120px);
+  transform: translateX(96px);
   opacity: 0;
-  transition:
-    transform 0.85s ease,
-    opacity 0.85s ease;
 }
 
 .experience-card::after {
   content: '';
   position: absolute;
-  top: 22px;
+  top: 50%;
   right: -14px;
   width: 0;
   height: 0;
   border-top: 12px solid transparent;
   border-bottom: 12px solid transparent;
   border-left: 14px solid #f3f3f3;
+  transform: translateY(-50%);
 }
 
 .experience-timeline.is-visible .experience-card {
-  transform: translateX(0);
-  opacity: 1;
+  animation: sectionCardSlideIn 1.28s cubic-bezier(0.16, 1, 0.3, 1) 0.16s forwards;
 }
 
 .education-timeline.is-visible .education-card {
-  transform: translateX(0);
-  opacity: 1;
+  animation: sectionCardSlideIn 1.28s cubic-bezier(0.16, 1, 0.3, 1) 0.16s forwards;
+}
+
+.experience-timeline.is-visible .experience-period,
+.education-timeline.is-visible .experience-period {
+  animation: sectionPeriodFadeIn 1.05s cubic-bezier(0.16, 1, 0.3, 1) 0.34s forwards;
 }
 
 .experience-card h3 {
@@ -896,9 +935,9 @@ img {
 .experience-card strong {
   display: block;
   margin-top: 18px;
-  color: #00e55c;
+  color: var(--page-bg);
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 600;
 }
 
 .experience-card p {
@@ -917,11 +956,17 @@ img {
 
 .experience-toggle {
   margin-top: 22px;
-  border: 1px solid rgba(0, 213, 83, 0.4);
-  color: #00d553;
+  border: 1px solid var(--page-bg);
+  color: var(--page-bg);
+  border-radius: 5px;
   background: transparent;
   padding: 4px 8px;
   cursor: pointer;
+}
+
+.experience-toggle:hover {
+  background: var(--page-bg);
+  color: #fff;
 }
 
 .experience-expanded {
@@ -944,8 +989,8 @@ img {
 
 .experience-skill-group>span {
   display: block;
-  color: #6f7480;
-  font-weight: 700;
+  color: var(--page-bg);
+  font-weight: 600;
 }
 
 .experience-skill-tags {
@@ -960,41 +1005,70 @@ img {
   align-items: center;
   min-height: 34px;
   padding: 6px 12px;
-  border-radius: 12px;
+  border-radius: 5px;
 }
 
 .experience-skill-tags.is-technical span {
-  background: #00f540;
+  background: #c1c3c175;
   color: #07250d;
 }
 
 .experience-skill-tags.is-behavior span {
-  border: 1px solid #a9f3d7;
-  color: #235046;
-  background: #effff8;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: va;
+  background: #fff;
 }
 
 .experience-marker {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 66px;
-  height: 66px;
-  margin: 0 auto;
-  border: 4px solid var(--green);
-  border-radius: 50%;
-  background: #f3f3f3;
-  color: #0e0e0e;
-  font-size: 1.35rem;
+  display: none;
 }
 
 .experience-period {
-  padding-top: 14px;
+  display: flex;
+  align-items: center;
+  min-height: 100%;
   color: #8f8f8f;
-  font-size: 1.55rem;
+  font-size: 1.2rem;
   letter-spacing: 0.06em;
+  padding: 0% 14px;
+  opacity: 0;
+  transform: translateX(18px);
+}
+
+@keyframes sectionHeadingFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sectionCardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(96px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes sectionPeriodFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .education-card strong {
@@ -1018,8 +1092,8 @@ img {
 .language-card {
   padding: 24px;
   border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.05);
+  border-radius: 5px;
+  background: rgba(26, 24, 24, 0.05);
 }
 
 .language-card-header {
@@ -1037,7 +1111,14 @@ img {
   height: 60px;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.06);
-  font-size: 2rem;
+}
+
+.language-flag-badge {
+  width: 30px;
+  height: 22px;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 .language-heading h3 {
@@ -1049,8 +1130,8 @@ img {
   align-items: center;
   min-height: 30px;
   padding: 6px 14px;
-  border-radius: 999px;
-  background: rgba(0, 255, 102, 0.16);
+  border-radius: 5px;
+  background: rgba(49, 53, 51, 0.16);
   color: var(--green);
   font-size: 0.85rem;
   font-weight: 700;
@@ -1449,33 +1530,31 @@ img {
   }
 
   .experience-item {
-    grid-template-columns: 68px 1fr;
+    grid-template-columns: 1fr;
     gap: 20px;
+    align-items: start;
   }
 
   .experience-marker {
+    display: none;
+  }
+
+  .experience-card {
     grid-column: 1;
     grid-row: 1;
   }
 
-  .experience-card {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
   .experience-card::after {
-    top: 24px;
-    left: -14px;
-    right: auto;
-    border-left: 0;
-    border-right: 14px solid #f3f3f3;
+    display: none;
   }
 
   .experience-period {
-    grid-column: 2;
+    grid-column: 1;
     grid-row: 2;
-    padding-top: 0;
-    padding-left: 4px;
+    display: block;
+    min-height: auto;
+    font-size: 1.1rem;
+    letter-spacing: 0.04em;
   }
 }
 

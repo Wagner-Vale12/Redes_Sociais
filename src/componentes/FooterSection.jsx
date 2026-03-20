@@ -37,7 +37,7 @@ const footerContent = {
       'Formula 1',
       'Retro games',
       'Technology',
-      'Sports practice',
+      'Sports and physical activities',
       'Coffee',
       'Collections',
       'Family and friends'

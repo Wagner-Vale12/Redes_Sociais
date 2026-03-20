@@ -5,7 +5,7 @@ const projectsContent = {
       {
         id: 'project-1',
         logo: 'FS',
-        title: 'Projeto destaque 01',
+        title: 'Plataforma de AI',
         period: 'ago 2025 - abr 2026',
         description: 'Descreva aqui um projeto importante do seu portfolio, explicando contexto, tecnologias, responsabilidades e impacto no resultado.'
       },

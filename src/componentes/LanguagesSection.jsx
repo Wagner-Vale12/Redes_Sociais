@@ -7,8 +7,8 @@ const languagesContent = {
     languages: [
       {
         id: 'pt',
-        flag: '🇧🇷',
-        name: 'Portugues',
+        flagCode: 'br',
+        name: 'Português',
         level: 'Nativo',
         sections: [
           { title: 'Comunicacao', text: 'Comunicacao plena em ambientes pessoais, profissionais e tecnicos, com clareza tanto em contextos formais quanto informais.' },
@@ -19,16 +19,16 @@ const languagesContent = {
       },
       {
         id: 'en',
-        flag: '🇺🇸',
-        name: 'Ingles',
-        level: 'Intermediario',
+        flagCode: 'us',
+        name: 'Inglês',
+        level: 'Intermediário',
         sections: [
           { title: 'Comunicacao', text: 'Compreensao e expressao adequadas para trabalho, estudos e interacoes tecnicas com apoio de contexto.' },
           { title: 'Conversacao', text: 'Conversacao funcional sobre temas gerais e tecnicos, em evolucao continua com pratica.' },
           { title: 'Leitura', text: 'Leitura confortavel de documentacao, artigos tecnicos, tutoriais e materiais profissionais em ingles.' },
           { title: 'Escrita', text: 'Escrita de mensagens, comentarios em codigo, resumos e textos tecnicos basicos quando necessario.' }
         ],
-        note: 'Voce pode usar este bloco para contar se esta estudando atualmente, fazendo curso ou praticando conversacao.'
+       note: 'Atualmente, estou em processo contínuo de desenvolvimento do inglês, combinando cursos especializados na Udemy com prática recorrente em plataformas como Duolingo e BeSpeaker. Esse processo é direcionado ao aprimoramento de habilidades de leitura, escuta, vocabulário técnico e conversação, com foco em comunicação no contexto profissional e tecnológico.'
       }
     ]
   },
@@ -40,7 +40,7 @@ const languagesContent = {
     languages: [
       {
         id: 'pt',
-        flag: '🇧🇷',
+        flagCode: 'br',
         name: 'Portuguese',
         level: 'Native',
         sections: [
@@ -52,7 +52,7 @@ const languagesContent = {
       },
       {
         id: 'en',
-        flag: '🇺🇸',
+        flagCode: 'us',
         name: 'English',
         level: 'Intermediate',
         sections: [
@@ -61,7 +61,7 @@ const languagesContent = {
           { title: 'Reading', text: 'Comfortable reading of documentation, technical articles, tutorials, and professional materials in English.' },
           { title: 'Writing', text: 'Writing messages, code comments, summaries, and basic technical texts when necessary.' }
         ],
-        note: 'You can use this block to mention whether you are currently studying, taking classes, or practicing conversation.'
+       note: 'Currently, I am continuously improving my English by combining specialized courses on Udemy with regular practice on platforms such as Duolingo and BeSpeaker. This process is focused on enhancing reading, listening, technical vocabulary, and conversational skills, with an emphasis on communication in professional and technological contexts.'
       }
     ]
   }
@@ -86,7 +86,7 @@ export default function LanguagesSection({ content }) {
           <article key={language.id} className="language-card">
             <div className="language-card-header">
               <div className="language-flag" aria-hidden="true">
-                {language.flag}
+                <span className={`language-flag-badge fi fi-${language.flagCode}`} />
               </div>
 
               <div className="language-heading">

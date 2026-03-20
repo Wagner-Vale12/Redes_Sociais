@@ -132,7 +132,10 @@ export default function Navbar({
               key={item.href}
               href={item.href}
               className={item.href === activeNavHref ? 'is-active' : ''}
-              onClick={() => onSelectNavItem(item.href)}
+              onClick={(event) => {
+                event.preventDefault();
+                onSelectNavItem(item.href);
+              }}
             >
               {item.label}
             </a>
@@ -147,7 +150,8 @@ export default function Navbar({
               key={item.href}
               href={item.href}
               className={item.href === activeNavHref ? 'is-active' : ''}
-              onClick={() => {
+              onClick={(event) => {
+                event.preventDefault();
                 onSelectNavItem(item.href);
                 onCloseMobileMenu();
               }}

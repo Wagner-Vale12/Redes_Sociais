@@ -13,11 +13,28 @@ import FooterSection, { getFooterContent } from './componentes/FooterSection';
 import ScrollTopButton from './componentes/ScrollTopButton';
 import { getNavbarContent, languagesMenu } from './componentes/Navbar';
 
+function normalizeHash(hash) {
+  if (!hash) {
+    return '';
+  }
+
+  const decodedHash = decodeURIComponent(hash);
+  const normalizedValue = decodedHash
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, '-');
+
+  return normalizedValue.startsWith('#') ? normalizedValue : `#${normalizedValue}`;
+}
+
 export default function App() {
   const [selectedId, setSelectedId] = useState('home');
   const [activeNavHref, setActiveNavHref] = useState('#inicio');
   const [isExperienceVisible, setIsExperienceVisible] = useState(false);
   const [isEducationVisible, setIsEducationVisible] = useState(false);
+  const [experienceReplayToken, setExperienceReplayToken] = useState(0);
+  const [educationReplayToken, setEducationReplayToken] = useState(0);
   const [isLightTheme, setIsLightTheme] = useState(false);
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -39,6 +56,7 @@ export default function App() {
   const experienceRef = useRef(null);
   const educationRef = useRef(null);
   const languageMenuRef = useRef(null);
+  const navReplayTimeoutRef = useRef(null);
 
   useEffect(() => {
     const section = experienceRef.current;
@@ -125,7 +143,24 @@ export default function App() {
       return undefined;
     }
 
+    const initialHash = normalizeHash(window.location.hash);
+
+    if (initialHash && initialHash !== window.location.hash) {
+      window.history.replaceState(null, '', initialHash);
+    }
+
+    if (initialHash) {
+      const initialSection = document.querySelector(initialHash);
+
+      if (initialSection) {
+        requestAnimationFrame(() => {
+          initialSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+    }
+
     function updateActiveNav() {
+      const normalizedHash = normalizeHash(window.location.hash);
       const scrollPosition = window.scrollY + 140;
       let currentSectionHref = sections[0].href;
 
@@ -135,11 +170,19 @@ export default function App() {
         }
       });
 
+      if (normalizedHash && normalizedHash !== window.location.hash) {
+        window.history.replaceState(null, '', normalizedHash);
+      }
+
       const reachedPageBottom =
         window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 8;
 
       if (reachedPageBottom) {
         currentSectionHref = sections[sections.length - 1].href;
+      }
+
+      if (normalizedHash && sections.some(({ href }) => href === normalizedHash)) {
+        currentSectionHref = normalizedHash;
       }
 
       setActiveNavHref(currentSectionHref);
@@ -157,8 +200,44 @@ export default function App() {
     };
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (navReplayTimeoutRef.current) {
+        window.clearTimeout(navReplayTimeoutRef.current);
+      }
+    };
+  }, []);
+
   function handleScrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function handleSelectNavItem(href) {
+    const normalizedHref = normalizeHash(href);
+    const targetSection = document.querySelector(normalizedHref);
+
+    if (!targetSection) {
+      return;
+    }
+
+    if (navReplayTimeoutRef.current) {
+      window.clearTimeout(navReplayTimeoutRef.current);
+    }
+
+    window.history.pushState(null, '', normalizedHref);
+    setActiveNavHref(normalizedHref);
+
+    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    navReplayTimeoutRef.current = window.setTimeout(() => {
+      if (normalizedHref === '#experiencia') {
+        setExperienceReplayToken((current) => current + 1);
+      }
+
+      if (normalizedHref === '#formacao') {
+        setEducationReplayToken((current) => current + 1);
+      }
+    }, 420);
   }
 
   return (
@@ -176,7 +255,7 @@ export default function App() {
         onToggleLanguageMenu={() => setIsLanguageMenuOpen((current) => !current)}
         onToggleMobileMenu={() => setIsMobileMenuOpen((current) => !current)}
         onCloseMobileMenu={() => setIsMobileMenuOpen(false)}
-        onSelectNavItem={setActiveNavHref}
+        onSelectNavItem={handleSelectNavItem}
         onSelectLanguage={(language) => {
           setSelectedLanguage(language);
           setIsLanguageMenuOpen(false);
@@ -196,11 +275,15 @@ export default function App() {
         content={experienceContent}
         experienceRef={experienceRef}
         isVisible={isExperienceVisible}
+        isActive={activeNavHref === '#experiencia'}
+        replayToken={experienceReplayToken}
       />
       <EducationSection
         content={educationContent}
         educationRef={educationRef}
         isVisible={isEducationVisible}
+        isActive={activeNavHref === '#formacao'}
+        replayToken={educationReplayToken}
       />
       <LanguagesSection content={languagesContent} />
       <ProjectsSection content={projectsContent} />

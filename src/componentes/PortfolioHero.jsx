@@ -62,10 +62,10 @@ const portfolioHeroContent = {
   EN: {
     hero: {
       name: 'Wagner',
-      role: 'Developer | Personal portfolio',
+      role: 'Mid-Level Software Engineer | React • Next.js • Node.js | AI & Automation',
       socialHeading: 'Follow my social networks',
       intro: [
-        'I am a Software Developer focused on front-end development and building scalable interfaces for Artificial Intelligence platforms. Currently, I work at Future Secure AI, where I contribute to the development and evolution of applications using React, Next.js, and Vue.js, implementing new features, improving user experience, and ensuring application quality and performance',
+        'I am a Software Developer focused on front-end development and building scalable interfaces for Artificial Intelligence platforms. I currently work at Future Secure AI, where I contribute to the development and evolution of applications using React, Next.js, and Vue.js, implementing new features, improving user experience, and ensuring application quality and performance.',
         'My role also involves integrating APIs and services using Node.js, as well as participating in the development of AI-based platforms. I have experience working with systems that leverage Large Language Models (LLMs), workflow automation, and service integrations, contributing to the creation of modern and scalable solutions.',
         'Throughout my experience, I have worked in environments with microservices architectures, distributed systems, and event-driven architectures, contributing to the development of systems designed for high scalability and continuous evolution.',
         'I hold a degree in Systems Analysis and Development from UNINOVE (2021) and I am constantly seeking to improve my skills in front-end development, AI platforms, system architecture, and scalable application development. I am highly interested in participating in innovative projects and collaborating with teams that aim to solve complex problems through technology.'
@@ -93,7 +93,7 @@ const portfolioHeroContent = {
       {
         id: 'instagram',
         label: 'Instagram',
-        title: 'Content and routine',
+        title: 'Content and daily routine',
         icon: '/imagens/logo-instagram.jpg',
         preview: '/imagens/instagram.jpg',
         href: 'https://www.instagram.com/wagner12jesus/',

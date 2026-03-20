@@ -1,13 +1,13 @@
 const educationContent = {
   PT: {
-    sectionTitle: 'Formacao',
+    sectionTitle: 'Formação',
     educationItems: [
       {
         id: 'edu-1',
-        institution: 'Sua faculdade ou instituicao',
-        degree: 'Seu curso ou formacao principal',
-        period: '2020 - 2024',
-        description: 'Use este espaco para descrever sua formacao, materias de destaque, projetos academicos e o foco principal do curso.'
+        institution: 'Universidade Nove de Julho (UNINOVE)',
+        degree: 'Analise e Desenvolvimento de Sistemas',
+        period: 'inicio - 2019 término - 2021',
+        description: 'Formação voltada ao desenvolvimento de sistemas e engenharia de software, com ênfase em construção de aplicações web, modelagem de dados e arquitetura de sistemas. Ao longo do curso, desenvolvi projetos acadêmicos aplicando conceitos de front-end, back-end e integração de sistemas, utilizando boas práticas de programação, versionamento de código e organização de software. A formação proporcionou uma base sólida em resolução de problemas, análise técnica e desenvolvimento de soluções escaláveis.'
       }
     ]
   },
@@ -33,17 +33,28 @@ export default function EducationSection({
   content,
   educationRef,
   isVisible,
+  isActive,
+  replayToken,
 }) {
   return (
-    <section id="formacao" ref={educationRef} className="education-section">
-      <header className="section-heading">
+    <section
+      id="formacao"
+      ref={educationRef}
+      className={`education-section ${isVisible ? 'is-visible' : ''} ${
+        isActive ? 'is-active-section' : ''
+      }`}
+    >
+      <header key={`education-heading-${replayToken}`} className="section-heading section-heading-animated">
         <span className="section-heading-icon" aria-hidden="true">
           ◇
         </span>
         <h2>{content.sectionTitle}</h2>
       </header>
 
-      <div className={`education-timeline ${isVisible ? 'is-visible' : ''}`}>
+      <div
+        key={`education-timeline-${replayToken}`}
+        className={`education-timeline ${isVisible ? 'is-visible' : ''}`}
+      >
         <div className="experience-track" aria-hidden="true" />
 
         {content.educationItems.map((education) => (

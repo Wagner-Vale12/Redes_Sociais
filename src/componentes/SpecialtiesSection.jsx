@@ -48,18 +48,20 @@ const specialtiesContent = {
         icon: '⌘',
         title: 'Technical Leadership',
         description: [
-          'Add your experience leading projects, organizing deliveries, and supporting team growth here.',
-          'You can talk about communication, decision-making, collaboration, and how you lead teams in real environments.'
+          'I have experience supporting the growth of other developers through mentoring, constructive code reviews, and continuous feedback. I believe code reviews go beyond technical quality and also serve as opportunities for learning and standardization.',
+          'I also help organize and prioritize demands, keeping the team focused on the most relevant deliveries and ensuring efficiency across the workflow. In challenging scenarios, I maintain a resilient mindset, looking for practical solutions and helping preserve team stability under pressure.'
         ],
         tags: ['Communication', 'Leadership', 'Mentoring', 'Continuous feedback', 'Code review', 'Organization', 'Prioritization', 'Resilience']
       },
       {
         id: 'software',
         icon: '</>',
-        title: 'Software Engineering / Development',
+        title: 'Software Development',
         description: [
-          'Use this block to list your stack, projects, front-end and back-end experience, and architecture background.',
-          'It also works well to highlight best practices, APIs, databases, testing, and technologies you master.'
+          'I work on modern web application development, with experience in both front-end and back-end. I have solid knowledge of widely used technologies and contribute from interface construction to API implementation and database integration.',
+          'On the front-end, I work with React, JavaScript, and TypeScript, focusing on responsive, high-performance interfaces with a strong user experience. I consistently apply best practices in componentization, code reuse, and state organization.',
+          'On the back-end, I use Node.js to build REST APIs, ensuring efficient communication between systems and applications. I have experience structuring routes, business rules, and integrations with SQL databases.',
+          'I also value code quality and project organization, using Git for version control and Docker to standardize environments and deployments. I always aim to follow good development practices such as clean code, separation of concerns, and scalability.'
         ],
         tags: ['React', 'JavaScript', 'TypeScript', 'Node.js', 'HTML', 'CSS', 'SQL', 'REST APIs', 'Git', 'Docker']
       },
@@ -68,8 +70,8 @@ const specialtiesContent = {
         icon: '*',
         title: 'Artificial Intelligence & Automation',
         description: [
-          'If you want, this column can be used for AI, automation, integrations, or any specialty that makes sense in your portfolio.',
-          'It can also become a services block, favorite tools section, or areas you want to highlight for recruiters.'
+          'I design and implement solutions with LLMs, orchestrating flows with LangChain and LangGraph, working with memory and tools, and applying RAG patterns to ground outputs on proprietary data. I also have hands-on experience with observability using Langfuse, workflow automation with n8n and Flowise, and prompt engineering best practices.',
+          'I build custom agents, chatbots, and service integrations using generative AI APIs. I also bring a product-oriented view to generative AI, including rapid prototyping, model evaluation, cost and risk analysis, and collaboration with business teams on real use cases, from internal assistants to data pipelines and specialized agents.'
         ],
         tags: ['OpenAI API', 'Prompts', 'Automation', 'Agents', 'Chatbots', 'Workflows', 'Integrations', 'Generative AI']
       }
