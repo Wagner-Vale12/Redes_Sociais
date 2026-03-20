@@ -2,10 +2,13 @@ const portfolioHeroContent = {
   PT: {
     hero: {
       name: 'Wagner',
-      role: 'Desenvolvedor | Portfolio pessoal',
+      role: 'Software Engineer Pleno | React • Next.js • Node.js | AI & Automation',
+      socialHeading: 'Sigam minhas redes sociais',
       intro: [
-        'Adicione aqui sua apresentacao principal. Esse bloco foi montado para ficar no mesmo estilo da imagem que voce enviou, com foco total na abertura do portfolio.',
-        'Depois voce pode trocar este texto manualmente com sua historia, experiencia, tecnologias e os destaques que quiser mostrar logo na primeira tela.'
+        'Sou Desenvolvedor de Software com foco em desenvolvimento front-end e construção de interfaces escaláveis para plataformas de Inteligência Artificial. Atualmente atuo na Future Secure AI, onde trabalho no desenvolvimento e evolução de aplicações utilizando React, Next.js e Vue.js, implementando novas funcionalidades, melhorando a experiência do usuário e garantindo a qualidade e performance das aplicações.',
+        'Minha atuação envolve também a integração com APIs e serviços em Node.js, além da participação no desenvolvimento de plataformas baseadas em Inteligência Artificial. Tenho experiência trabalhando com sistemas que utilizam Large Language Models (LLMs), automação de workflows e integrações entre serviços, contribuindo para a construção de soluções modernas e escaláveis.',
+        'Ao longo da minha experiência, venho trabalhando em ambientes com arquiteturas baseadas em microservices, sistemas distribuídos e arquiteturas orientadas a eventos, participando do desenvolvimento de sistemas preparados para alta escalabilidade e evolução contínua.',
+        'Sou graduado em Análise e Desenvolvimento de Sistemas pela UNINOVE (2021) e estou constantemente buscando evoluir minhas habilidades em desenvolvimento front-end, plataformas de IA, arquitetura de sistemas e construção de aplicações escaláveis. Tenho grande interesse em participar de projetos inovadores e colaborar com equipes que buscam resolver problemas complexos através da tecnologia.'
       ]
     },
     profiles: [
@@ -60,9 +63,12 @@ const portfolioHeroContent = {
     hero: {
       name: 'Wagner',
       role: 'Developer | Personal portfolio',
+      socialHeading: 'Follow my social networks',
       intro: [
-        'Add your main introduction here. This block was designed to match the style of the reference image, with full focus on the portfolio opening.',
-        'Later you can replace this text manually with your story, experience, technologies, and the highlights you want to show on the first screen.'
+        'I am a Software Developer focused on front-end development and building scalable interfaces for Artificial Intelligence platforms. Currently, I work at Future Secure AI, where I contribute to the development and evolution of applications using React, Next.js, and Vue.js, implementing new features, improving user experience, and ensuring application quality and performance',
+        'My role also involves integrating APIs and services using Node.js, as well as participating in the development of AI-based platforms. I have experience working with systems that leverage Large Language Models (LLMs), workflow automation, and service integrations, contributing to the creation of modern and scalable solutions.',
+        'Throughout my experience, I have worked in environments with microservices architectures, distributed systems, and event-driven architectures, contributing to the development of systems designed for high scalability and continuous evolution.',
+        'I hold a degree in Systems Analysis and Development from UNINOVE (2021) and I am constantly seeking to improve my skills in front-end development, AI platforms, system architecture, and scalable application development. I am highly interested in participating in innovative projects and collaborating with teams that aim to solve complex problems through technology.'
       ]
     },
     profiles: [
@@ -145,28 +151,32 @@ export default function PortfolioHero({
       </section>
 
       <section className="portfolio-layout">
-        <div className="phone-frame" aria-live="polite">
-          <div className="phone-screen">
-            <div key={activeProfile.id} className="screen-content">
-              <img
-                className="screen-image"
-                src={activeProfile.preview}
-                alt={`Preview da tela ${activeProfile.label}`}
-              />
+        <div className="phone-preview-block">
+          <p className="phone-preview-heading">{content.hero.socialHeading}</p>
 
-              {activeProfile.href ? (
-                <a
-                  className="screen-link"
-                  href={activeProfile.href}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <span>{activeProfile.cta}</span>
-                  <span className="screen-link-arrow" aria-hidden="true">
-                    ↗
-                  </span>
-                </a>
-              ) : null}
+          <div className="phone-frame" aria-live="polite">
+            <div className="phone-screen">
+              <div key={activeProfile.id} className="screen-content">
+                <img
+                  className="screen-image"
+                  src={activeProfile.preview}
+                  alt={`Preview da tela ${activeProfile.label}`}
+                />
+
+                {activeProfile.href ? (
+                  <a
+                    className="screen-link"
+                    href={activeProfile.href}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <span>{activeProfile.cta}</span>
+                    <span className="screen-link-arrow" aria-hidden="true">
+                      ↗
+                    </span>
+                  </a>
+                ) : null}
+              </div>
             </div>
           </div>
         </div>

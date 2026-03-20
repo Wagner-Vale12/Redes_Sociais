@@ -1,3 +1,5 @@
+import { FaBrain, FaUsers } from 'react-icons/fa';
+
 const specialtiesContent = {
   PT: {
     sectionTitle: 'Especialidades',
@@ -5,30 +7,34 @@ const specialtiesContent = {
       {
         id: 'leadership',
         icon: '⌘',
-        title: 'Lideranca Tecnica',
+        title: 'Lideranca Técnica',
         description: [
-          'Adicione aqui sua experiencia liderando projetos, organizando entregas e apoiando o crescimento do time.',
-          'Voce pode escrever sobre comunicacao, tomada de decisao, colaboracao e como conduz times em ambientes reais.'
+          'Tenho experiência em apoiar o crescimento de outros desenvolvedores por meio de mentoria, code reviews construtivos e feedback contínuo. Acredito que revisões de código vão além da qualidade técnica, sendo também uma oportunidade de aprendizado e padronização.',
+          'Também atuo na organização e priorização de demandas, ajudando a manter o foco nas entregas mais relevantes e garantindo eficiência no fluxo de trabalho. Em cenários desafiadores, mantenho uma postura resiliente, buscando soluções práticas e mantendo a estabilidade do time mesmo sob pressão.'
         ],
         tags: ['Comunicacao', 'Lideranca', 'Mentoria', 'Feedback continuo', 'Code review', 'Organizacao', 'Priorizacao', 'Resiliencia']
       },
       {
         id: 'software',
         icon: '</>',
-        title: 'Engenharia / Desenvolvimento de Software',
+        title: 'Desenvolvimento de Software',
         description: [
-          'Use este bloco para listar sua stack, projetos, experiencia com front-end, back-end e arquitetura.',
-          'Tambem fica bom para destacar boas praticas, APIs, bancos de dados, testes e tecnologias que voce domina.'
+          'Atuo no desenvolvimento de aplicações web modernas, com experiência tanto em front-end quanto em back-end. Tenho domínio de tecnologias amplamente utilizadas no mercado, participando desde a construção de interfaces até a implementação de APIs e integração com bancos de dados.',
+          'No front-end, trabalho com React, JavaScript e TypeScript, focando na criação de interfaces responsivas, performáticas e com boa experiência do usuário. Busco sempre aplicar boas práticas de componentização, reutilização de código e organização de estados.',
+          'No back-end, utilizo Node.js para desenvolvimento de APIs REST, garantindo uma comunicação eficiente entre sistemas e aplicações. Tenho experiência na estruturação de rotas, regras de negócio e integração com bancos de dados SQL.',
+          'Também valorizo a qualidade do código e a organização dos projetos, utilizando Git para versionamento e Docker para padronização de ambientes e deploy. Procuro sempre seguir boas práticas de desenvolvimento, como código limpo, separação de responsabilidades e escalabilidade.'
         ],
         tags: ['React', 'JavaScript', 'TypeScript', 'Node.js', 'HTML', 'CSS', 'SQL', 'APIs REST', 'Git', 'Docker']
       },
       {
         id: 'ai',
         icon: '*',
-        title: 'Inteligencia Artificial & Automacoes',
+        title: 'Inteligencia Artificial & Automações',
         description: [
-          'Se quiser, esta coluna pode ser usada para IA, automacoes, integrações ou qualquer especialidade que faca sentido no seu portfolio.',
-          'Tambem pode virar um bloco de servicos, ferramentas favoritas ou areas que voce quer destacar para recrutadores.'
+          'Concepção e implementação de soluções com LLMs, orquestração com LangChain e LangGraph, fluxos com memória e ferramentas, e padrões RAG para grounding em dados próprios. Experiência prática com observabilidade (Langfuse), automação de workflows (n8n, Flowise) e boas práticas de engenharia de prompt.',
+          'Desenvolvimento de agentes personalizados, chatbots e integrações entre serviços utilizando APIs de IA generativa. Visão de produto em IA generativa: prototipagem rápida, avaliação de modelos, custos e riscos, e colaboração com negócio para casos de uso reais — de assistentes internos a pipelines de dados e agentes especializados.',
+          'Desenvolvimento de agentes personalizados, chatbots e integrações entre serviços utilizando APIs de IA generativa.',
+          'Visão de produto em IA generativa: prototipagem rápida, avaliação de modelos, custos e riscos, e colaboração com negócio para casos de uso reais — de assistentes internos a pipelines de dados e agentes especializados.'
         ],
         tags: ['OpenAI API', 'Prompts', 'Automacao', 'Agentes', 'Chatbots', 'Workflows', 'Integracoes', 'IA generativa']
       }
@@ -79,8 +85,12 @@ export default function SpecialtiesSection({ content }) {
   return (
     <section id="especialidades" className="specialties-section">
       <header className="section-heading">
-        <span className="section-heading-icon" aria-hidden="true">
-          ≡
+        <span className="section-heading-icon section-heading-icon-layers" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+            <path d="M12 3 3 7.5 12 12l9-4.5L12 3Z" />
+            <path d="M5.2 11.2 12 14.7l6.8-3.5" />
+            <path d="M5.2 16 12 19.5l6.8-3.5" />
+          </svg>
         </span>
         <h2>{content.sectionTitle}</h2>
       </header>
@@ -89,7 +99,13 @@ export default function SpecialtiesSection({ content }) {
         {content.specialties.map((specialty) => (
           <article key={specialty.id} className="specialty-card">
             <span className="specialty-icon" aria-hidden="true">
-              {specialty.icon}
+              {specialty.id === 'leadership' ? (
+                <FaUsers />
+              ) : specialty.id === 'ai' ? (
+                <FaBrain />
+              ) : (
+                specialty.icon
+              )}
             </span>
             <h3>{specialty.title}</h3>
 

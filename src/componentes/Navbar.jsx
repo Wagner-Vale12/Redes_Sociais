@@ -5,13 +5,13 @@ export const languagesMenu = [
 
 const navbarContent = {
   PT: {
-    brand: 'Portfolio - Wagner',
+     brand: 'Portfólio',
     navItems: [
       { href: '#inicio', label: 'Inicio' },
       { href: '#especialidades', label: 'Especialidades' },
-      { href: '#certificacoes', label: 'Certificacoes' },
-      { href: '#experiencia', label: 'Experiencia' },
-      { href: '#formacao', label: 'Formacao' },
+      { href: '#certificacoes', label: 'Certificações' },
+      { href: '#experiencia', label: 'Experiência' },
+      { href: '#formacao', label: 'Formação' },
       { href: '#idiomas', label: 'Idiomas' },
       { href: '#projetos', label: 'Projetos' },
       { href: '#projetos-pessoais', label: 'Projetos Pessoais' },
@@ -21,7 +21,7 @@ const navbarContent = {
     ]
   },
   EN: {
-    brand: 'Portfolio - Wagner',
+    brand: 'Portfolio',
     navItems: [
       { href: '#inicio', label: 'Home' },
       { href: '#especialidades', label: 'Specialties' },
@@ -47,6 +47,7 @@ export default function Navbar({
   isLanguageMenuOpen,
   isMobileMenuOpen,
   selectedLanguage,
+  activeNavHref,
   languageMenuRef,
   content,
   languagesMenu,
@@ -54,6 +55,7 @@ export default function Navbar({
   onToggleLanguageMenu,
   onToggleMobileMenu,
   onCloseMobileMenu,
+  onSelectNavItem,
   onSelectLanguage
 }) {
   return (
@@ -126,7 +128,12 @@ export default function Navbar({
 
         <nav className="top-nav-links" aria-label="Navegacao principal">
           {content.navItems.map((item) => (
-            <a key={item.href} href={item.href}>
+            <a
+              key={item.href}
+              href={item.href}
+              className={item.href === activeNavHref ? 'is-active' : ''}
+              onClick={() => onSelectNavItem(item.href)}
+            >
               {item.label}
             </a>
           ))}
@@ -136,7 +143,15 @@ export default function Navbar({
       <div className={`mobile-menu ${isMobileMenuOpen ? 'is-open' : ''}`}>
         <nav className="mobile-menu-links" aria-label="Navegacao mobile">
           {content.navItems.map((item) => (
-            <a key={item.href} href={item.href} onClick={onCloseMobileMenu}>
+            <a
+              key={item.href}
+              href={item.href}
+              className={item.href === activeNavHref ? 'is-active' : ''}
+              onClick={() => {
+                onSelectNavItem(item.href);
+                onCloseMobileMenu();
+              }}
+            >
               {item.label}
             </a>
           ))}

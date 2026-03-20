@@ -15,6 +15,7 @@ import { getNavbarContent, languagesMenu } from './componentes/Navbar';
 
 export default function App() {
   const [selectedId, setSelectedId] = useState('home');
+  const [activeNavHref, setActiveNavHref] = useState('#inicio');
   const [isExperienceVisible, setIsExperienceVisible] = useState(false);
   const [isEducationVisible, setIsEducationVisible] = useState(false);
   const [isLightTheme, setIsLightTheme] = useState(false);
@@ -98,6 +99,64 @@ export default function App() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    const sectionIds = [
+      '#inicio',
+      '#especialidades',
+      '#certificacoes',
+      '#experiencia',
+      '#formacao',
+      '#idiomas',
+      '#projetos',
+      '#projetos-pessoais',
+      '#cursos',
+      '#hobbies',
+      '#curriculo'
+    ];
+
+    const sections = sectionIds
+      .map((href) => {
+        const section = document.querySelector(href);
+        return section ? { href, section } : null;
+      })
+      .filter(Boolean);
+
+    if (!sections.length) {
+      return undefined;
+    }
+
+    function updateActiveNav() {
+      const scrollPosition = window.scrollY + 140;
+      let currentSectionHref = sections[0].href;
+
+      sections.forEach(({ href, section }) => {
+        if (section.offsetTop <= scrollPosition) {
+          currentSectionHref = href;
+        }
+      });
+
+      const reachedPageBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 8;
+
+      if (reachedPageBottom) {
+        currentSectionHref = sections[sections.length - 1].href;
+      }
+
+      setActiveNavHref(currentSectionHref);
+    }
+
+    updateActiveNav();
+    window.addEventListener('scroll', updateActiveNav, { passive: true });
+    window.addEventListener('resize', updateActiveNav);
+    window.addEventListener('hashchange', updateActiveNav);
+
+    return () => {
+      window.removeEventListener('scroll', updateActiveNav);
+      window.removeEventListener('resize', updateActiveNav);
+      window.removeEventListener('hashchange', updateActiveNav);
+    };
+  }, []);
+
   function handleScrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -110,12 +169,14 @@ export default function App() {
         isLanguageMenuOpen={isLanguageMenuOpen}
         isMobileMenuOpen={isMobileMenuOpen}
         selectedLanguage={selectedLanguage}
+        activeNavHref={activeNavHref}
         languageMenuRef={languageMenuRef}
         languagesMenu={languagesMenu}
         onToggleTheme={() => setIsLightTheme((current) => !current)}
         onToggleLanguageMenu={() => setIsLanguageMenuOpen((current) => !current)}
         onToggleMobileMenu={() => setIsMobileMenuOpen((current) => !current)}
         onCloseMobileMenu={() => setIsMobileMenuOpen(false)}
+        onSelectNavItem={setActiveNavHref}
         onSelectLanguage={(language) => {
           setSelectedLanguage(language);
           setIsLanguageMenuOpen(false);

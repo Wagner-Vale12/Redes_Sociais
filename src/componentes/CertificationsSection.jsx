@@ -1,117 +1,113 @@
+import { FaCertificate } from 'react-icons/fa';
+
 const certificationsContent = {
   PT: {
     section: {
-      title: 'Certificacoes',
-      subtitle: 'Credenciais verificaveis da sua carreira.',
-      linkLabel: 'Ver carteira na Credly.',
-      verifyLabel: 'Verificar na Credly ↗'
-    },
+      title: 'Certificações',
+     },
     certifications: [
       {
         id: 'cert-1',
-        badge: 'DS',
-        title: 'Nome da certificacao 01',
-        issuer: 'Instituicao ou plataforma emissora.',
-        description: 'Use este card para colocar o nome da certificacao, um pequeno resumo e o que ela comprova no seu perfil.',
-        href: 'https://www.credly.com/'
+        badge: 'UD',
+        badgeImage: '/imagens/badge-udemy.svg',
+        title: 'React 19 e Next.js 15 com App Router, Server Actions, Server Components, Tailwind CSS, TypeScript e Rest API com NestJS',
+        issuer: 'Udemy',
+        description: 'Curso de React 19 e Next.js 15 com Tailwind, TypeScript e muito mais, do zero ao deploy',
       },
       {
         id: 'cert-2',
-        badge: 'AI',
-        title: 'Nome da certificacao 02',
-        issuer: 'Emissor da certificacao.',
-        description: 'Esse espaco funciona bem para certificados de IA, desenvolvimento, cloud, metodologias ou qualquer trilha relevante.',
-        href: 'https://www.credly.com/'
+        badge: 'TS',
+        badgeImage: '/imagens/badge-udemy.svg',
+        title: 'Express Js + Typescript multipart/form-data Formulário com Imagem e front-end usando Next Js',
+        issuer: 'Udemy',
+        description: 'Curso de node js para formulários multipart/form-data',
       },
       {
         id: 'cert-3',
-        badge: 'RW',
-        title: 'Nome da certificacao 03',
-        issuer: 'Empresa, curso ou academia.',
-        description: 'Se quiser, voce pode manter o mesmo estilo da imagem e depois ir trocando cada card com seus dados reais.',
-        href: 'https://www.credly.com/'
+        badge: 'SF',
+        badgeImage: '/imagens/badge-certiprof.svg',
+        title: 'Scrum Foundation Professional Certificate (SFPC)',
+        issuer: 'CertiProf',
+        description: 'Certificação que valida conhecimentos fundamentais em metodologias ágeis e no framework Scrum, incluindo seus princípios, papéis, eventos e artefatos. Emitida pela CertiProf, organização internacional focada em certificações profissionais.'
       },
       {
         id: 'cert-4',
-        badge: 'SC',
-        title: 'Nome da certificacao 04',
-        issuer: 'Organizacao certificadora.',
-        description: 'Aqui cabe uma descricao curta com foco em fundamentos, resultado obtido ou nivel da credencial conquistada.',
-        href: 'https://www.credly.com/'
+        badge: 'AL',
+        badgeImage: '/imagens/badge-alura.svg',
+        title: 'Desenvolvimento de aplicações Web em JavaScript com tarefas concorrentes e orientadas a objetos.',
+        issuer: 'Alura',
+        description: 'Certificação voltada ao desenvolvimento de aplicações web com JavaScript, abordando execução assíncrona, tarefas concorrentes e conceitos de orientação a objetos. Emitida pela Alura.',
       },
       {
         id: 'cert-5',
-        badge: 'LL',
-        title: 'Nome da certificacao 05',
-        issuer: 'Plataforma de estudos.',
-        description: 'Tambem pode usar este bloco para cursos importantes, trilhas profissionais ou badges verificaveis da sua carreira.',
-        href: 'https://www.credly.com/'
+        badge: 'AL',
+        badgeImage: '/imagens/badge-alura.svg',
+        title: 'Node.js: continue seu projeto full stack criando uma API com Express',
+        issuer: 'Alura',
+        description: 'Curso para aprender a criar uma API Node.js usando Express Entenda como funcionam requisições HTTP Compreenda como testar e validar uma API manualmente Aprenda a manipular arquivos JSON para armazenar dados Saiba como lidar com erros na sua aplicação Conheça os mais utilizados métodos HTTP.'
       },
       {
         id: 'cert-6',
-        badge: 'WD',
-        title: 'Nome da certificacao 06',
-        issuer: 'Microsoft, Oracle, AWS, etc.',
-        description: 'Se voce quiser, eu depois posso preencher cada card com o nome real das suas certificacoes e links oficiais.',
-        href: 'https://www.credly.com/'
+        badge: 'AL',
+        badgeImage: '/imagens/badge-alura.svg',
+        title: 'Next.js Full stack: arquitetura de componentes Front-end',
+        issuer: 'Alura',
+        description: 'Certificação voltada ao desenvolvimento de aplicações web com Next.js, abordando arquitetura de componentes e práticas de desenvolvimento full stack. Emitida pela Alura.'
       }
     ]
   },
   EN: {
     section: {
-      title: 'Certifications',
-      subtitle: 'Verifiable credentials in your career.',
-      linkLabel: 'View Credly profile.',
-      verifyLabel: 'Verify on Credly ↗'
+      title: 'Certifications'
     },
     certifications: [
       {
         id: 'cert-1',
-        badge: 'DS',
-        title: 'Certification name 01',
-        issuer: 'Issuing institution or platform.',
-        description: 'Use this card to place the certification name, a short summary, and what it proves in your profile.',
-        href: 'https://www.credly.com/'
+        badge: 'UD',
+        badgeImage: '/imagens/badge-udemy.svg',
+        title: 'React 19 and Next.js 15 with App Router, Server Actions, Server Components, Tailwind CSS, TypeScript, and REST API with NestJS',
+        issuer: 'Udemy',
+        description: 'React 19 and Next.js 15 course with Tailwind, TypeScript, and much more, from scratch to deployment.'
       },
       {
         id: 'cert-2',
-        badge: 'AI',
-        title: 'Certification name 02',
-        issuer: 'Certification issuer.',
-        description: 'This space works well for AI, development, cloud, methodologies, or any relevant learning path certificates.',
-        href: 'https://www.credly.com/'
+        badge: 'TS',
+        badgeImage: '/imagens/badge-udemy.svg',
+        title: 'Express.js + TypeScript multipart/form-data form with image and front-end using Next.js',
+        issuer: 'Udemy',
+        description: 'Node.js course focused on multipart/form-data forms.'
       },
       {
         id: 'cert-3',
-        badge: 'RW',
-        title: 'Certification name 03',
-        issuer: 'Company, course, or academy.',
-        description: 'If you want, you can keep the same style as the reference image and later replace each card with your real data.',
-        href: 'https://www.credly.com/'
+        badge: 'SF',
+        badgeImage: '/imagens/badge-certiprof.svg',
+        title: 'Scrum Foundation Professional Certificate (SFPC)',
+        issuer: 'CertiProf',
+        description: 'Certification that validates fundamental knowledge in agile methodologies and the Scrum framework, including its principles, roles, events, and artifacts. Issued by CertiProf, an international organization focused on professional certifications.'
       },
       {
         id: 'cert-4',
-        badge: 'SC',
-        title: 'Certification name 04',
-        issuer: 'Certifying organization.',
-        description: 'This is a good place for a short description focused on fundamentals, achievement, or credential level.',
-        href: 'https://www.credly.com/'
+        badge: 'AL',
+        badgeImage: '/imagens/badge-alura.svg',
+        title: 'Development of web applications in JavaScript with concurrent and object-oriented tasks.',
+        issuer: 'Alura',
+        description: 'Certification focused on JavaScript web application development, covering asynchronous execution, concurrent tasks, and object-oriented concepts. Issued by Alura.'
       },
       {
         id: 'cert-5',
-        badge: 'LL',
-        title: 'Certification name 05',
-        issuer: 'Learning platform.',
-        description: 'You can also use this block for important courses, professional learning paths, or verifiable badges in your career.',
-        href: 'https://www.credly.com/'
+        badge: 'AL',
+        badgeImage: '/imagens/badge-alura.svg',
+        title: 'Node.js: continue your full stack project by creating an API with Express',
+        issuer: 'Alura',
+        description: 'Course to learn how to build a Node.js API using Express. Understand how HTTP requests work, how to manually test and validate an API, how to manipulate JSON files to store data, handle errors in your application, and use the most common HTTP methods.'
       },
       {
         id: 'cert-6',
-        badge: 'WD',
-        title: 'Certification name 06',
-        issuer: 'Microsoft, Oracle, AWS, etc.',
-        description: 'If you want, I can later fill each card with the real names of your certifications and official links.',
-        href: 'https://www.credly.com/'
+        badge: 'AL',
+        badgeImage: '/imagens/badge-alura.svg',
+        title: 'Next.js Full stack: front-end component architecture',
+        issuer: 'Alura',
+        description: 'Certification focused on Next.js web application development, covering component architecture and full stack development practices. Issued by Alura.'
       }
     ]
   }
@@ -125,8 +121,8 @@ export default function CertificationsSection({ content }) {
   return (
     <section id="certificacoes" className="certifications-section">
       <header className="section-heading">
-        <span className="section-heading-icon" aria-hidden="true">
-          ◉
+        <span className="section-heading-icon section-heading-icon-certificate" aria-hidden="true">
+          <FaCertificate />
         </span>
         <div className="section-heading-copy">
           <h2>{content.section.title}</h2>
@@ -143,7 +139,17 @@ export default function CertificationsSection({ content }) {
         {content.certifications.map((certification) => (
           <article key={certification.id} className="certification-card">
             <div className="certification-badge" aria-hidden="true">
-              <span>{certification.badge}</span>
+              {certification.badgeImage ? (
+                <span className="certification-badge-image-wrap">
+                  <img
+                    className="certification-badge-image"
+                    src={certification.badgeImage}
+                    alt=""
+                  />
+                </span>
+              ) : (
+                <span>{certification.badge}</span>
+              )}
             </div>
 
             <div className="certification-content">
