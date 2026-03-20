@@ -6,7 +6,7 @@ Projeto desenvolvido em React para apresentar meus perfis profissionais e sociai
 
 O link do deploy na Vercel.
 
-https://redes-sociais-orcin-chi.vercel.app/ 
+<!-- https://redes-sociais-orcin-chi.vercel.app/ -->
 
 ## Sobre o projeto
 
