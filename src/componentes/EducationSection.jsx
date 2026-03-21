@@ -16,10 +16,10 @@ const educationContent = {
     educationItems: [
       {
         id: 'edu-1',
-        institution: 'Your college or institution',
-        degree: 'Your main degree or program',
-        period: '2020 - 2024',
-        description: 'Use this space to describe your education, key subjects, academic projects, and the main focus of the program.'
+        institution: 'Nove de Julho University (UNINOVE)',
+        degree: 'Systems Analysis and Development',
+        period: 'Start - 2019 / Graduation - 2021',
+        description: 'Education focused on systems development and software engineering, with emphasis on building web applications, data modeling, and systems architecture. Throughout the program, I developed academic projects applying front-end, back-end, and systems integration concepts, using good programming practices, code versioning, and software organization. This education provided a solid foundation in problem solving, technical analysis, and the development of scalable solutions.'
       }
     ]
   }

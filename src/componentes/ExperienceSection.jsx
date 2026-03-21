@@ -48,6 +48,41 @@ const experienceContent = {
           'Comunicação técnica',
           'Ownership e responsabilidade compartilhada'
         ]
+      },
+      {
+        id: 'exp-2',
+        company: 'Projeto freelance • empresa do setor de climatização',
+        location: 'São Paulo/SP',
+        role: 'Desenvolvedor Front-end',
+        period: 'Maio 2023 - dezembro 2023',
+        description: 'Atuei no desenvolvimento front-end de uma solução para uma empresa do segmento de climatização, contribuindo para a construção de uma interface moderna, responsiva e escalável.',
+        cta: 'Ver mais',
+        collapseLabel: 'Ver menos',
+        details: [
+          'O projeto foi desenvolvido com React, Next.js, Node.js e Tailwind CSS, com foco em uma interface moderna, organizada e responsiva.',
+          'Também houve integração com banco de dados PostgreSQL, priorizando boa estrutura de código, usabilidade e performance da aplicação.',
+          'Contribuí para a construção de uma experiência consistente e escalável, alinhando front-end, regras de negócio e organização da aplicação.'
+        ],
+        technicalSkillsLabel: 'Competências técnicas',
+        technicalSkills: [
+          'React',
+          'Next.js',
+          'Node.js',
+          'Tailwind CSS',
+          'JavaScript',
+          'PostgreSQL',
+          'Front-end development',
+          'Responsividade',
+          'Performance'
+        ],
+        behaviorSkillsLabel: 'Competências comportamentais',
+        behaviorSkills: [
+          'Organização de código',
+          'Atenção à usabilidade',
+          'Foco em qualidade',
+          'Autonomia',
+          'Entrega orientada a resultado'
+        ]
       }
     ]
   },
@@ -97,6 +132,41 @@ const experienceContent = {
           'Technical communication',
           'Ownership and shared responsibility'
         ]
+      },
+      {
+        id: 'exp-2',
+        company: 'Freelance project • air conditioning company',
+        location: 'Sao Paulo/SP',
+        role: 'Front-end Developer',
+        period: 'May 2023 - December 2023',
+        description: 'I worked on the front-end development of a solution for a company in the air conditioning sector, contributing to a modern, responsive, and scalable interface.',
+        cta: 'See more',
+        collapseLabel: 'See less',
+        details: [
+          'The project was developed with React, Next.js, Node.js, and Tailwind CSS, with a focus on a modern, well-structured, and responsive interface.',
+          'It also included PostgreSQL database integration, prioritizing clean code structure, usability, and application performance.',
+          'I contributed to building a consistent and scalable experience, aligning front-end implementation, business rules, and overall application organization.'
+        ],
+        technicalSkillsLabel: 'Technical skills',
+        technicalSkills: [
+          'React',
+          'Next.js',
+          'Node.js',
+          'Tailwind CSS',
+          'JavaScript',
+          'PostgreSQL',
+          'Front-end development',
+          'Responsiveness',
+          'Performance'
+        ],
+        behaviorSkillsLabel: 'Behavioral skills',
+        behaviorSkills: [
+          'Code organization',
+          'Attention to usability',
+          'Quality focus',
+          'Autonomy',
+          'Results-driven delivery'
+        ]
       }
     ]
   }
@@ -106,11 +176,14 @@ export function getExperienceContent(languageCode) {
   return experienceContent[languageCode] ?? experienceContent.PT;
 }
 
-function ExperienceCard({ experience }) {
+function ExperienceCard({ experience, index }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <article className="experience-item">
+    <article
+      className="experience-item"
+      style={{ '--experience-delay': `${0.16 + index * 0.28}s` }}
+    >
       <div className="experience-card">
         <h3>{experience.company}</h3>
         <span className="experience-location">{experience.location}</span>
@@ -199,8 +272,8 @@ export default function ExperienceSection({
       >
         <div className="experience-track" aria-hidden="true" />
 
-        {content.experiences.map((experience) => (
-          <ExperienceCard key={experience.id} experience={experience} />
+        {content.experiences.map((experience, index) => (
+          <ExperienceCard key={experience.id} experience={experience} index={index} />
         ))}
       </div>
     </section>

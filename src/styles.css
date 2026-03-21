@@ -882,6 +882,11 @@ img {
   grid-template-columns: minmax(280px, 520px) minmax(220px, 1fr);
   align-items: center;
   gap: 18px;
+  margin-top: 22px;
+}
+
+.experience-item:first-child {
+  margin-top: 0;
 }
 
 .experience-card {
@@ -909,7 +914,7 @@ img {
 }
 
 .experience-timeline.is-visible .experience-card {
-  animation: sectionCardSlideIn 1.28s cubic-bezier(0.16, 1, 0.3, 1) 0.16s forwards;
+  animation: sectionCardSlideIn 1.28s cubic-bezier(0.16, 1, 0.3, 1) var(--experience-delay, 0.16s) forwards;
 }
 
 .education-timeline.is-visible .education-card {
@@ -918,7 +923,7 @@ img {
 
 .experience-timeline.is-visible .experience-period,
 .education-timeline.is-visible .experience-period {
-  animation: sectionPeriodFadeIn 1.05s cubic-bezier(0.16, 1, 0.3, 1) 0.34s forwards;
+  animation: sectionPeriodFadeIn 1.05s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--experience-delay, 0.16s) + 0.18s) forwards;
 }
 
 .experience-card h3 {
@@ -1190,7 +1195,7 @@ img {
 .project-card {
   padding: 22px 24px 26px;
   border: 1px solid rgba(255, 255, 255, 0.75);
-  border-radius: 16px;
+  border-radius: 5px;
   background: rgba(255, 255, 255, 0.04);
 }
 
@@ -1212,6 +1217,13 @@ img {
   font-weight: 700;
 }
 
+.project-logo-image {
+  width: 72%;
+  height: 72%;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
 .project-heading {
   display: flex;
   flex-direction: column;
@@ -1227,7 +1239,7 @@ img {
   width: fit-content;
   min-height: 30px;
   padding: 6px 12px;
-  border-radius: 10px;
+  border-radius: 5px;
   background: rgba(255, 255, 255, 0.08);
   color: #ffffff;
   font-size: 0.88rem;
@@ -1256,13 +1268,16 @@ img {
 .personal-projects-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
+  gap: 14px;
 }
 
 .personal-project-card {
-  padding: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  min-height: 255px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 5px;
   background: rgba(255, 255, 255, 0.04);
 }
 
@@ -1274,8 +1289,8 @@ img {
 }
 
 .personal-project-top h3 {
-  font-size: 1.1rem;
-  line-height: 1.4;
+  font-size: 0.96rem;
+  line-height: 1.28;
 }
 
 .personal-status,
@@ -1284,7 +1299,7 @@ img {
   align-items: center;
   min-height: 30px;
   padding: 6px 10px;
-  border-radius: 10px;
+  border-radius: 5px;
   background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
   font-size: 0.82rem;
@@ -1292,19 +1307,65 @@ img {
 
 .personal-project-card p {
   color: #edf7ed;
-  line-height: 1.8;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.personal-project-card p.is-expanded {
+  display: block;
+}
+
+.personal-project-toggle {
+  width: fit-content;
+  margin-top: 16px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .personal-links {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  margin-top: 22px;
+  margin-top: 18px;
 }
 
 .personal-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   color: var(--green);
+  font-weight: 500;
   text-decoration: none;
+}
+
+.personal-link-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.personal-link-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.personal-links a:first-child .personal-link-icon svg {
+  fill: currentColor;
+  stroke: none;
 }
 
 .personal-meta {
@@ -1312,11 +1373,12 @@ img {
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
-  margin-top: 18px;
+  margin-top: auto;
+  padding-top: 16px;
 }
 
 .personal-stars {
-  background: rgba(255, 185, 0, 0.16);
+  background: rgba(217, 161, 8, 0.16);
   color: #ffcc4d;
 }
 

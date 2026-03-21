@@ -2,7 +2,7 @@ const languagesContent = {
   PT: {
     section: {
       title: 'Idiomas',
-      observationLabel: 'Observacao'
+      observationLabel: 'Observação'
     },
     languages: [
       {

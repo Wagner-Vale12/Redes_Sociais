@@ -4,25 +4,18 @@ const projectsContent = {
     projects: [
       {
         id: 'project-1',
-        logo: 'FS',
+        logoImage: 'https://www.google.com/s2/favicons?domain=futuresecure.ai&sz=128',
         title: 'Plataforma de AI',
-        period: 'ago 2025 - abr 2026',
-        description: 'Descreva aqui um projeto importante do seu portfolio, explicando contexto, tecnologias, responsabilidades e impacto no resultado.'
+        period: ' Nov 2024 - até o momento',
+        description: 'Plataforma para orquestrar workflows, integrações e agentes de inteligência artificial/LLMs. Atuei no desenvolvimento e na sustentação do núcleo low-code, permitindo que engenheiros de IA criem agentes, digital coworkers e automações complexas com menos código manual e mais velocidade de entrega.'
       },
       {
         id: 'project-2',
-        logo: 'CPQ',
-        title: 'Projeto destaque 02',
-        period: 'out 2024 - jul 2025',
-        description: 'Este card pode ser usado para outro projeto relevante, com foco em arquitetura, entrega, manutencao, escalabilidade ou colaboracao com negocio.'
+        logoImage: '/imagens/logo_air.png',
+        title: 'Projeto freelance • empresa do setor de climatização',
+        period: 'mai 2023 - dez 2023',
+        description: 'Atuei no desenvolvimento front-end de uma solução para uma empresa do segmento de climatização, contribuindo para a construção de uma interface moderna, responsiva e escalável. O projeto foi desenvolvido com React, Next.js, Node.js e Tailwind CSS, com integração a banco de dados PostgreSQL, priorizando organização do código, usabilidade e performance da aplicação.'
       },
-      {
-        id: 'project-3',
-        logo: 'GW',
-        title: 'Projeto destaque 03',
-        period: 'jan 2024 - fev 2024',
-        description: 'Use o terceiro card para mostrar variedade de experiencia, como integracoes, sistemas internos, produto web ou automacoes complexas.'
-      }
     ]
   },
   EN: {
@@ -30,25 +23,18 @@ const projectsContent = {
     projects: [
       {
         id: 'project-1',
-        logo: 'FS',
-        title: 'Featured project 01',
-        period: 'Aug 2025 - Apr 2026',
-        description: 'Describe an important portfolio project here, explaining context, technologies, responsibilities, and business impact.'
+        logoImage: 'https://www.google.com/s2/favicons?domain=futuresecure.ai&sz=128',
+        title: 'AI Platform',
+        period: 'Nov 2024 - Present',
+        description: 'Platform for orchestrating workflows, integrations, and artificial intelligence/LLM agents. I worked on the development and ongoing support of the low-code core, enabling AI engineers to build agents, digital coworkers, and complex automations with less manual code and faster delivery.'
       },
       {
         id: 'project-2',
-        logo: 'CPQ',
-        title: 'Featured project 02',
-        period: 'Oct 2024 - Jul 2025',
-        description: 'This card can be used for another relevant project, focused on architecture, delivery, maintenance, scalability, or collaboration with business.'
+        logoImage: '/imagens/logo_air.png',
+        title: 'Freelance project • air conditioning company',
+        period: 'May 2023 - Aug 2023',
+        description: 'I worked on the front-end development of a solution for a company in the air conditioning sector, contributing to a modern, responsive, and scalable interface. The project was built with React, Next.js, Node.js, and Tailwind CSS, integrated with a PostgreSQL database, with strong attention to code organization, usability, and application performance.'
       },
-      {
-        id: 'project-3',
-        logo: 'GW',
-        title: 'Featured project 03',
-        period: 'Jan 2024 - Feb 2024',
-        description: 'Use the third card to show variety of experience, such as integrations, internal systems, web products, or complex automation.'
-      }
     ]
   }
 };
@@ -72,7 +58,11 @@ export default function ProjectsSection({ content }) {
           <article key={project.id} className="project-card">
             <div className="project-card-header">
               <div className="project-logo" aria-hidden="true">
-                <span>{project.logo}</span>
+                {project.logoImage ? (
+                  <img className="project-logo-image" src={project.logoImage} alt="" />
+                ) : (
+                  <span>{project.logo}</span>
+                )}
               </div>
 
               <div className="project-heading">
