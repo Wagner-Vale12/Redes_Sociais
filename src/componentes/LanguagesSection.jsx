@@ -1,8 +1,12 @@
+import { useEffect, useRef, useState } from 'react';
+
 const languagesContent = {
   PT: {
     section: {
       title: 'Idiomas',
-      observationLabel: 'Observação'
+      observationLabel: 'Observação',
+      seeMoreLabel: 'Ver mais',
+      seeLessLabel: 'Ver menos'
     },
     languages: [
       {
@@ -35,7 +39,9 @@ const languagesContent = {
   EN: {
     section: {
       title: 'Languages',
-      observationLabel: 'Note'
+      observationLabel: 'Note',
+      seeMoreLabel: 'See more',
+      seeLessLabel: 'See less'
     },
     languages: [
       {
@@ -71,6 +77,84 @@ export function getLanguagesContent(languageCode) {
   return languagesContent[languageCode] ?? languagesContent.PT;
 }
 
+function LanguageCard({ language, labels }) {
+  const collapsedBodyHeight = 280;
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [hasOverflow, setHasOverflow] = useState(false);
+  const bodyRef = useRef(null);
+
+  useEffect(() => {
+    const element = bodyRef.current;
+
+    if (!element) {
+      return undefined;
+    }
+
+    function measureOverflow() {
+      setHasOverflow(element.scrollHeight > collapsedBodyHeight + 2);
+    }
+
+    measureOverflow();
+
+    const observer = new ResizeObserver(() => {
+      measureOverflow();
+    });
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, [language]);
+
+  return (
+    <article className="language-card">
+      <div className="language-card-header">
+        <div className="language-flag" aria-hidden="true">
+          <span className={`language-flag-badge fi fi-${language.flagCode}`} />
+        </div>
+
+        <div className="language-heading">
+          <h3>{language.name}</h3>
+        </div>
+
+        <span className="language-level">{language.level}</span>
+      </div>
+
+      <div className="language-divider" aria-hidden="true" />
+
+      <div
+        ref={bodyRef}
+        className={`language-card-body ${isExpanded ? 'is-expanded' : ''}`}
+      >
+        <div className="language-sections">
+          {language.sections.map((section) => (
+            <div key={section.title} className="language-copy-block">
+              <strong>{section.title}</strong>
+              <p>{section.text}</p>
+            </div>
+          ))}
+        </div>
+
+        {language.note ? (
+          <div className="language-note">
+            <strong>{labels.observationLabel}</strong>
+            <p>{language.note}</p>
+          </div>
+        ) : null}
+      </div>
+
+      {hasOverflow ? (
+        <button
+          type="button"
+          className="language-toggle"
+          onClick={() => setIsExpanded((current) => !current)}
+        >
+          {isExpanded ? labels.seeLessLabel : labels.seeMoreLabel}
+        </button>
+      ) : null}
+    </article>
+  );
+}
+
 export default function LanguagesSection({ content }) {
   return (
     <section id="idiomas" className="languages-section">
@@ -83,37 +167,7 @@ export default function LanguagesSection({ content }) {
 
       <div className="languages-grid">
         {content.languages.map((language) => (
-          <article key={language.id} className="language-card">
-            <div className="language-card-header">
-              <div className="language-flag" aria-hidden="true">
-                <span className={`language-flag-badge fi fi-${language.flagCode}`} />
-              </div>
-
-              <div className="language-heading">
-                <h3>{language.name}</h3>
-              </div>
-
-              <span className="language-level">{language.level}</span>
-            </div>
-
-            <div className="language-divider" aria-hidden="true" />
-
-            <div className="language-sections">
-              {language.sections.map((section) => (
-                <div key={section.title} className="language-copy-block">
-                  <strong>{section.title}</strong>
-                  <p>{section.text}</p>
-                </div>
-              ))}
-            </div>
-
-            {language.note ? (
-              <div className="language-note">
-                <strong>{content.section.observationLabel}</strong>
-                <p>{language.note}</p>
-              </div>
-            ) : null}
-          </article>
+          <LanguageCard key={language.id} language={language} labels={content.section} />
         ))}
       </div>
     </section>
