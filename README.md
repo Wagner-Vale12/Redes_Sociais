@@ -1,32 +1,43 @@
-# Portfólio de Redes Sociais
+🚀 Wagner Vale — Interactive Portfolio (React)
 
-Projeto desenvolvido em React para apresentar meus perfis profissionais e sociais em uma interface interativa inspirada na visualização de um celular.
+Aplicação front-end desenvolvida para apresentar minha identidade profissional, projetos e presença digital através de uma experiência interativa inspirada em dispositivos mobile.
 
-## Preview
+🔗 Live Demo:
+https://redes-sociais-orcin-chi.vercel.app/
 
-O link do deploy na Vercel.
+ <img width="1872" height="920" alt="image" src="https://github.com/user-attachments/assets/84774555-7d1b-4fa2-8d04-e258b8de95e9" />
 
- https://redes-sociais-orcin-chi.vercel.app/ 
+📌 Visão Geral
 
-## Sobre o projeto
+Este projeto foi concebido como uma single-page application (SPA) com foco em experiência do usuário, performance e apresentação profissional.
 
-Este projeto foi criado para funcionar como uma vitrine digital dos meus perfis online. A proposta é oferecer uma experiência visual mais moderna, com transições suaves entre as telas, navegação por botões interativos e destaque para cada rede social dentro de uma moldura de smartphone.
+A proposta vai além de um agregador de links: trata-se de uma interface imersiva que simula um ambiente mobile, proporcionando navegação fluida entre conteúdos e reforçando a percepção de produto moderno.
 
-## Funcionalidades
+🧠 Abordagem e Decisões Técnicas
 
-- Navegação entre perfis sociais com botões interativos
-- Visualização dinâmica do conteúdo dentro da tela do celular
-- Transição animada ao trocar de rede social
-- Botão interno com link direto para cada perfil
-- Layout responsivo para desktop e mobile
+Arquitetura baseada em componentização com React
+Utilização do Vite para build rápida e ambiente de desenvolvimento otimizado
+Gerenciamento de estado simplificado com hooks nativos
+Separação clara entre estrutura, estilo e lógica
+Foco em responsividade e consistência visual
+Transições controladas para melhorar a percepção de fluidez
 
-## Tecnologias utilizadas
+✨ Principais Features
 
-- React
-- Vite
-- JavaScript
-- CSS3
-- HTML5
+Interface simulando um dispositivo mobile
+Navegação entre telas com transições suaves
+Estrutura modular e reutilizável
+Acesso direto a perfis e conteúdos externos
+Layout responsivo (mobile-first)
+Experiência centrada no usuário
+
+🛠️ Stack Tecnológica
+
+- React — construção da interface
+- Vite — bundler e dev server
+- JavaScript (ES6+) — lógica da aplicação
+- CSS3 — estilização e animações
+- HTML5 — estrutura semântica
 
 ## Estrutura do projeto
 
@@ -43,7 +54,7 @@ Este projeto foi criado para funcionar como uma vitrine digital dos meus perfis 
 └── vite.config.js
 ```
 
-## Como rodar o projeto
+⚙️ Execução Local
 
 ### 1. Clone o repositório
 
@@ -87,31 +98,38 @@ Para visualizar a build localmente:
 npm run preview
 ```
 
-## Deploy
+☁️ Deploy
 
-Este projeto pode ser publicado facilmente na Vercel.
+Deploy realizado via Vercel, com integração contínua baseada no repositório Git.
 
-Passos básicos:
+📊 Foco em Engenharia
 
-1. Suba o projeto para o GitHub
-2. Acesse a Vercel
-3. Importe o repositório
-4. Clique em deploy
+Este projeto demonstra:
 
-Depois, adicione aqui no README o link final do projeto publicado.
+Construção de interfaces escaláveis com React
+Organização de código orientada a componentes
+Atenção à experiência do usuário (UX)
+Uso eficiente de ferramentas modernas de build
+Boas práticas de responsividade
 
-## Objetivo
+🎯 Objetivo do Projeto
 
-Além de reunir meus links em um só lugar, este projeto também serve como peça de portfólio para demonstrar:
+Consolidar minha presença profissional em uma única interface
+Demonstrar capacidade de desenvolvimento front-end moderno
+Criar um produto visualmente atrativo e funcional
+Servir como peça estratégica de portfólio
 
-- criação de interfaces com React
-- componentização
-- estilização com CSS
-- preocupação com experiência visual e interatividade
+🔮 Roadmap
+Integração com APIs externas (GitHub, LinkedIn)
+Implementação de dark mode
+Animações avançadas (Framer Motion)
+Refatoração para TypeScript
+Testes automatizados (unitários e integração)
 
-## Autor
+👨‍💻 Autor
 
 Wagner Vale
+Front-end Developer
 
 - GitHub: [Wagner-Vale12](https://github.com/Wagner-Vale12)
 - Instagram: [@wagner12jesus](https://www.instagram.com/wagner12jesus/)
