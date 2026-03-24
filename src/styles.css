@@ -1602,6 +1602,8 @@ img {
 }
 
 .footer-heading {
+  width: fit-content;
+  margin: 0 auto;
   justify-content: center;
 }
 
