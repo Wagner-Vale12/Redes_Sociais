@@ -913,11 +913,13 @@ img {
 .experience-timeline {
   position: relative;
   padding: 16px 0 0;
+  overflow: hidden;
 }
 
 .education-timeline {
   position: relative;
   padding: 16px 0 0;
+  overflow: hidden;
 }
 
 .experience-track {
@@ -2189,11 +2191,14 @@ img {
 
 @media (max-width: 900px) {
   .top-nav-inner {
+    position: relative;
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     justify-content: initial;
-    width: calc(100% - 24px);
+    width: auto;
+    margin-inline: 12px;
     min-height: 58px;
+    padding-right: 58px;
     gap: 16px;
   }
 
@@ -2221,13 +2226,20 @@ img {
   }
 
   .mobile-menu-toggle {
+    position: fixed;
+    top: 8px;
+    right: 12px;
+    z-index: 35;
+    margin-left: 0;
+    flex-shrink: 0;
+    transform: none;
     display: inline-flex;
   }
 
   .mobile-menu {
     display: none;
-    width: calc(100% - 24px);
-    margin: 0 auto 12px;
+    width: auto;
+    margin: 0 12px 12px;
     padding: 10px;
     border: 1px solid var(--panel-line);
     border-radius: 16px;
@@ -2328,7 +2340,8 @@ img {
 
 @media (max-width: 560px) {
   .top-nav-inner {
-    width: calc(100% - 20px);
+    width: auto;
+    margin-inline: 10px;
     min-height: 58px;
     gap: 16px;
   }
@@ -2347,7 +2360,12 @@ img {
   }
 
   .mobile-menu {
-    width: calc(100% - 20px);
+    width: auto;
+    margin-inline: 10px;
+  }
+
+  .mobile-menu-toggle {
+    right: 10px;
   }
 
   .profile-avatar {
