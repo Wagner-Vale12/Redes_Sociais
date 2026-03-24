@@ -3,7 +3,7 @@ const portfolioHeroContent = {
     hero: {
       name: 'Wagner',
       role: 'Software Engineer Pleno | React • Next.js • Node.js | AI & Automation',
-      socialHeading: 'Sigam minhas redes sociais',
+      socialHeading: 'Conecte-se comigo',
       intro: [
         'Sou Desenvolvedor de Software com foco em desenvolvimento front-end e construção de interfaces escaláveis para plataformas de Inteligência Artificial. Atualmente atuo na Future Secure AI, onde trabalho no desenvolvimento e evolução de aplicações utilizando React, Next.js e Vue.js, implementando novas funcionalidades, melhorando a experiência do usuário e garantindo a qualidade e performance das aplicações.',
         'Minha atuação envolve também a integração com APIs e serviços em Node.js, além da participação no desenvolvimento de plataformas baseadas em Inteligência Artificial. Tenho experiência trabalhando com sistemas que utilizam Large Language Models (LLMs), automação de workflows e integrações entre serviços, contribuindo para a construção de soluções modernas e escaláveis.',
@@ -54,7 +54,7 @@ const portfolioHeroContent = {
     hero: {
       name: 'Wagner',
       role: 'Mid-Level Software Engineer | React • Next.js • Node.js | AI & Automation',
-      socialHeading: 'Follow my social networks',
+      socialHeading: 'Connect with me',
       intro: [
         'I am a Software Developer focused on front-end development and building scalable interfaces for Artificial Intelligence platforms. I currently work at Future Secure AI, where I contribute to the development and evolution of applications using React, Next.js, and Vue.js, implementing new features, improving user experience, and ensuring application quality and performance.',
         'My role also involves integrating APIs and services using Node.js, as well as participating in the development of AI-based platforms. I have experience working with systems that leverage Large Language Models (LLMs), workflow automation, and service integrations, contributing to the creation of modern and scalable solutions.',
@@ -107,12 +107,63 @@ export function getPortfolioHeroContent(languageCode) {
   return portfolioHeroContent[languageCode] ?? portfolioHeroContent.PT;
 }
 
-export default function PortfolioHero({
-  activeProfile,
-  content,
-  selectedId,
-  onSelectProfile
-}) {
+export function SocialShowcase({ activeProfile, content, selectedId, onSelectProfile }) {
+  const socialNavLabel =
+    content.hero.socialHeading === 'Follow my social networks'
+      ? 'Social links'
+      : 'Redes sociais';
+
+  return (
+    <section className="portfolio-layout social-showcase">
+      <div className="phone-preview-block">
+        <p className="phone-preview-heading">{content.hero.socialHeading}</p>
+
+        <div className="phone-frame" aria-live="polite">
+          <div className="phone-screen">
+            <div key={activeProfile.id} className="screen-content">
+              <img
+                className="screen-image"
+                src={activeProfile.preview}
+                alt={`Preview da tela ${activeProfile.label}`}
+              />
+
+              {activeProfile.href ? (
+                <a
+                  className="screen-link"
+                  href={activeProfile.href}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <span>{activeProfile.cta}</span>
+                  <span className="screen-link-arrow" aria-hidden="true">
+                    ↗
+                  </span>
+                </a>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <nav className="social-nav" aria-label={socialNavLabel}>
+        {content.profiles.map((profile) => (
+          <button
+            key={profile.id}
+            type="button"
+            className={`social-button ${profile.id === selectedId ? 'is-active' : ''}`}
+            onClick={() => onSelectProfile(profile.id)}
+            aria-pressed={profile.id === selectedId}
+          >
+            <img src={profile.icon} alt="" />
+            <span>{profile.label}</span>
+          </button>
+        ))}
+      </nav>
+    </section>
+  );
+}
+
+export default function PortfolioHero({ content }) {
   return (
     <section id="inicio" className="hero-section">
       <section className="intro-panel">
@@ -130,53 +181,6 @@ export default function PortfolioHero({
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
-      </section>
-
-      <section className="portfolio-layout">
-        <div className="phone-preview-block">
-          <p className="phone-preview-heading">{content.hero.socialHeading}</p>
-
-          <div className="phone-frame" aria-live="polite">
-            <div className="phone-screen">
-              <div key={activeProfile.id} className="screen-content">
-                <img
-                  className="screen-image"
-                  src={activeProfile.preview}
-                  alt={`Preview da tela ${activeProfile.label}`}
-                />
-
-                {activeProfile.href ? (
-                  <a
-                    className="screen-link"
-                    href={activeProfile.href}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <span>{activeProfile.cta}</span>
-                    <span className="screen-link-arrow" aria-hidden="true">
-                      ↗
-                    </span>
-                  </a>
-                ) : null}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <nav className="social-nav" aria-label="Seções do portfólio">
-          {content.profiles.map((profile) => (
-            <button
-              key={profile.id}
-              type="button"
-              className={`social-button ${profile.id === selectedId ? 'is-active' : ''}`}
-              onClick={() => onSelectProfile(profile.id)}
-              aria-pressed={profile.id === selectedId}
-            >
-              <img src={profile.icon} alt="" />
-              <span>{profile.label}</span>
-            </button>
-          ))}
-        </nav>
       </section>
     </section>
   );

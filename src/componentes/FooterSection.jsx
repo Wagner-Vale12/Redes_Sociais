@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { SocialShowcase } from './PortfolioHero';
 
 const resumeDocumentPaths = {
   complete: {
@@ -150,7 +151,14 @@ export function getFooterContent(languageCode) {
   return footerContent[languageCode] ?? footerContent.PT;
 }
 
-export default function FooterSection({ footer, hobbies }) {
+export default function FooterSection({
+  footer,
+  hobbies,
+  socialContent,
+  activeProfile,
+  selectedId,
+  onSelectProfile
+}) {
   const [isResumeCardOpen, setIsResumeCardOpen] = useState(false);
   const [selectedResumeLanguage, setSelectedResumeLanguage] = useState('PT');
   const [selectedResumeMode, setSelectedResumeMode] = useState('complete');
@@ -359,6 +367,16 @@ export default function FooterSection({ footer, hobbies }) {
             </button>
           </div>
         ) : null}
+
+      </section>
+
+      <section id="redes-sociais" className="footer-social-section">
+        <SocialShowcase
+          activeProfile={activeProfile}
+          content={socialContent}
+          selectedId={selectedId}
+          onSelectProfile={onSelectProfile}
+        />
       </section>
     </footer>
   );

@@ -7,12 +7,12 @@ const specialtiesContent = {
       {
         id: 'leadership',
         icon: '⌘',
-        title: 'Liderança Técnica',
+        title: 'Trabalho em Equipe',
         description: [
           'Tenho experiência em apoiar o crescimento de outros desenvolvedores por meio de mentoria, code reviews construtivos e feedback contínuo. Acredito que revisões de código vão além da qualidade técnica, sendo também uma oportunidade de aprendizado e padronização.',
-          'Também atuo na organização e priorização de demandas, ajudando a manter o foco nas entregas mais relevantes e garantindo eficiência no fluxo de trabalho. Em cenários desafiadores, mantenho uma postura resiliente, buscando soluções práticas e mantendo a estabilidade do time mesmo sob pressão.'
+          'Também atuo na organização e priorização de demandas, ajudando a manter o foco nas entregas mais relevantes e garantindo eficiência no fluxo de trabalho. Em cenários desafiadores, mantenho uma postura resiliente, buscando soluções práticas e mantendo a estabilidade do time.'
         ],
-        tags: ['Comunicação', 'Liderança', 'Mentoria', 'Feedback contínuo', 'Code review', 'Organização', 'Priorização', 'Resiliência']
+        tags: ['Comunicação', 'Trabalho em Equipe', 'Mentoria', 'Feedback contínuo', 'Code review', 'Organização', 'Priorização', 'Resiliência']
       },
       {
         id: 'software',
@@ -44,12 +44,12 @@ const specialtiesContent = {
       {
         id: 'leadership',
         icon: '⌘',
-        title: 'Technical Leadership',
+        title: 'Teamwork',
         description: [
           'I have experience supporting the growth of other developers through mentoring, constructive code reviews, and continuous feedback. I believe code reviews go beyond technical quality and also serve as opportunities for learning and standardization.',
-          'I also help organize and prioritize demands, keeping the team focused on the most relevant deliveries and ensuring efficiency across the workflow. In challenging scenarios, I maintain a resilient mindset, looking for practical solutions and helping preserve team stability under pressure.'
+          'I also help organize and prioritize demands, keeping the team focused on the most relevant deliveries and ensuring efficiency across the workflow. In challenging scenarios, I maintain a resilient mindset, looking for practical solutions and helping preserve team stability.'
         ],
-        tags: ['Communication', 'Leadership', 'Mentoring', 'Continuous feedback', 'Code review', 'Organization', 'Prioritization', 'Resilience']
+        tags: ['Communication', 'Teamwork', 'Mentoring', 'Continuous feedback', 'Code review', 'Organization', 'Prioritization', 'Resilience']
       },
       {
         id: 'software',

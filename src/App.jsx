@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import Navbar from './componentes/Navbar';
-import PortfolioHero, { getPortfolioHeroContent } from './componentes/PortfolioHero';
+import PortfolioHero, {
+  getPortfolioHeroContent
+} from './componentes/PortfolioHero';
 import SpecialtiesSection, { getSpecialtiesContent } from './componentes/SpecialtiesSection';
 import CertificationsSection, { getCertificationsContent } from './componentes/CertificationsSection';
 import ExperienceSection, { getExperienceContent } from './componentes/ExperienceSection';
@@ -296,10 +298,7 @@ function PortfolioApp() {
       />
 
       <PortfolioHero
-        activeProfile={activeProfile}
         content={heroContent}
-        selectedId={selectedId}
-        onSelectProfile={setSelectedId}
       />
 
       <SpecialtiesSection content={specialtiesContent} />
@@ -322,7 +321,14 @@ function PortfolioApp() {
       <ProjectsSection content={projectsContent} />
       <PersonalProjectsSection content={personalProjectsContent} />
       <CoursesSection content={coursesContent} />
-      <FooterSection footer={footerContent.footer} hobbies={footerContent.hobbies} />
+      <FooterSection
+        footer={footerContent.footer}
+        hobbies={footerContent.hobbies}
+        socialContent={heroContent}
+        activeProfile={activeProfile}
+        selectedId={selectedId}
+        onSelectProfile={setSelectedId}
+      />
       <ScrollTopButton onClick={handleScrollToTop} />
     </main>
   );
