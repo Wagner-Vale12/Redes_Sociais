@@ -7,12 +7,12 @@ const specialtiesContent = {
       {
         id: 'leadership',
         icon: '⌘',
-        title: 'Lideranca Técnica',
+        title: 'Liderança Técnica',
         description: [
           'Tenho experiência em apoiar o crescimento de outros desenvolvedores por meio de mentoria, code reviews construtivos e feedback contínuo. Acredito que revisões de código vão além da qualidade técnica, sendo também uma oportunidade de aprendizado e padronização.',
           'Também atuo na organização e priorização de demandas, ajudando a manter o foco nas entregas mais relevantes e garantindo eficiência no fluxo de trabalho. Em cenários desafiadores, mantenho uma postura resiliente, buscando soluções práticas e mantendo a estabilidade do time mesmo sob pressão.'
         ],
-        tags: ['Comunicacao', 'Lideranca', 'Mentoria', 'Feedback continuo', 'Code review', 'Organizacao', 'Priorizacao', 'Resiliencia']
+        tags: ['Comunicação', 'Liderança', 'Mentoria', 'Feedback contínuo', 'Code review', 'Organização', 'Priorização', 'Resiliência']
       },
       {
         id: 'software',
@@ -29,14 +29,12 @@ const specialtiesContent = {
       {
         id: 'ai',
         icon: '*',
-        title: 'Inteligencia Artificial & Automações',
+        title: 'Inteligência Artificial & Automações',
         description: [
           'Concepção e implementação de soluções com LLMs, orquestração com LangChain e LangGraph, fluxos com memória e ferramentas, e padrões RAG para grounding em dados próprios. Experiência prática com observabilidade (Langfuse), automação de workflows (n8n, Flowise) e boas práticas de engenharia de prompt.',
-          'Desenvolvimento de agentes personalizados, chatbots e integrações entre serviços utilizando APIs de IA generativa. Visão de produto em IA generativa: prototipagem rápida, avaliação de modelos, custos e riscos, e colaboração com negócio para casos de uso reais — de assistentes internos a pipelines de dados e agentes especializados.',
-          'Desenvolvimento de agentes personalizados, chatbots e integrações entre serviços utilizando APIs de IA generativa.',
-          'Visão de produto em IA generativa: prototipagem rápida, avaliação de modelos, custos e riscos, e colaboração com negócio para casos de uso reais — de assistentes internos a pipelines de dados e agentes especializados.'
+          'Desenvolvimento de agentes personalizados, chatbots e integrações entre serviços utilizando APIs de IA generativa. Visão de produto em IA generativa: prototipagem rápida, avaliação de modelos, custos e riscos, e colaboração com o negócio para casos de uso reais, de assistentes internos a pipelines de dados e agentes especializados.'
         ],
-        tags: ['OpenAI API', 'Prompts', 'Automacao', 'Agentes', 'Chatbots', 'Workflows', 'Integracoes', 'IA generativa']
+        tags: ['OpenAI API', 'Prompts', 'Automação', 'Agentes', 'Chatbots', 'Workflows', 'Integrações', 'IA generativa']
       }
     ]
   },

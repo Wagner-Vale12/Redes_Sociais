@@ -5,9 +5,9 @@ export const languagesMenu = [
 
 const navbarContent = {
   PT: {
-     brand: 'Portfólio - Wagner',
+    brand: 'Portfólio - Wagner',
     navItems: [
-      { href: '#inicio', label: 'Inicio' },
+      { href: '#inicio', label: 'Início' },
       { href: '#especialidades', label: 'Especialidades' },
       { href: '#certificacoes', label: 'Certificações' },
       { href: '#experiencia', label: 'Experiência' },
@@ -17,7 +17,7 @@ const navbarContent = {
       { href: '#projetos-pessoais', label: 'Projetos Pessoais' },
       { href: '#cursos', label: 'Cursos' },
       { href: '#hobbies', label: 'Hobbies' },
-      { href: '#curriculo', label: 'Curriculo' }
+      { href: '#curriculo', label: 'Currículo' }
     ]
   },
   EN: {
@@ -118,7 +118,7 @@ export default function Navbar({
           type="button"
           className={`mobile-menu-toggle ${isMobileMenuOpen ? 'is-open' : ''}`}
           onClick={onToggleMobileMenu}
-          aria-label="Abrir navegacao"
+          aria-label="Abrir navegação"
           aria-expanded={isMobileMenuOpen}
         >
           <span />
@@ -126,7 +126,7 @@ export default function Navbar({
           <span />
         </button>
 
-        <nav className="top-nav-links" aria-label="Navegacao principal">
+        <nav className="top-nav-links" aria-label="Navegação principal">
           {content.navItems.map((item) => (
             <a
               key={item.href}
@@ -144,7 +144,7 @@ export default function Navbar({
       </div>
 
       <div className={`mobile-menu ${isMobileMenuOpen ? 'is-open' : ''}`}>
-        <nav className="mobile-menu-links" aria-label="Navegacao mobile">
+        <nav className="mobile-menu-links" aria-label="Navegação mobile">
           {content.navItems.map((item) => (
             <a
               key={item.href}

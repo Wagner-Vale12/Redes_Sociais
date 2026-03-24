@@ -1844,13 +1844,6 @@ img {
   font-size: 0.92rem;
 }
 
-.resume-preview-note {
-  margin: 20px 0 18px;
-  color: var(--muted-text);
-  text-align: center;
-  font-size: 0.92rem;
-}
-
 .resume-preview-button {
   width: 100%;
   min-height: 54px;
@@ -2423,9 +2416,7 @@ img {
   .top-nav-brand {
     display: none;
   }
-}
 
-@media (max-width: 420px) {
   .app-shell {
     padding-inline: 10px;
     gap: 72px;

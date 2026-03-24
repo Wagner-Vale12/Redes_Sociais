@@ -15,10 +15,10 @@ const languagesContent = {
         name: 'Português',
         level: 'Nativo',
         sections: [
-          { title: 'Comunicacao', text: 'Comunicacao plena em ambientes pessoais, profissionais e tecnicos, com clareza tanto em contextos formais quanto informais.' },
-          { title: 'Conversacao', text: 'Fluencia natural para reunioes, apresentacoes, atendimento e colaboracao no dia a dia.' },
-          { title: 'Leitura', text: 'Leitura confortavel de documentacao, artigos, contratos, materiais tecnicos e conteudo academico.' },
-          { title: 'Escrita', text: 'Escrita clara de mensagens, textos, especificacoes, anotacoes tecnicas e comunicacoes profissionais.' }
+          { title: 'Comunicação', text: 'Comunicação plena em ambientes pessoais, profissionais e técnicos, com clareza tanto em contextos formais quanto informais.' },
+          { title: 'Conversação', text: 'Fluência natural para reuniões, apresentações, atendimento e colaboração no dia a dia.' },
+          { title: 'Leitura', text: 'Leitura confortável de documentação, artigos, contratos, materiais técnicos e conteúdo acadêmico.' },
+          { title: 'Escrita', text: 'Escrita clara de mensagens, textos, especificações, anotações técnicas e comunicações profissionais.' }
         ]
       },
       {
@@ -27,12 +27,12 @@ const languagesContent = {
         name: 'Inglês',
         level: 'Intermediário',
         sections: [
-          { title: 'Comunicacao', text: 'Compreensao e expressao adequadas para trabalho, estudos e interacoes tecnicas com apoio de contexto.' },
-          { title: 'Conversacao', text: 'Conversacao funcional sobre temas gerais e tecnicos, em evolucao continua com pratica.' },
-          { title: 'Leitura', text: 'Leitura confortavel de documentacao, artigos tecnicos, tutoriais e materiais profissionais em ingles.' },
-          { title: 'Escrita', text: 'Escrita de mensagens, comentarios em codigo, resumos e textos tecnicos basicos quando necessario.' }
+          { title: 'Comunicação', text: 'Compreensão e expressão adequadas para trabalho, estudos e interações técnicas com apoio de contexto.' },
+          { title: 'Conversação', text: 'Conversação funcional sobre temas gerais e técnicos, em evolução contínua com prática.' },
+          { title: 'Leitura', text: 'Leitura confortável de documentação, artigos técnicos, tutoriais e materiais profissionais em inglês.' },
+          { title: 'Escrita', text: 'Escrita de mensagens, comentários em código, resumos e textos técnicos básicos quando necessário.' }
         ],
-       note: 'Atualmente, estou em processo contínuo de desenvolvimento do inglês, combinando cursos especializados na Udemy com prática recorrente em plataformas como Duolingo e BeSpeaker. Esse processo é direcionado ao aprimoramento de habilidades de leitura, escuta, vocabulário técnico e conversação, com foco em comunicação no contexto profissional e tecnológico.'
+        note: 'Atualmente, estou em processo contínuo de desenvolvimento do inglês, combinando cursos especializados na Udemy com prática recorrente em plataformas como Duolingo e BeSpeaker. Esse processo é direcionado ao aprimoramento de habilidades de leitura, escuta, vocabulário técnico e conversação, com foco em comunicação no contexto profissional e tecnológico.'
       }
     ]
   },

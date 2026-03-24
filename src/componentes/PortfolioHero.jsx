@@ -14,8 +14,8 @@ const portfolioHeroContent = {
     profiles: [
       {
         id: 'home',
-        label: 'Inicio',
-        title: 'Abertura do portfolio',
+        label: 'Início',
+        title: 'Abertura do portfólio',
         icon: '/imagens/logo-home.jpg',
         preview: '/imagens/tela-home.jpg',
         href: '',
@@ -24,7 +24,7 @@ const portfolioHeroContent = {
       {
         id: 'github',
         label: 'GitHub',
-        title: 'Projetos e codigo',
+        title: 'Projetos e código',
         icon: '/imagens/logo-github.jpg',
         preview: '/imagens/github.jpg',
         href: 'https://github.com/Wagner-Vale12',
@@ -33,7 +33,7 @@ const portfolioHeroContent = {
       {
         id: 'instagram',
         label: 'Instagram',
-        title: 'Conteudo e rotina',
+        title: 'Conteúdo e rotina',
         icon: '/imagens/logo-instagram.jpg',
         preview: '/imagens/instagram.jpg',
         href: 'https://www.instagram.com/wagner12jesus/',
@@ -42,7 +42,7 @@ const portfolioHeroContent = {
       {
         id: 'linkedin',
         label: 'LinkedIn',
-        title: 'Carreira e conexoes',
+        title: 'Carreira e conexões',
         icon: '/imagens/logo-linkedin.png',
         preview: '/imagens/tela-linkedin.jpg',
         href: 'https://www.linkedin.com/in/wagner12',
@@ -163,7 +163,7 @@ export default function PortfolioHero({
           </div>
         </div>
 
-        <nav className="social-nav" aria-label="Secoes do portfolio">
+        <nav className="social-nav" aria-label="Seções do portfólio">
           {content.profiles.map((profile) => (
             <button
               key={profile.id}

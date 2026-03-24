@@ -1,51 +1,54 @@
-🚀 Wagner Vale — Interactive Portfolio (React)
+# Wagner Vale — Portfólio Pessoal
 
-Aplicação front-end desenvolvida para apresentar minha identidade profissional, projetos e presença digital através de uma experiência interativa inspirada em dispositivos mobile.
+Portfólio desenvolvido em React para apresentar minha trajetória profissional, experiências, projetos, certificações, formação, idiomas e currículo em uma interface moderna, responsiva e bilíngue.
 
-🔗 Live Demo:
+## Demo
+
 https://redes-sociais-orcin-chi.vercel.app/
 
- <img width="1872" height="920" alt="image" src="https://github.com/user-attachments/assets/84774555-7d1b-4fa2-8d04-e258b8de95e9" />
+## Visão geral
 
-📌 Visão Geral
+Este projeto deixou de ser apenas uma vitrine de redes sociais e passou a funcionar como meu portfólio profissional completo.
 
-Este projeto foi concebido como uma single-page application (SPA) com foco em experiência do usuário, performance e apresentação profissional.
+Hoje ele reúne:
 
-A proposta vai além de um agregador de links: trata-se de uma interface imersiva que simula um ambiente mobile, proporcionando navegação fluida entre conteúdos e reforçando a percepção de produto moderno.
+- apresentação profissional em `PT` e `EN`
+- especialidades técnicas
+- experiências profissionais
+- formação acadêmica
+- certificações
+- idiomas
+- projetos profissionais e projetos pessoais
+- cursos
+- hobbies
+- download e visualização de currículo completo ou personalizado
 
-🧠 Abordagem e Decisões Técnicas
+## Stack
 
-Arquitetura baseada em componentização com React
-Utilização do Vite para build rápida e ambiente de desenvolvimento otimizado
-Gerenciamento de estado simplificado com hooks nativos
-Separação clara entre estrutura, estilo e lógica
-Foco em responsividade e consistência visual
-Transições controladas para melhorar a percepção de fluidez
+- React
+- Vite
+- JavaScript
+- CSS
+- HTML
 
-✨ Principais Features
+## Principais recursos
 
-Interface simulando um dispositivo mobile
-Navegação entre telas com transições suaves
-Estrutura modular e reutilizável
-Acesso direto a perfis e conteúdos externos
-Layout responsivo (mobile-first)
-Experiência centrada no usuário
-
-🛠️ Stack Tecnológica
-
-- React — construção da interface
-- Vite — bundler e dev server
-- JavaScript (ES6+) — lógica da aplicação
-- CSS3 — estilização e animações
-- HTML5 — estrutura semântica
+- navegação por seções com menu responsivo
+- suporte a tema claro e escuro
+- suporte a português e inglês
+- seção de currículo com pré-visualização personalizada
+- layout responsivo para desktop, tablet e mobile
+- organização modular por componentes
 
 ## Estrutura do projeto
 
 ```bash
 .
 ├── public/
+│   ├── curriculos/
 │   └── imagens/
 ├── src/
+│   ├── componentes/
 │   ├── App.jsx
 │   ├── main.jsx
 │   └── styles.css
@@ -54,15 +57,15 @@ Experiência centrada no usuário
 └── vite.config.js
 ```
 
-⚙️ Execução Local
+## Como rodar localmente
 
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/seu-repositorio.git
+git clone https://github.com/Wagner-Vale12/rede_sociais.git
 ```
 
-### 2. Acesse a pasta do projeto
+### 2. Entre na pasta do projeto
 
 ```bash
 cd rede_sociais
@@ -74,19 +77,19 @@ cd rede_sociais
 npm install
 ```
 
-### 4. Rode o projeto em ambiente local
+### 4. Rode o projeto
 
 ```bash
 npm run dev
 ```
 
-Depois disso, abra no navegador o endereço mostrado no terminal, normalmente:
+Depois, abra no navegador o endereço exibido no terminal, normalmente:
 
 ```bash
 http://localhost:5173
 ```
 
-## Gerando build de produção
+## Build de produção
 
 ```bash
 npm run build
@@ -98,39 +101,29 @@ Para visualizar a build localmente:
 npm run preview
 ```
 
-☁️ Deploy
+## Currículo
 
-Deploy realizado via Vercel, com integração contínua baseada no repositório Git.
+Os arquivos de currículo ficam em:
 
-📊 Foco em Engenharia
+```bash
+public/curriculos/
+```
 
-Este projeto demonstra:
+O projeto já suporta:
 
-Construção de interfaces escaláveis com React
-Organização de código orientada a componentes
-Atenção à experiência do usuário (UX)
-Uso eficiente de ferramentas modernas de build
-Boas práticas de responsividade
+- currículo completo em PDF
+- currículo personalizado com pré-visualização em HTML pronta para impressão
+- seleção de idioma
+- seleção de seções do currículo
 
-🎯 Objetivo do Projeto
+## Deploy
 
-Consolidar minha presença profissional em uma única interface
-Demonstrar capacidade de desenvolvimento front-end moderno
-Criar um produto visualmente atrativo e funcional
-Servir como peça estratégica de portfólio
+Deploy realizado na Vercel.
 
-🔮 Roadmap
-Integração com APIs externas (GitHub, LinkedIn)
-Implementação de dark mode
-Animações avançadas (Framer Motion)
-Refatoração para TypeScript
-Testes automatizados (unitários e integração)
-
-👨‍💻 Autor
+## Autor
 
 Wagner Vale
-Front-end Developer
 
 - GitHub: [Wagner-Vale12](https://github.com/Wagner-Vale12)
-- Instagram: [@wagner12jesus](https://www.instagram.com/wagner12jesus/)
 - LinkedIn: [wagner12](https://www.linkedin.com/in/wagner12)
+- Instagram: [@wagner12jesus](https://www.instagram.com/wagner12jesus/)
