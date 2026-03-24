@@ -40,15 +40,6 @@ const portfolioHeroContent = {
         cta: 'Abrir Instagram'
       },
       {
-        id: 'twitter',
-        label: 'Twitter',
-        title: 'Atualizacoes e ideias',
-        icon: '/imagens/logo-twitter.jpg',
-        preview: '/imagens/twitter.jpg',
-        href: 'https://twitter.com/Wagner5422/',
-        cta: 'Abrir Twitter'
-      },
-      {
         id: 'linkedin',
         label: 'LinkedIn',
         title: 'Carreira e conexoes',
@@ -98,15 +89,6 @@ const portfolioHeroContent = {
         preview: '/imagens/instagram.jpg',
         href: 'https://www.instagram.com/wagner12jesus/',
         cta: 'Open Instagram'
-      },
-      {
-        id: 'twitter',
-        label: 'Twitter',
-        title: 'Updates and ideas',
-        icon: '/imagens/logo-twitter.jpg',
-        preview: '/imagens/twitter.jpg',
-        href: 'https://twitter.com/Wagner5422/',
-        cta: 'Open Twitter'
       },
       {
         id: 'linkedin',

@@ -5,7 +5,7 @@ export const languagesMenu = [
 
 const navbarContent = {
   PT: {
-     brand: 'Portfólio',
+     brand: 'Portfólio - Wagner',
     navItems: [
       { href: '#inicio', label: 'Inicio' },
       { href: '#especialidades', label: 'Especialidades' },
@@ -21,7 +21,7 @@ const navbarContent = {
     ]
   },
   EN: {
-    brand: 'Portfolio',
+    brand: 'Portfolio - Wagner',
     navItems: [
       { href: '#inicio', label: 'Home' },
       { href: '#especialidades', label: 'Specialties' },

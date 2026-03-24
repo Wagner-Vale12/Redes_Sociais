@@ -86,7 +86,7 @@ function LanguageCard({ language, labels }) {
   useEffect(() => {
     const element = bodyRef.current;
 
-    if (!element) {
+    if (!element) { 
       return undefined;
     }
 

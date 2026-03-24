@@ -10,6 +10,7 @@ import ProjectsSection, { getProjectsContent } from './componentes/ProjectsSecti
 import PersonalProjectsSection, { getPersonalProjectsContent } from './componentes/PersonalProjectsSection';
 import CoursesSection, { getCoursesContent } from './componentes/CoursesSection';
 import FooterSection, { getFooterContent } from './componentes/FooterSection';
+import ResumePreviewPage from './componentes/ResumePreviewPage';
 import ScrollTopButton from './componentes/ScrollTopButton';
 import { getNavbarContent, languagesMenu } from './componentes/Navbar';
 
@@ -28,7 +29,40 @@ function normalizeHash(hash) {
   return normalizedValue.startsWith('#') ? normalizedValue : `#${normalizedValue}`;
 }
 
-export default function App() {
+function ResumePreviewApp() {
+  const searchParams = new URLSearchParams(window.location.search);
+  const languageCode = searchParams.get('lang') === 'EN' ? 'EN' : 'PT';
+  const mode = searchParams.get('mode') === 'custom' ? 'custom' : 'complete';
+  const sections = (searchParams.get('sections') ?? '')
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
+  const options = (searchParams.get('options') ?? '')
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+  return (
+    <ResumePreviewPage
+      languageCode={languageCode}
+      mode={mode}
+      sections={sections}
+      options={options}
+      heroContent={getPortfolioHeroContent(languageCode)}
+      specialtiesContent={getSpecialtiesContent(languageCode)}
+      certificationsContent={getCertificationsContent(languageCode)}
+      experienceContent={getExperienceContent(languageCode)}
+      educationContent={getEducationContent(languageCode)}
+      languagesContent={getLanguagesContent(languageCode)}
+      projectsContent={getProjectsContent(languageCode)}
+      personalProjectsContent={getPersonalProjectsContent(languageCode)}
+      coursesContent={getCoursesContent(languageCode)}
+      footerContent={getFooterContent(languageCode)}
+    />
+  );
+}
+
+function PortfolioApp() {
   const [selectedId, setSelectedId] = useState('home');
   const [activeNavHref, setActiveNavHref] = useState('#inicio');
   const [isExperienceVisible, setIsExperienceVisible] = useState(false);
@@ -50,7 +84,6 @@ export default function App() {
   const personalProjectsContent = getPersonalProjectsContent(selectedLanguage.code);
   const coursesContent = getCoursesContent(selectedLanguage.code);
   const footerContent = getFooterContent(selectedLanguage.code);
-  const introLinks = heroContent.profiles.filter((profile) => profile.href);
   const activeProfile =
     heroContent.profiles.find((profile) => profile.id === selectedId) ?? heroContent.profiles[0];
   const experienceRef = useRef(null);
@@ -289,13 +322,15 @@ export default function App() {
       <ProjectsSection content={projectsContent} />
       <PersonalProjectsSection content={personalProjectsContent} />
       <CoursesSection content={coursesContent} />
-      <FooterSection
-        footer={footerContent.footer}
-        hobbies={footerContent.hobbies}
-        introLinks={introLinks}
-        onSelectProfile={setSelectedId}
-      />
+      <FooterSection footer={footerContent.footer} hobbies={footerContent.hobbies} />
       <ScrollTopButton onClick={handleScrollToTop} />
     </main>
   );
+}
+
+export default function App() {
+  const searchParams = new URLSearchParams(window.location.search);
+  const isResumePreview = searchParams.get('resumePreview') === '1';
+
+  return isResumePreview ? <ResumePreviewApp /> : <PortfolioApp />;
 }
