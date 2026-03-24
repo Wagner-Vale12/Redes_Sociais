@@ -1,10 +1,13 @@
 # Wagner Vale — Portfólio Pessoal
 
-Portfólio desenvolvido em React para apresentar minha trajetória profissional, experiências, projetos, certificações, formação, idiomas e currículo em uma interface moderna, responsiva e bilíngue.
+Portfólio desenvolvido para apresentar minha trajetória profissional, experiências, projetos, certificações, formação, idiomas e currículo em uma interface moderna, responsiva e bilíngue.
 
 ## Demo
 
 https://redes-sociais-orcin-chi.vercel.app/
+
+<img width="1900" height="938" alt="image" src="https://github.com/user-attachments/assets/7805d472-ba1f-44c5-8e74-0a12c33a90a4" />
+
 
 ## Visão geral
 
