@@ -43,6 +43,7 @@ body {
   background:
     radial-gradient(circle at center, rgba(0, 255, 102, 0.05), transparent 30%),
     var(--page-bg);
+  overflow-x: hidden;
 }
 
 button,
@@ -1563,8 +1564,8 @@ img {
 }
 
 .site-footer {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  width: 100%;
+  margin-left: 0;
   padding-top: 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -2201,6 +2202,7 @@ img {
     left: auto;
     transform: none;
     width: 100%;
+    min-width: 0;
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -2412,10 +2414,13 @@ img {
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 520px) {
   .top-nav-brand {
     display: none;
   }
+}
+
+@media (max-width: 420px) {
 
   .app-shell {
     padding-inline: 10px;
