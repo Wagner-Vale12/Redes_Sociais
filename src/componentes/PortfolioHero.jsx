@@ -195,7 +195,7 @@ export function SocialShowcase({ activeProfile, content, selectedId, onSelectPro
   );
 }
 
-export default function PortfolioHero({ content }) {
+export default function PortfolioHero({ content, languageCode = 'PT' }) {
   return (
     <>
       <section id="inicio" className="hero-section">
@@ -216,7 +216,7 @@ export default function PortfolioHero({ content }) {
           </div>
         </section>
       </section>
-      <AssistantChatWidget content={content.hero} />
+      <AssistantChatWidget content={content.hero} languageCode={languageCode} />
     </>
   );
 }

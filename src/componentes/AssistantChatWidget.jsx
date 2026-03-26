@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import { getMockChatResponse } from '../data/portfolioChatMock';
 
-export default function AssistantChatWidget({ content }) {
+export default function AssistantChatWidget({ content, languageCode = 'PT' }) {
   const initialMessages = [
     {
       id: 'assistant-greeting',
@@ -25,6 +26,16 @@ export default function AssistantChatWidget({ content }) {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, [assistantMessages, isAssistantOpen]);
+
+  async function getAssistantResponse(message) {
+    await new Promise((resolve) => {
+      window.setTimeout(resolve, 450);
+    });
+
+    return {
+      text: getMockChatResponse(message, languageCode)
+    };
+  }
 
   async function handleAssistantSubmit(event) {
     event.preventDefault();
@@ -55,22 +66,12 @@ export default function AssistantChatWidget({ content }) {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message: trimmedInput
-        })
-      });
-
-      const data = await response.json();
+      const data = await getAssistantResponse(trimmedInput);
       const assistantReply = {
         id: `assistant-${timestamp + 2}`,
         author: 'assistant',
         text:
-          response.ok && typeof data?.text === 'string' && data.text.trim()
+          typeof data?.text === 'string' && data.text.trim()
             ? data.text.trim()
             : content.assistantErrorText
       };
@@ -168,7 +169,14 @@ export default function AssistantChatWidget({ content }) {
                             <path d="M12 22h8" />
                           </svg>
                         </div>
-                      ) : null}
+                      ) : (
+                        <div className="assistant-widget-user assistant-chat-avatar">
+                          <svg viewBox="0 0 32 32" aria-hidden="true">
+                            <circle cx="16" cy="11" r="5" />
+                            <path d="M7 26a9 9 0 0 1 18 0" />
+                          </svg>
+                        </div>
+                      )}
 
                       <div
                         className={`assistant-chat-bubble ${

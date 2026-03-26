@@ -298,6 +298,7 @@ function PortfolioApp() {
       />
 
       <PortfolioHero
+        languageCode={selectedLanguage.code}
         content={heroContent}
       />
 
