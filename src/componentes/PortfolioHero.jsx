@@ -1,9 +1,26 @@
+import AssistantChatWidget from './AssistantChatWidget';
+
 const portfolioHeroContent = {
   PT: {
     hero: {
       name: 'Wagner',
       role: 'Software Engineer Pleno | React • Next.js • Node.js | AI & Automation',
       socialHeading: 'Conecte-se comigo',
+      assistantTitle: 'Fale com meu assistente',
+      assistantGreeting: 'Olá! Como posso te ajudar?',
+      assistantInputPlaceholder: 'Escreva sua pergunta aqui',
+      assistantBotName: 'Assistente',
+      assistantExpandLabel: 'Expandir',
+      assistantEditLabel: 'Limpar',
+      assistantCloseLabel: 'Fechar',
+      assistantClearLabel: 'Clear Chat',
+      assistantClearTitle: 'Clear Chat History',
+      assistantClearDescription: 'Are you sure you want to clear all chat history?',
+      assistantCancel: 'Cancel',
+      assistantConfirm: 'Clear',
+      assistantEmptyState: 'Envie uma pergunta para iniciar a conversa.',
+      assistantLoadingText: 'Wagner está respondendo...',
+      assistantErrorText: 'Nao consegui responder agora. Tente novamente em instantes.',
       intro: [
         'Sou Desenvolvedor de Software com foco em desenvolvimento front-end e construção de interfaces escaláveis para plataformas de Inteligência Artificial. Atualmente atuo na Future Secure AI, onde trabalho no desenvolvimento e evolução de aplicações utilizando React, Next.js e Vue.js, implementando novas funcionalidades, melhorando a experiência do usuário e garantindo a qualidade e performance das aplicações.',
         'Minha atuação envolve também a integração com APIs e serviços em Node.js, além da participação no desenvolvimento de plataformas baseadas em Inteligência Artificial. Tenho experiência trabalhando com sistemas que utilizam Large Language Models (LLMs), automação de workflows e integrações entre serviços, contribuindo para a construção de soluções modernas e escaláveis.',
@@ -55,6 +72,21 @@ const portfolioHeroContent = {
       name: 'Wagner',
       role: 'Mid-Level Software Engineer | React • Next.js • Node.js | AI & Automation',
       socialHeading: 'Connect with me',
+      assistantTitle: 'Talk to my assistant',
+      assistantGreeting: 'Hi there! How can I help?',
+      assistantInputPlaceholder: 'Type your question here',
+      assistantBotName: 'Assistant',
+      assistantExpandLabel: 'Expand',
+      assistantEditLabel: 'To Clean',
+      assistantCloseLabel: 'Close',
+      assistantClearLabel: 'Clear Chat',
+      assistantClearTitle: 'Clear Chat History',
+      assistantClearDescription: 'Are you sure you want to clear all chat history?',
+      assistantCancel: 'Cancel',
+      assistantConfirm: 'Clear',
+      assistantEmptyState: 'Send a question to start the conversation.',
+      assistantLoadingText: 'Thinking...',
+      assistantErrorText: 'I could not answer right now. Please try again in a moment.',
       intro: [
         'I am a Software Developer focused on front-end development and building scalable interfaces for Artificial Intelligence platforms. I currently work at Future Secure AI, where I contribute to the development and evolution of applications using React, Next.js, and Vue.js, implementing new features, improving user experience, and ensuring application quality and performance.',
         'My role also involves integrating APIs and services using Node.js, as well as participating in the development of AI-based platforms. I have experience working with systems that leverage Large Language Models (LLMs), workflow automation, and service integrations, contributing to the creation of modern and scalable solutions.',
@@ -165,23 +197,26 @@ export function SocialShowcase({ activeProfile, content, selectedId, onSelectPro
 
 export default function PortfolioHero({ content }) {
   return (
-    <section id="inicio" className="hero-section">
-      <section className="intro-panel">
-        <img
-          className="profile-avatar"
-          src="https://github.com/Wagner-Vale12.png"
-          alt="Foto de perfil de Wagner"
-        />
+    <>
+      <section id="inicio" className="hero-section">
+        <section className="intro-panel">
+          <img
+            className="profile-avatar"
+            src="https://github.com/Wagner-Vale12.png"
+            alt="Foto de perfil de Wagner"
+          />
 
-        <h1>{content.hero.name}</h1>
-        <p className="hero-role">{content.hero.role}</p>
+          <h1>{content.hero.name}</h1>
+          <p className="hero-role">{content.hero.role}</p>
 
-        <div className="intro-description">
-          {content.hero.intro.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
-        </div>
+          <div className="intro-description">
+            {content.hero.intro.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
+        </section>
       </section>
-    </section>
+      <AssistantChatWidget content={content.hero} />
+    </>
   );
 }
