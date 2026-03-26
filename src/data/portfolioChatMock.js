@@ -716,10 +716,47 @@ function isClearlyOutOfScope(message, locale) {
   return outOfScopeTerms.some((term) => normalized.includes(term));
 }
 
+function isLikelyPortugueseMessage(message) {
+  const normalized = normalizeMessage(message);
+  const portugueseSignals = [
+    'ola',
+    'olá',
+    'quem',
+    'quais',
+    'qual',
+    'sobre',
+    'experiencia',
+    'experiência',
+    'tecnologias',
+    'projetos',
+    'formacao',
+    'formação',
+    'idiomas',
+    'contato',
+    'idade',
+    'estado civil',
+    'localizacao',
+    'localização',
+    'me fale',
+    'mostre',
+    'voce',
+    'você'
+  ];
+
+  return portugueseSignals.some((term) => normalized.includes(normalizeMessage(term)));
+}
+
 export function getMockChatResponse(message, language = 'PT') {
   const locale = language === 'EN' ? 'EN' : 'PT';
   const data = portfolioChatMock[locale];
   const normalizedMessage = normalizeMessage(message);
+
+  if (locale === 'EN' && isLikelyPortugueseMessage(message)) {
+    return formatChatResponse('Please ask in English', [
+      'The portfolio is currently in English mode, so I can only answer in English.',
+      'Try asking something like: "Tell me about Wagner experience", "What technologies does he use?" or "Show me his projects".'
+    ]);
+  }
 
   if (isClearlyOutOfScope(message, locale)) {
     return getOutOfScopeResponse(locale);
