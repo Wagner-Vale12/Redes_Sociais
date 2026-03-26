@@ -1,6 +1,35 @@
 import { useEffect, useRef, useState } from 'react';
 import { getMockChatResponse } from '../data/portfolioChatMock';
 
+function renderMessageText(text) {
+  const urlPattern = /(https?:\/\/[^\s]+)/g;
+  const lines = text.split('\n');
+
+  return lines.map((line, lineIndex) => {
+    const parts = line.split(urlPattern);
+
+    return (
+      <span key={`line-${lineIndex}`}>
+        {parts.map((part, partIndex) =>
+          /^https?:\/\//.test(part) ? (
+            <a
+              key={`part-${lineIndex}-${partIndex}`}
+              href={part}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {part}
+            </a>
+          ) : (
+            <span key={`part-${lineIndex}-${partIndex}`}>{part}</span>
+          )
+        )}
+        {lineIndex < lines.length - 1 ? <br /> : null}
+      </span>
+    );
+  });
+}
+
 export default function AssistantChatWidget({ content, languageCode = 'PT' }) {
   const initialMessages = [
     {
@@ -16,6 +45,8 @@ export default function AssistantChatWidget({ content, languageCode = 'PT' }) {
   const [assistantMessages, setAssistantMessages] = useState(initialMessages);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const messagesEndRef = useRef(null);
+  const widgetRef = useRef(null);
+  const dialogRef = useRef(null);
 
   useEffect(() => {
     setAssistantMessages(initialMessages);
@@ -26,6 +57,29 @@ export default function AssistantChatWidget({ content, languageCode = 'PT' }) {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }, [assistantMessages, isAssistantOpen]);
+
+  useEffect(() => {
+    if (!isAssistantOpen) {
+      return undefined;
+    }
+
+    function handleClickOutside(event) {
+      const clickedInsideWidget = widgetRef.current?.contains(event.target);
+      const clickedInsideDialog = dialogRef.current?.contains(event.target);
+
+      if (!clickedInsideWidget && !clickedInsideDialog) {
+        setIsAssistantOpen(false);
+        setIsAssistantExpanded(false);
+        setIsClearDialogOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isAssistantOpen]);
 
   async function getAssistantResponse(message) {
     await new Promise((resolve) => {
@@ -96,7 +150,7 @@ export default function AssistantChatWidget({ content, languageCode = 'PT' }) {
 
   return (
     <>
-      <div className="assistant-widget-shell">
+      <div ref={widgetRef} className="assistant-widget-shell">
         {isAssistantOpen ? (
           <aside
             className={`assistant-widget ${isAssistantExpanded ? 'is-expanded' : ''}`}
@@ -185,7 +239,7 @@ export default function AssistantChatWidget({ content, languageCode = 'PT' }) {
                             : ''
                         } ${message.isLoading ? 'assistant-chat-bubble-loading' : ''}`}
                       >
-                        <p>{message.text}</p>
+                        <p>{renderMessageText(message.text)}</p>
                       </div>
                     </div>
                   ))
@@ -231,7 +285,7 @@ export default function AssistantChatWidget({ content, languageCode = 'PT' }) {
 
       {isClearDialogOpen ? (
         <div className="assistant-dialog-backdrop" role="presentation">
-          <div className="assistant-dialog" role="dialog" aria-modal="true">
+          <div ref={dialogRef} className="assistant-dialog" role="dialog" aria-modal="true">
             <h3>{content.assistantClearTitle}</h3>
             <p>{content.assistantClearDescription}</p>
             <div className="assistant-dialog-actions">

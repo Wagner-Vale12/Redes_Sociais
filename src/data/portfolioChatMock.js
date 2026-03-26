@@ -7,6 +7,12 @@ export const portfolioChatMock = {
       focus: 'Desenvolvimento front-end e construção de interfaces escaláveis para plataformas de Inteligência Artificial',
       company: 'Future Secure AI',
       location: 'São Paulo, Brasil',
+      country: 'Brasil',
+      state: 'São Paulo - SP',
+      email: 'wagner6528@gmail.com',
+      age: '38 anos',
+      gender: 'Masculino',
+      maritalStatus: 'Casado',
       about:
         'Wagner é Desenvolvedor de Software com foco em desenvolvimento front-end e na construção de interfaces escaláveis para plataformas de Inteligência Artificial. Atualmente, atua na Future Secure AI, contribuindo para a evolução de aplicações com React, Next.js e Vue.js, implementando novas funcionalidades, aprimorando a experiência do usuário e garantindo qualidade e performance.',
       intro: [
@@ -244,6 +250,12 @@ export const portfolioChatMock = {
       focus: 'Front-end development and scalable interfaces for Artificial Intelligence platforms',
       company: 'Future Secure AI',
       location: 'Sao Paulo, Brazil',
+      country: 'Brazil',
+      state: 'Sao Paulo - SP',
+      email: 'wagner6528@gmail.com',
+      age: '38 years old',
+      gender: 'Male',
+      maritalStatus: 'Married',
       about:
         'Software Developer focused on front-end development and building scalable interfaces for Artificial Intelligence platforms. He currently works at Future Secure AI, where he contributes to the development and evolution of applications using React, Next.js, and Vue.js, implementing new features, improving user experience, and ensuring application quality and performance.',
       intro: [
@@ -497,14 +509,18 @@ function getResponseLead(locale, variant = 'default') {
       summary: 'Claro. Aqui está um resumo profissional:',
       direct: 'Perfeito. Seguem os principais pontos:',
       links: 'Claro. Aqui estão os links mais relevantes:',
-      search: 'Encontrei estas informações mais relevantes no portfólio:'
+      search: 'Encontrei estas informações mais relevantes no portfólio:',
+      outOfScope: 'Desculpe, não encontrei essa informação no portfólio.',
+      unknown: 'Não tenho dados suficientes no portfólio para responder isso com segurança.'
     },
     EN: {
       default: 'Sure. Here is a clearer summary:',
       summary: 'Sure. Here is a professional summary:',
       direct: 'Absolutely. Here are the main points:',
       links: 'Sure. Here are the most relevant links:',
-      search: 'I found these relevant details in the portfolio:'
+      search: 'I found these relevant details in the portfolio:',
+      outOfScope: 'Sorry, I could not find that information in the portfolio.',
+      unknown: 'I do not have enough portfolio data to answer that reliably.'
     }
   };
 
@@ -657,10 +673,57 @@ function getProjectByTitle(data, message) {
   );
 }
 
+function getOutOfScopeResponse(locale) {
+  return locale === 'EN'
+    ? formatChatResponse(getResponseLead(locale, 'outOfScope'), [
+        'I can only answer based on the portfolio mock data currently available.',
+        'You can ask about experience, technologies, AI, education, certifications, projects, courses, languages, hobbies, contact details, or professional links.'
+      ])
+    : formatChatResponse(getResponseLead(locale, 'outOfScope'), [
+        'No momento, eu só consigo responder com base nos dados mockados do portfólio.',
+        'Você pode perguntar sobre experiência, tecnologias, IA, formação, certificações, projetos, cursos, idiomas, hobbies, contato ou links profissionais.'
+      ]);
+}
+
+function isClearlyOutOfScope(message, locale) {
+  const normalized = normalizeMessage(message);
+  const outOfScopeTerms =
+    locale === 'EN'
+      ? [
+          'weather',
+          'temperature',
+          'football score',
+          'stock market',
+          'bitcoin',
+          'recipe',
+          'movie review',
+          'politics',
+          'news',
+          'horoscope'
+        ]
+      : [
+          'temperatura',
+          'resultado do jogo',
+          'bolsa de valores',
+          'bitcoin',
+          'receita',
+          'filme',
+          'politica',
+          'noticias',
+          'horoscopo'
+        ];
+
+  return outOfScopeTerms.some((term) => normalized.includes(term));
+}
+
 export function getMockChatResponse(message, language = 'PT') {
   const locale = language === 'EN' ? 'EN' : 'PT';
   const data = portfolioChatMock[locale];
   const normalizedMessage = normalizeMessage(message);
+
+  if (isClearlyOutOfScope(message, locale)) {
+    return getOutOfScopeResponse(locale);
+  }
 
   if (
     includesAny(
@@ -826,9 +889,47 @@ export function getMockChatResponse(message, language = 'PT') {
   if (
     includesAny(
       normalizedMessage,
+      locale === 'EN' ? ['github profile', 'github link', 'github'] : ['github']
+    )
+  ) {
+    return formatChatResponse(
+      'GitHub',
+      [data.links.github]
+    );
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
       locale === 'EN'
-        ? ['linkedin', 'github', 'instagram', 'contact', 'links']
-        : ['linkedin', 'github', 'instagram', 'contato', 'links']
+        ? ['linkedin profile', 'linkedin contact', 'linkedin', 'linkdin', 'linkedin']
+        : ['linkedin', 'linkdin', 'linkedin']
+    )
+  ) {
+    return formatChatResponse(
+      'LinkedIn',
+      [data.links.linkedin]
+    );
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN' ? ['instagram profile', 'instagram link', 'instagram'] : ['instagram']
+    )
+  ) {
+    return formatChatResponse(
+      'Instagram',
+      [data.links.instagram]
+    );
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? ['contact links', 'professional links', 'social links', 'links']
+        : ['links para contato', 'links profissionais', 'redes', 'links']
     )
   ) {
     return formatChatResponse(
@@ -837,6 +938,145 @@ export function getMockChatResponse(message, language = 'PT') {
         `GitHub: ${data.links.github}`,
         `LinkedIn: ${data.links.linkedin}`,
         `Instagram: ${data.links.instagram}`
+      ]
+    );
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? ['how old', 'age', 'old is wagner']
+        : ['idade', 'quantos anos', 'anos ele tem']
+    )
+  ) {
+    return formatChatResponse(
+      locale === 'EN' ? 'Age' : 'Idade',
+      [locale === 'EN' ? `Wagner is ${data.profile.age}.` : `Wagner tem ${data.profile.age}.`]
+    );
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? ['marital status', 'is he married', 'relationship status']
+        : ['estado civil', 'casado', 'solteiro']
+    )
+  ) {
+    return formatChatResponse(
+      locale === 'EN' ? 'Marital Status' : 'Estado Civil',
+      [
+        locale === 'EN'
+          ? `Marital status: ${data.profile.maritalStatus}`
+          : `Estado civil: ${data.profile.maritalStatus}`
+      ]
+    );
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? ['birth country', 'where was he born', 'place of birth']
+        : ['pais de nascimento', 'país de nascimento', 'onde nasceu', 'local de nascimento']
+    )
+  ) {
+    return locale === 'EN'
+      ? formatChatResponse(getResponseLead(locale, 'unknown'), [
+          'The portfolio does not include Wagner place of birth.',
+          'What is available is his current location: Sao Paulo, Brazil.'
+        ])
+      : formatChatResponse(getResponseLead(locale, 'unknown'), [
+          'O portfólio não informa o local de nascimento do Wagner.',
+          'O que está disponível é a localização atual: São Paulo, Brasil.'
+        ]);
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? ['country', 'where is he from', 'nationality']
+        : ['pais', 'país', 'pais de origem', 'nacionalidade']
+    )
+  ) {
+    return formatChatResponse(
+      locale === 'EN' ? 'Country' : 'País',
+      [locale === 'EN' ? `Country: ${data.profile.country}` : `País: ${data.profile.country}`]
+    );
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? ['location', 'where does he live', 'city', 'state']
+        : ['localizacao', 'localização', 'onde mora', 'cidade', 'estado']
+    )
+  ) {
+    return formatChatResponse(
+      locale === 'EN' ? 'Location' : 'Localização',
+      [
+        locale === 'EN'
+          ? `Location: ${data.profile.location}`
+          : `Localização: ${data.profile.location}`
+      ]
+    );
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN' ? ['email', 'e-mail'] : ['email', 'e-mail']
+    )
+  ) {
+    return formatChatResponse(
+      locale === 'EN' ? 'Email' : 'E-mail',
+      [data.profile.email]
+    );
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? ['public contact', 'contact', 'contact info', 'professional contact']
+        : ['contato', 'contato profissional', 'como entrar em contato']
+    )
+  ) {
+    return formatChatResponse(
+      locale === 'EN' ? 'Public Contact Information' : 'Informações Públicas de Contato',
+      [
+        locale === 'EN'
+          ? `Location: ${data.profile.location}`
+          : `Localização: ${data.profile.location}`,
+        locale === 'EN' ? `Email: ${data.profile.email}` : `E-mail: ${data.profile.email}`,
+        `LinkedIn: ${data.links.linkedin}`
+      ]
+    );
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? ['phone number', 'full address', 'address', 'zip code', 'postal code', 'personal information', 'personal contact information', 'full contact details']
+        : ['telefone', 'numero de telefone', 'número de telefone', 'endereco', 'endereço', 'cep', 'dados pessoais', 'informacoes pessoais', 'informações pessoais', 'contato pessoal', 'dados completos']
+    )
+  ) {
+    return formatChatResponse(
+      locale === 'EN' ? 'Personal and Contact Information' : 'Informações Pessoais e de Contato',
+      [
+        locale === 'EN'
+          ? `Country: ${data.profile.country}\nState: ${data.profile.state}\nLocation: ${data.profile.location}`
+          : `País: ${data.profile.country}\nEstado: ${data.profile.state}\nLocalização: ${data.profile.location}`,
+        locale === 'EN'
+          ? `Email: ${data.profile.email}`
+          : `E-mail: ${data.profile.email}`,
+        locale === 'EN'
+          ? `Age: ${data.profile.age}\nGender: ${data.profile.gender}\nMarital status: ${data.profile.maritalStatus}`
+          : `Idade: ${data.profile.age}\nSexo: ${data.profile.gender}\nEstado civil: ${data.profile.maritalStatus}`
       ]
     );
   }
@@ -857,11 +1097,11 @@ export function getMockChatResponse(message, language = 'PT') {
   }
 
   return locale === 'EN'
-    ? formatChatResponse('How I can help', [
+    ? formatChatResponse(getResponseLead(locale, 'unknown'), [
         'I can answer questions about Wagner background, experience, specialties, certifications, education, projects, personal projects, courses, languages, hobbies, and professional links.',
         'For example, you can ask: "Tell me about his experience", "What technologies does he use?" or "Show me his personal projects".'
       ])
-    : formatChatResponse('Como posso ajudar', [
+    : formatChatResponse(getResponseLead(locale, 'unknown'), [
         'Posso responder perguntas sobre perfil, experiência, especialidades, certificações, formação, projetos, projetos pessoais, cursos, idiomas, hobbies e links profissionais.',
         'Por exemplo, você pode perguntar: "Fale sobre a experiência dele", "Quais tecnologias ele usa?" ou "Mostre os projetos pessoais".'
       ]);
