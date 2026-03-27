@@ -15,6 +15,7 @@ import FooterSection, { getFooterContent } from './componentes/FooterSection';
 import ResumePreviewPage from './componentes/ResumePreviewPage';
 import ScrollTopButton from './componentes/ScrollTopButton';
 import { getNavbarContent, languagesMenu } from './componentes/Navbar';
+import { Analytics } from '@vercel/analytics/react';
 
 function normalizeHash(hash) {
   if (!hash) {
@@ -339,5 +340,10 @@ export default function App() {
   const searchParams = new URLSearchParams(window.location.search);
   const isResumePreview = searchParams.get('resumePreview') === '1';
 
-  return isResumePreview ? <ResumePreviewApp /> : <PortfolioApp />;
+   return (
+    <>
+      {isResumePreview ? <ResumePreviewApp /> : <PortfolioApp />}
+      <Analytics />
+    </>
+  );
 }
