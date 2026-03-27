@@ -561,20 +561,20 @@ function formatList(items) {
 function getResponseLead(locale, variant = 'default') {
   const leads = {
     PT: {
-      default: 'Claro. Aqui está um resumo mais organizado:',
-      summary: 'Claro. Aqui está um resumo profissional:',
-      direct: 'Perfeito. Seguem os principais pontos:',
-      links: 'Claro. Aqui estão os links mais relevantes:',
-      search: 'Encontrei estas informações mais relevantes no portfólio:',
+      default: 'Claro. Vou te responder de forma objetiva:',
+      summary: 'Claro. Aqui vai um resumo profissional do Wagner:',
+      direct: 'Perfeito. Separei os pontos principais:',
+      links: 'Claro. Separei os links mais importantes:',
+      search: 'Encontrei estes pontos do portfólio que mais combinam com a sua pergunta:',
       outOfScope: 'Desculpe, não encontrei essa informação no portfólio.',
-      unknown: 'Não tenho dados suficientes no portfólio para responder isso com segurança.'
+      unknown: 'Não encontrei dados suficientes no portfólio para responder isso com segurança.'
     },
     EN: {
-      default: 'Sure. Here is a clearer summary:',
-      summary: 'Sure. Here is a professional summary:',
+      default: 'Sure. I will answer in a clear and objective way:',
+      summary: 'Sure. Here is a professional summary of Wagner:',
       direct: 'Absolutely. Here are the main points:',
-      links: 'Sure. Here are the most relevant links:',
-      search: 'I found these relevant details in the portfolio:',
+      links: 'Sure. I separated the most relevant links:',
+      search: 'I found these portfolio details that best match your question:',
       outOfScope: 'Sorry, I could not find that information in the portfolio.',
       unknown: 'I do not have enough portfolio data to answer that reliably.'
     }
@@ -593,6 +593,88 @@ function formatBulletList(items) {
 
 function formatSpacedSections(sections) {
   return sections.filter(Boolean).join('\n\n');
+}
+
+function getFollowUpPrompt(locale, topic = 'general') {
+  const prompts = {
+    PT: {
+      general: 'Se quiser, também posso te mostrar experiência, projetos, formação ou links de contato.',
+      skills: 'Se quiser, também posso organizar essas skills por front-end, back-end ou IA.',
+      experience: 'Se quiser, também posso detalhar melhor a atuação atual dele na Future Secure AI.',
+      projects: 'Se quiser, também posso separar os projetos profissionais dos projetos pessoais.',
+      links: 'Se quiser, também posso te passar LinkedIn, GitHub e Instagram em uma única resposta.'
+    },
+    EN: {
+      general: 'If you want, I can also show experience, projects, education, or links.',
+      skills: 'If you want, I can also summarize this by front end, back end, or AI.',
+      experience: 'If you want, I can also detail the current experience at Future Secure AI.',
+      projects: 'If you want, I can also separate professional projects from personal ones.',
+      links: 'If you want, I can also send LinkedIn, GitHub, and Instagram in a single response.'
+    }
+  };
+
+  return prompts[locale]?.[topic] ?? prompts[locale].general;
+}
+
+function getBriefProfileSummary(data, locale) {
+  return locale === 'EN'
+    ? 'Wagner is a Mid-Level Full Stack Developer focused on scalable web applications, modern front-end development, and AI-based products.'
+    : 'Wagner é um Desenvolvedor Full Stack Pleno com foco em aplicações web escaláveis, front-end moderno e produtos com Inteligência Artificial.';
+}
+
+function getExperienceIntro(locale) {
+  return locale === 'EN'
+    ? 'His experience combines scalable product development, interface evolution, backend integration, and AI platform work.'
+    : 'A experiência dele combina evolução de produto, construção de interfaces escaláveis, integração com backend e atuação em plataformas de IA.';
+}
+
+function getProjectsIntro(locale) {
+  return locale === 'EN'
+    ? 'These are the professional projects currently highlighted in the portfolio.'
+    : 'Estes são os projetos profissionais atualmente em destaque no portfólio.';
+}
+
+function formatProjectsByCategory(data, locale) {
+  const professionalTitle = locale === 'EN' ? 'Professional Projects' : 'Projetos profissionais';
+  const personalTitle = locale === 'EN' ? 'Personal Projects' : 'Projetos pessoais';
+
+  const professionalProjects = data.projects
+    .map((item) => `${item.title}\n${item.description}`)
+    .join('\n\n');
+
+  const personalProjects = data.personalProjects
+    .slice(0, 3)
+    .map((item) => `${item.title}\n${item.description}`)
+    .join('\n\n');
+
+  return formatSpacedSections([
+    `${professionalTitle}\n${professionalProjects}`,
+    `${personalTitle}\n${personalProjects}`
+  ]);
+}
+
+function formatProfessionalProjects(data) {
+  return data.projects.map((item) => `${item.title}\n${item.description}`).join('\n\n');
+}
+
+function formatPersonalProjects(data) {
+  return data.personalProjects
+    .map((item) => `${item.title}\n${item.description}`)
+    .join('\n\n');
+}
+
+function formatExperienceItems(data, locale) {
+  return data.experience.map((item) =>
+    locale === 'EN'
+      ? `${item.role} at ${item.company}\nPeriod: ${item.period}\n${item.description}`
+      : `${item.role} na ${item.company}\nPeríodo: ${item.period}\n${item.description}`
+  );
+}
+
+function getContactIntro(locale) {
+  return locale === 'EN'
+    ? 'These are the main public contact channels available in the portfolio:'
+    : 'Estes são os principais canais públicos de contato disponíveis no portfólio:';
 }
 
 function formatProjectLinks(project, locale) {
@@ -726,7 +808,12 @@ function searchPortfolio(message, data, locale) {
 
   return formatChatResponse(
     getResponseLead(locale, 'search'),
-    entries.map((entry) => `${entry.title}\n${entry.text}`)
+    [
+      locale === 'EN'
+        ? 'I matched your question with these portfolio sections:'
+        : 'Relacionei sua pergunta com estas partes do portfólio:',
+      ...entries.map((entry) => `${entry.title}\n${entry.text}`)
+    ]
   );
 }
 
@@ -865,14 +952,14 @@ export function getMockChatResponse(message, language = 'PT') {
     )
   ) {
     return locale === 'EN'
-      ? 'Hello, how are you? How can I help you with information about Wagner?'
-      : 'Oi, tudo bem? O que eu posso te ajudar sobre o Wagner?';
+      ? 'Hi! I can help with Wagner profile, experience, technologies, projects, or contact links.'
+      : 'Oi! Posso te ajudar com perfil, experiência, tecnologias, projetos e links de contato do Wagner.';
   }
 
   if (locale === 'EN' && isLikelyPortugueseMessage(message)) {
     return formatChatResponse('Please ask in English', [
       'The portfolio is currently in English mode, so I can only answer in English.',
-      'Try asking something like: "Tell me about Wagner experience", "What technologies does he use?" or "Show me his projects".'
+      'Try something like: "Tell me about Wagner experience", "What technologies does he use?" or "Show me his projects".'
     ]);
   }
 
@@ -890,7 +977,12 @@ export function getMockChatResponse(message, language = 'PT') {
   ) {
     return formatChatResponse(
       getResponseLead(locale, 'summary'),
-      [data.profile.about, data.profile.intro[0]]
+      [
+        getBriefProfileSummary(data, locale),
+        data.profile.about,
+        data.profile.intro[0],
+        getFollowUpPrompt(locale, 'general')
+      ]
     );
   }
 
@@ -904,11 +996,11 @@ export function getMockChatResponse(message, language = 'PT') {
   ) {
     return formatChatResponse(
       locale === 'EN' ? 'Professional Experience' : 'Experiência Profissional',
-      data.experience.map((item) =>
-        locale === 'EN'
-          ? `${item.role} at ${item.company}\nPeriod: ${item.period}\n${item.description}`
-          : `${item.role} na ${item.company}\nPeríodo: ${item.period}\n${item.description}`
-      )
+      [
+        getExperienceIntro(locale),
+        formatSpacedSections(formatExperienceItems(data, locale)),
+        getFollowUpPrompt(locale, 'experience')
+      ]
     );
   }
 
@@ -928,13 +1020,17 @@ export function getMockChatResponse(message, language = 'PT') {
     return formatChatResponse(
       locale === 'EN' ? 'Main Technologies' : 'Principais Tecnologias',
       [
+        locale === 'EN'
+          ? 'Wagner main stack is centered on full stack development, scalable architecture, and AI applied to products.'
+          : 'A base principal do Wagner hoje está em desenvolvimento full stack, arquitetura escalável e IA aplicada a produtos.',
         formatSpacedSections([
           `${locale === 'EN' ? 'Top Skills' : 'Principais'}\n${formatBulletList(topSkills?.tags ?? [])}`,
           `${locale === 'EN' ? 'Backend / Architecture' : 'Backend / Arquitetura'}\n${formatBulletList(backend?.tags ?? [])}`,
           `${locale === 'EN' ? 'AI / Competitive Edge' : 'IA / Diferencial competitivo'}\n${formatBulletList(ai?.tags ?? [])}`,
           `${locale === 'EN' ? 'Frontend / UI' : 'Frontend / UI'}\n${formatBulletList(frontend?.tags ?? [])}`,
           `${locale === 'EN' ? 'Tools & Practices' : 'Ferramentas e práticas'}\n${formatBulletList(tools?.tags ?? [])}`
-        ])
+        ]),
+        getFollowUpPrompt(locale, 'skills')
       ]
     );
   }
@@ -951,6 +1047,9 @@ export function getMockChatResponse(message, language = 'PT') {
     return formatChatResponse(
       locale === 'EN' ? 'Artificial Intelligence' : 'Inteligência Artificial',
       [
+        locale === 'EN'
+          ? 'AI is one of Wagner strongest differentiators and a central part of his current work.'
+          : 'IA é um dos principais diferenciais do Wagner e uma parte central da atuação atual dele.',
         ai?.description.join(' ') ?? '',
         `${locale === 'EN' ? 'Main topics' : 'Principais temas'}\n${formatBulletList(ai?.tags ?? [])}`
       ]
@@ -961,15 +1060,57 @@ export function getMockChatResponse(message, language = 'PT') {
     includesAny(
       normalizedMessage,
       locale === 'EN'
-        ? ['projects', 'portfolio', 'personal projects']
-        : ['projetos', 'portfolio', 'projetos pessoais']
+        ? ['personal projects', 'personal project']
+        : ['projetos pessoais', 'projeto pessoal']
     )
   ) {
     return formatChatResponse(
-      locale === 'EN' ? 'Projects Overview' : 'Visão Geral dos Projetos',
-      [...data.projects, ...data.personalProjects]
-        .slice(0, 5)
-        .map((item) => `${item.title}\n${item.description}`)
+      locale === 'EN' ? 'Personal Projects' : 'Projetos Pessoais',
+      [
+        locale === 'EN'
+          ? 'These are the personal projects currently highlighted in the portfolio:'
+          : 'Estes são os projetos pessoais que estão em destaque no portfólio:',
+        formatPersonalProjects(data),
+        getFollowUpPrompt(locale, 'projects')
+      ]
+    );
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? ['professional projects', 'professional project']
+        : ['projetos profissionais', 'projeto profissional']
+    )
+  ) {
+    return formatChatResponse(
+      locale === 'EN' ? 'Professional Projects' : 'Projetos Profissionais',
+      [
+        locale === 'EN'
+          ? 'These are the professional projects currently shown in the portfolio:'
+          : 'Estes são os projetos profissionais atualmente mostrados no portfólio:',
+        formatProfessionalProjects(data),
+        getFollowUpPrompt(locale, 'projects')
+      ]
+    );
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? ['projects', 'portfolio']
+        : ['projetos', 'portfolio']
+    )
+  ) {
+    return formatChatResponse(
+      locale === 'EN' ? 'Projects' : 'Projetos',
+      [
+        getProjectsIntro(locale),
+        formatProfessionalProjects(data),
+        getFollowUpPrompt(locale, 'projects')
+      ]
     );
   }
 
@@ -983,7 +1124,12 @@ export function getMockChatResponse(message, language = 'PT') {
   ) {
     return formatChatResponse(
       locale === 'EN' ? 'Certifications' : 'Certificações',
-      data.certifications.map((item) => `${item.title}\n${item.issuer}\n${item.description}`)
+      [
+        locale === 'EN'
+          ? 'At the moment, the portfolio highlights the following certification:'
+          : 'No momento, o portfólio destaca a seguinte certificação:',
+        ...data.certifications.map((item) => `${item.title}\n${item.issuer}\n${item.description}`)
+      ]
     );
   }
 
@@ -997,10 +1143,15 @@ export function getMockChatResponse(message, language = 'PT') {
   ) {
     return formatChatResponse(
       locale === 'EN' ? 'Courses and Learning' : 'Cursos e Formação Complementar',
-      data.courses.map(
+      [
+        locale === 'EN'
+          ? 'Wagner keeps his learning active through ongoing technical training.'
+          : 'O Wagner mantém a evolução técnica com estudos e formações contínuas.',
+        ...data.courses.map(
         (item) =>
           `${item.provider} (${item.period})\n${formatBulletList(item.items.slice(0, 5))}`
-      )
+        )
+      ]
     );
   }
 
@@ -1014,10 +1165,15 @@ export function getMockChatResponse(message, language = 'PT') {
   ) {
     return formatChatResponse(
       locale === 'EN' ? 'Education' : 'Formação',
-      data.education.map(
+      [
+        locale === 'EN'
+          ? 'His academic background is aligned with systems development and software engineering.'
+          : 'A formação acadêmica dele é alinhada com desenvolvimento de sistemas e engenharia de software.',
+        ...data.education.map(
         (item) =>
           `${item.degree}\n${item.institution}\n${locale === 'EN' ? 'Period' : 'Período'}: ${item.period}\n${item.description}`
-      )
+        )
+      ]
     );
   }
 
@@ -1031,7 +1187,14 @@ export function getMockChatResponse(message, language = 'PT') {
   ) {
     return formatChatResponse(
       locale === 'EN' ? 'Languages' : 'Idiomas',
-      data.languages.map((item) => `${item.name} (${item.level})\n${item.description}`)
+      [
+        locale === 'EN'
+          ? 'These are the languages currently listed in the portfolio:'
+          : 'Estes são os idiomas atualmente informados no portfólio:',
+        formatSpacedSections(
+          data.languages.map((item) => `${item.name} (${item.level})\n${item.description}`)
+        )
+      ]
     );
   }
 
@@ -1045,7 +1208,12 @@ export function getMockChatResponse(message, language = 'PT') {
   ) {
     return formatChatResponse(
       locale === 'EN' ? 'Hobbies and Interests' : 'Hobbies e Interesses',
-      [formatBulletList(data.hobbies)]
+      [
+        locale === 'EN'
+          ? 'Outside work, these are some of Wagner interests:'
+          : 'Fora do trabalho, estes são alguns interesses do Wagner:',
+        formatBulletList(data.hobbies)
+      ]
     );
   }
 
@@ -1057,7 +1225,13 @@ export function getMockChatResponse(message, language = 'PT') {
   ) {
     return formatChatResponse(
       'GitHub',
-      [data.links.github]
+      [
+        locale === 'EN'
+          ? 'Here is Wagner GitHub profile:'
+          : 'Aqui está o GitHub do Wagner:',
+        data.links.github,
+        getFollowUpPrompt(locale, 'links')
+      ]
     );
   }
 
@@ -1071,7 +1245,12 @@ export function getMockChatResponse(message, language = 'PT') {
   ) {
     return formatChatResponse(
       'LinkedIn',
-      [data.links.linkedin]
+      [
+        locale === 'EN'
+          ? 'Here is Wagner LinkedIn profile:'
+          : 'Aqui está o LinkedIn do Wagner:',
+        data.links.linkedin
+      ]
     );
   }
 
@@ -1083,7 +1262,12 @@ export function getMockChatResponse(message, language = 'PT') {
   ) {
     return formatChatResponse(
       'Instagram',
-      [data.links.instagram]
+      [
+        locale === 'EN'
+          ? 'Here is Wagner Instagram profile:'
+          : 'Aqui está o Instagram do Wagner:',
+        data.links.instagram
+      ]
     );
   }
 
@@ -1092,15 +1276,19 @@ export function getMockChatResponse(message, language = 'PT') {
       normalizedMessage,
       locale === 'EN'
         ? ['contact links', 'professional links', 'social links', 'links']
-        : ['links para contato', 'links profissionais', 'redes', 'links']
+        : ['links para contato', 'links profissionais', 'redes', 'links', 'redes sociais']
     )
   ) {
     return formatChatResponse(
       getResponseLead(locale, 'links'),
       [
+        locale === 'EN'
+          ? 'These are Wagner main professional and social links:'
+          : 'Esses são os principais links profissionais e sociais do Wagner:',
         `GitHub: ${data.links.github}`,
         `LinkedIn: ${data.links.linkedin}`,
-        `Instagram: ${data.links.instagram}`
+        `Instagram: ${data.links.instagram}`,
+        getFollowUpPrompt(locale, 'links')
       ]
     );
   }
@@ -1211,6 +1399,7 @@ export function getMockChatResponse(message, language = 'PT') {
     return formatChatResponse(
       locale === 'EN' ? 'Public Contact Information' : 'Informações Públicas de Contato',
       [
+        getContactIntro(locale),
         locale === 'EN'
           ? `Location: ${data.profile.location}`
           : `Localização: ${data.profile.location}`,
@@ -1249,7 +1438,13 @@ export function getMockChatResponse(message, language = 'PT') {
   if (matchedProject) {
     return formatChatResponse(
       matchedProject.title,
-      [matchedProject.description, formatProjectLinks(matchedProject, locale)]
+      [
+        locale === 'EN'
+          ? 'Here is a quick summary of this project:'
+          : 'Aqui vai um resumo rápido desse projeto:',
+        matchedProject.description,
+        formatProjectLinks(matchedProject, locale)
+      ]
     );
   }
 
@@ -1261,11 +1456,11 @@ export function getMockChatResponse(message, language = 'PT') {
 
   return locale === 'EN'
     ? formatChatResponse(getResponseLead(locale, 'unknown'), [
-        'I can answer questions about Wagner background, experience, specialties, certifications, education, projects, personal projects, courses, languages, hobbies, and professional links.',
+        'I can help with Wagner profile, experience, technologies, AI, projects, education, certifications, languages, hobbies, and links.',
         'For example, you can ask: "Tell me about his experience", "What technologies does he use?" or "Show me his personal projects".'
       ])
     : formatChatResponse(getResponseLead(locale, 'unknown'), [
-        'Posso responder perguntas sobre perfil, experiência, especialidades, certificações, formação, projetos, projetos pessoais, cursos, idiomas, hobbies e links profissionais.',
+        'Posso te ajudar com perfil, experiência, tecnologias, IA, projetos, formação, certificações, idiomas, hobbies e links.',
         'Por exemplo, você pode perguntar: "Fale sobre a experiência dele", "Quais tecnologias ele usa?" ou "Mostre os projetos pessoais".'
       ]);
 }
