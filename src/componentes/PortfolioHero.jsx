@@ -4,7 +4,7 @@ const portfolioHeroContent = {
   PT: {
     hero: {
       name: 'Wagner',
-      role: 'Software Engineer Pleno | React • Next.js • Node.js | AI & Automation',
+      role: 'Full Stack Developer | React | Next.js | AI Applications | LLMs | Scalable Systems',
       socialHeading: 'Conecte-se comigo',
       assistantTitle: 'Fale com meu assistente',
       assistantGreeting: 'Olá! Como posso te ajudar?',
@@ -22,10 +22,22 @@ const portfolioHeroContent = {
       assistantLoadingText: 'Wagner está respondendo...',
       assistantErrorText: 'Nao consegui responder agora. Tente novamente em instantes.',
       intro: [
-        'Sou Desenvolvedor de Software com foco em desenvolvimento front-end e construção de interfaces escaláveis para plataformas de Inteligência Artificial. Atualmente atuo na Future Secure AI, onde trabalho no desenvolvimento e evolução de aplicações utilizando React, Next.js e Vue.js, implementando novas funcionalidades, melhorando a experiência do usuário e garantindo a qualidade e performance das aplicações.',
-        'Minha atuação envolve também a integração com APIs e serviços em Node.js, além da participação no desenvolvimento de plataformas baseadas em Inteligência Artificial. Tenho experiência trabalhando com sistemas que utilizam Large Language Models (LLMs), automação de workflows e integrações entre serviços, contribuindo para a construção de soluções modernas e escaláveis.',
-        'Ao longo da minha experiência, venho trabalhando em ambientes com arquiteturas baseadas em microservices, sistemas distribuídos e arquiteturas orientadas a eventos, participando do desenvolvimento de sistemas preparados para alta escalabilidade e evolução contínua.',
-        'Sou graduado em Análise e Desenvolvimento de Sistemas pela UNINOVE (2021) e estou constantemente buscando evoluir minhas habilidades em desenvolvimento front-end, plataformas de IA, arquitetura de sistemas e construção de aplicações escaláveis. Tenho grande interesse em participar de projetos inovadores e colaborar com equipes que buscam resolver problemas complexos através da tecnologia.'
+        'Desenvolvedor Full Stack, com experiência na construção de aplicações web escaláveis e desenvolvimento de plataformas baseadas em Inteligência Artificial. Atuação com foco em front-end moderno utilizando React, Next.js e Vue.js, aliada à integração de APIs e serviços backend em Node.js.',
+
+'Experiência no desenvolvimento de sistemas que utilizam Large Language Models (LLMs), automação de workflows e integração entre serviços, contribuindo para a criação de soluções inteligentes e orientadas a dados.',
+
+'Atuação em ambientes com arquiteturas de microservices, sistemas distribuídos e processamento orientado a eventos, participando da construção de aplicações preparadas para alta escalabilidade, performance e evolução contínua.',
+
+'Vivência em:',
+'• Desenvolvimento de interfaces escaláveis e responsivas',
+'• Integração de APIs e serviços backend',
+'• Automação de processos com IA',
+'• Arquitetura de sistemas distribuídos',
+'• Observabilidade e monitoramento de aplicações',
+'Interesse em oportunidades como Full Stack Developer, com foco em desenvolvimento de sistemas escaláveis, aplicações com IA e soluções que envolvam automação e alta performance.',
+
+'Aberto a conexões e trocas sobre desenvolvimento, arquitetura de sistemas e Inteligência Artificial.',
+'📩 Contato: wagner6528@gmail.com'
       ]
     },
     profiles: [
@@ -88,10 +100,18 @@ const portfolioHeroContent = {
       assistantLoadingText: 'Thinking...',
       assistantErrorText: 'I could not answer right now. Please try again in a moment.',
       intro: [
-        'I am a Software Developer focused on front-end development and building scalable interfaces for Artificial Intelligence platforms. I currently work at Future Secure AI, where I contribute to the development and evolution of applications using React, Next.js, and Vue.js, implementing new features, improving user experience, and ensuring application quality and performance.',
-        'My role also involves integrating APIs and services using Node.js, as well as participating in the development of AI-based platforms. I have experience working with systems that leverage Large Language Models (LLMs), workflow automation, and service integrations, contributing to the creation of modern and scalable solutions.',
-        'Throughout my experience, I have worked in environments with microservices architectures, distributed systems, and event-driven architectures, contributing to the development of systems designed for high scalability and continuous evolution.',
-        'I hold a degree in Systems Analysis and Development from UNINOVE (2021) and I am constantly seeking to improve my skills in front-end development, AI platforms, system architecture, and scalable application development. I am highly interested in participating in innovative projects and collaborating with teams that aim to solve complex problems through technology.'
+        'Full Stack Developer with experience building scalable web applications and developing Artificial Intelligence-based platforms. Focused on modern front-end development using React, Next.js, and Vue.js, combined with API integration and backend services in Node.js.',
+        'Experience developing systems that use Large Language Models (LLMs), workflow automation, and service integrations, contributing to the creation of intelligent, data-driven solutions.',
+        'Background working in environments with microservices architectures, distributed systems, and event-driven processing, contributing to applications designed for high scalability, performance, and continuous evolution.',
+        'Experience in:',
+        '• Scalable and responsive interface development',
+        '• API and backend service integration',
+        '• AI process automation',
+        '• Distributed systems architecture',
+        '• Application observability and monitoring',
+        'Interested in opportunities as a Full Stack Developer, focused on scalable systems, AI applications, and solutions involving automation and high performance.',
+        'Open to connecting and exchanging ideas about development, systems architecture, and Artificial Intelligence.',
+        '📩 Contact: wagner6528@gmail.com'
       ]
     },
     profiles: [

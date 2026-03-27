@@ -14,38 +14,59 @@ export const portfolioChatMock = {
       gender: 'Masculino',
       maritalStatus: 'Casado',
       about:
-        'Wagner é Desenvolvedor de Software com foco em desenvolvimento front-end e na construção de interfaces escaláveis para plataformas de Inteligência Artificial. Atualmente, atua na Future Secure AI, contribuindo para a evolução de aplicações com React, Next.js e Vue.js, implementando novas funcionalidades, aprimorando a experiência do usuário e garantindo qualidade e performance.',
+        'Wagner é Desenvolvedor Full Stack, com experiência na construção de aplicações web escaláveis e no desenvolvimento de plataformas baseadas em Inteligência Artificial. Atua com foco em front-end moderno utilizando React, Next.js e Vue.js, aliado à integração de APIs e serviços backend em Node.js.',
       intro: [
-        'Sua atuação também envolve integração com APIs e serviços em Node.js, além da participação no desenvolvimento de plataformas baseadas em Inteligência Artificial.',
-        'Ele possui experiência com sistemas que utilizam Large Language Models (LLMs), automação de workflows e integrações entre serviços, contribuindo para a construção de soluções modernas e escaláveis.',
-        'Ao longo da trajetória profissional, tem atuado em ambientes com arquiteturas baseadas em microservices, sistemas distribuídos e arquiteturas orientadas a eventos.'
+        'Possui experiência no desenvolvimento de sistemas que utilizam Large Language Models (LLMs), automação de workflows e integração entre serviços, contribuindo para a criação de soluções inteligentes e orientadas a dados.',
+        'Atua em ambientes com arquiteturas de microservices, sistemas distribuídos e processamento orientado a eventos, participando da construção de aplicações preparadas para alta escalabilidade, performance e evolução contínua.',
+        'Tem vivência em desenvolvimento de interfaces escaláveis e responsivas, integração de APIs e serviços backend, automação de processos com IA, arquitetura de sistemas distribuídos e observabilidade de aplicações.',
+        'Busca oportunidades como Full Stack Developer com foco em sistemas escaláveis, aplicações com IA e soluções envolvendo automação e alta performance.'
       ]
     },
     specialties: [
       {
-        title: 'Trabalho em Equipe',
+        id: 'top',
+        title: 'Principais',
         description: [
-          'Tem experiência em apoiar o crescimento de outros desenvolvedores por meio de mentoria, code reviews construtivos e feedback contínuo.',
-          'Também atua na organização e priorização de demandas, ajudando a manter o foco nas entregas mais relevantes e garantindo eficiência no fluxo de trabalho.'
+          'Atua como Full Stack Developer com foco na construção de aplicações web escaláveis, experiência de usuário consistente e integração eficiente entre front-end e back-end.',
+          'Sua base principal envolve React.js, Next.js, Node.js, JavaScript e TypeScript, aplicados em produtos modernos com evolução contínua.'
         ],
-        tags: ['Comunicação', 'Trabalho em Equipe', 'Mentoria', 'Code review', 'Organização', 'Priorização', 'Resiliência']
+        tags: ['Full Stack Development', 'React.js', 'Next.js', 'Node.js', 'JavaScript (ES6+)', 'TypeScript']
       },
       {
-        title: 'Desenvolvimento de Software',
+        id: 'backend',
+        title: 'Backend / Arquitetura',
         description: [
-          'Atua no desenvolvimento de aplicações web modernas, com experiência tanto em front-end quanto em back-end.',
-          'No front-end, trabalha com React, JavaScript e TypeScript, com foco em interfaces responsivas, performáticas e com boa experiência do usuário.',
-          'No back-end, utiliza Node.js no desenvolvimento de APIs REST, garantindo comunicação eficiente entre sistemas e aplicações.'
+          'Tem experiência na construção de APIs REST, integração entre serviços e desenho de soluções preparadas para crescimento, manutenção e evolução contínua.',
+          'Também atua em contextos com arquitetura de microservices, processamento orientado a eventos e decisões técnicas voltadas à escalabilidade.'
         ],
-        tags: ['React', 'JavaScript', 'TypeScript', 'Node.js', 'HTML', 'CSS', 'SQL', 'APIs REST', 'Git', 'Docker']
+        tags: ['REST APIs', 'Microservices Architecture', 'Event-Driven Architecture', 'Scalable Systems Design']
       },
       {
-        title: 'Inteligencia Artificial e Automacoes',
+        id: 'ai',
+        title: 'IA / Diferencial competitivo',
         description: [
-          'Concepção e implementação de soluções com LLMs, orquestração com LangChain e LangGraph, fluxos com memória e ferramentas, além de padrões RAG aplicados a dados proprietários.',
-          'Também atua no desenvolvimento de agentes personalizados, chatbots e integrações entre serviços utilizando APIs de IA generativa.'
+          'Inteligência Artificial é um dos seus principais diferenciais, com experiência em aplicações que utilizam LLMs, automação de processos e integração de fluxos inteligentes.',
+          'Atua no desenvolvimento de soluções com IA aplicada a produtos, combinando automação, workflows e uso estratégico de modelos generativos.'
         ],
-        tags: ['OpenAI API', 'Prompts', 'Automação', 'Agentes', 'Chatbots', 'Workflows', 'Integrações', 'IA generativa']
+        tags: ['Artificial Intelligence (AI)', 'Large Language Models (LLMs)', 'AI Automation', 'Workflow Automation']
+      },
+      {
+        id: 'frontend',
+        title: 'Frontend / UI',
+        description: [
+          'No front-end, foca na criação de interfaces modernas, responsivas e escaláveis, com atenção à clareza visual, performance e usabilidade.',
+          'Trabalha com componentização, integração com APIs e construção de experiências consistentes para diferentes contextos de produto.'
+        ],
+        tags: ['Tailwind CSS', 'Responsive Design', 'Front-End Development']
+      },
+      {
+        id: 'tools',
+        title: 'Ferramentas e práticas',
+        description: [
+          'Valoriza organização de código, colaboração em equipe e padronização de ambientes para manter projetos sustentáveis ao longo do tempo.',
+          'Utiliza ferramentas e práticas de engenharia para apoiar versionamento, integração de serviços e decisões estruturais de software.'
+        ],
+        tags: ['Git & GitHub', 'API Integration', 'System Design', 'Software Architecture']
       }
     ],
     experience: [
@@ -55,12 +76,19 @@ export const portfolioChatMock = {
         role: 'Desenvolvedor de Software Pleno',
         period: 'Novembro 2024 - até o momento',
         description:
-          'Atua no desenvolvimento de uma plataforma de Inteligência Artificial, contribuindo para a construção e evolução da interface e para a integração de múltiplos projetos dentro de um ecossistema escalável.',
+          'Atua como Full Stack Developer no desenvolvimento e evolução da interface principal de uma plataforma de Inteligência Artificial, com foco em performance, escalabilidade e experiência do usuário.',
         details: [
-          'Contribui para o desenvolvimento e a evolução da interface principal da plataforma, com foco em performance, escalabilidade e experiência do usuário.',
-          'Participa da construção e integração da interface de projetos estratégicos dentro da plataforma, como Flowise e Aiflow.',
-          'Utilizo React, TypeScript, Next.js, Node.js, Tailwind CSS, Supabase, PostgreSQL e Docker.',
-          'Também atua na sustentação contínua da plataforma, realizando debugging, correção de bugs e melhorias constantes no código.'
+          'Desenvolvimento e evolução da interface principal de uma plataforma de Inteligência Artificial, com foco em performance, escalabilidade e experiência do usuário.',
+          'Integração de múltiplos projetos e módulos, como Flowise e Aiflow, dentro de um ecossistema unificado.',
+          'Construção de aplicações utilizando React, Next.js, TypeScript e Node.js.',
+          'Integração com banco de dados Supabase (PostgreSQL) e serviços backend.',
+          'Utilização de Docker para padronização de ambientes e suporte à escalabilidade.',
+          'Atuação na sustentação da aplicação, incluindo debugging, correção de bugs e melhorias contínuas.',
+          'Colaboração na definição de boas práticas de engenharia, organização de código e evolução do produto.',
+          'Contribuição na construção de uma plataforma escalável de IA com múltiplos módulos integrados.',
+          'Melhoria da consistência visual e funcional entre diferentes aplicações do ecossistema.',
+          'Evolução contínua da performance e estabilidade da aplicação.',
+          'Participação na estruturação de um ambiente de desenvolvimento mais padronizado e escalável.'
         ],
         technicalSkills: [
           'React',
@@ -257,38 +285,59 @@ export const portfolioChatMock = {
       gender: 'Male',
       maritalStatus: 'Married',
       about:
-        'Software Developer focused on front-end development and building scalable interfaces for Artificial Intelligence platforms. He currently works at Future Secure AI, where he contributes to the development and evolution of applications using React, Next.js, and Vue.js, implementing new features, improving user experience, and ensuring application quality and performance.',
+        'Full Stack Developer with experience building scalable web applications and developing Artificial Intelligence-based platforms. Focused on modern front-end development using React, Next.js, and Vue.js, combined with API integration and backend services in Node.js.',
       intro: [
-        'His role also involves integrating APIs and services using Node.js, as well as participating in the development of AI-based platforms.',
-        'He has experience working with systems that leverage Large Language Models, workflow automation, and service integrations, contributing to modern and scalable solutions.',
-        'Throughout his experience, he has worked in environments with microservices, distributed systems, and event-driven architectures.'
+        'He has experience developing systems that use Large Language Models (LLMs), workflow automation, and service integrations, contributing to the creation of intelligent, data-driven solutions.',
+        'He works in environments with microservices architectures, distributed systems, and event-driven processing, contributing to applications designed for high scalability, performance, and continuous evolution.',
+        'He has experience with scalable and responsive interface development, API and backend service integration, AI process automation, distributed systems architecture, and application observability.',
+        'He is interested in opportunities as a Full Stack Developer focused on scalable systems, AI applications, and solutions involving automation and high performance.'
       ]
     },
     specialties: [
       {
-        title: 'Teamwork',
+        id: 'top',
+        title: 'Top Skills',
         description: [
-          'He has experience supporting the growth of other developers through mentoring, constructive code reviews, and continuous feedback.',
-          'He also helps organize and prioritize demands, keeping the team focused on the most relevant deliveries and maintaining workflow efficiency.'
+          'He works as a Full Stack Developer focused on building scalable web applications, delivering consistent user experience, and integrating front-end and back-end efficiently.',
+          'His core stack includes React.js, Next.js, Node.js, JavaScript, and TypeScript, applied to modern products with continuous evolution.'
         ],
-        tags: ['Communication', 'Teamwork', 'Mentoring', 'Code review', 'Organization', 'Prioritization', 'Resilience']
+        tags: ['Full Stack Development', 'React.js', 'Next.js', 'Node.js', 'JavaScript (ES6+)', 'TypeScript']
       },
       {
-        title: 'Software Development',
+        id: 'backend',
+        title: 'Backend / Architecture',
         description: [
-          'He works on modern web application development, with experience in both front-end and back-end.',
-          'On the front end, he works with React, JavaScript, and TypeScript, focusing on responsive and high-performance interfaces.',
-          'On the back end, he uses Node.js to build REST APIs and integrate with SQL databases.'
+          'He has experience building REST APIs, integrating services, and designing solutions prepared for growth, maintainability, and continuous evolution.',
+          'He also works in contexts involving microservices architecture, event-driven processing, and technical decisions oriented toward scalability.'
         ],
-        tags: ['React', 'JavaScript', 'TypeScript', 'Node.js', 'HTML', 'CSS', 'SQL', 'REST APIs', 'Git', 'Docker']
+        tags: ['REST APIs', 'Microservices Architecture', 'Event-Driven Architecture', 'Scalable Systems Design']
       },
       {
-        title: 'Artificial Intelligence and Automation',
+        id: 'ai',
+        title: 'AI / Competitive Edge',
         description: [
-          'He designs and implements solutions with LLMs, LangChain, LangGraph, and RAG patterns grounded on proprietary data.',
-          'He builds custom agents, chatbots, and integrations using generative AI APIs and workflow automation tools.'
+          'Artificial Intelligence is one of his main differentiators, with experience in applications that use LLMs, process automation, and intelligent workflow integrations.',
+          'He works on AI solutions applied to products, combining automation, workflows, and strategic use of generative models.'
         ],
-        tags: ['OpenAI API', 'Prompts', 'Automation', 'Agents', 'Chatbots', 'Workflows', 'Integrations', 'Generative AI']
+        tags: ['Artificial Intelligence (AI)', 'Large Language Models (LLMs)', 'AI Automation', 'Workflow Automation']
+      },
+      {
+        id: 'frontend',
+        title: 'Frontend / UI',
+        description: [
+          'On the front end, he focuses on building modern, responsive, and scalable interfaces with attention to visual clarity, performance, and usability.',
+          'He works with componentization, API integrations, and the creation of consistent experiences across different product contexts.'
+        ],
+        tags: ['Tailwind CSS', 'Responsive Design', 'Front-End Development']
+      },
+      {
+        id: 'tools',
+        title: 'Tools & Practices',
+        description: [
+          'He values code organization, team collaboration, and environment standardization to keep projects sustainable over time.',
+          'He uses engineering tools and practices to support version control, service integration, and structural software decisions.'
+        ],
+        tags: ['Git & GitHub', 'API Integration', 'System Design', 'Software Architecture']
       }
     ],
     experience: [
@@ -298,12 +347,19 @@ export const portfolioChatMock = {
         role: 'Mid-Level Software Developer',
         period: 'November 2024 - Present',
         description:
-          'He works on the development of an Artificial Intelligence platform, contributing to the creation and evolution of the interface and to the integration of multiple projects within a scalable ecosystem.',
+          'He works as a Full Stack Developer on the development and evolution of the main interface of an Artificial Intelligence platform, with a focus on performance, scalability, and user experience.',
         details: [
-          'He contributed to the development and evolution of the platform main interface with focus on performance, scalability, and user experience.',
-          'He took part in the integration of strategic project interfaces such as Flowise and Aiflow.',
-          'He uses React, TypeScript, Next.js, Node.js, Tailwind CSS, Supabase, PostgreSQL, and Docker.',
-          'He supports the platform through debugging, bug fixing, and continuous code improvements.'
+          'Development and evolution of the main interface of an Artificial Intelligence platform, focusing on performance, scalability, and user experience.',
+          'Integration of multiple projects and modules, such as Flowise and Aiflow, within a unified ecosystem.',
+          'Building applications using React, Next.js, TypeScript, and Node.js.',
+          'Integration with Supabase (PostgreSQL) and backend services.',
+          'Use of Docker to standardize environments and support scalability.',
+          'Support of the application, including debugging, bug fixing, and continuous improvements.',
+          'Collaboration in defining engineering best practices, code organization, and product evolution.',
+          'Contribution to building a scalable AI platform with multiple integrated modules.',
+          'Improved visual and functional consistency across different applications in the ecosystem.',
+          'Continuous evolution of application performance and stability.',
+          'Participation in structuring a more standardized and scalable development environment.'
         ],
         technicalSkills: [
           'React',
@@ -535,6 +591,10 @@ function formatBulletList(items) {
   return items.map((item) => `- ${item}`).join('\n');
 }
 
+function formatSpacedSections(sections) {
+  return sections.filter(Boolean).join('\n\n');
+}
+
 function formatProjectLinks(project, locale) {
   const lines = [];
 
@@ -619,6 +679,10 @@ function buildKnowledgeEntries(data, locale) {
   });
 
   return entries;
+}
+
+function getSpecialtyById(data, id) {
+  return data.specialties.find((item) => item.id === id);
 }
 
 function extractKeywords(message, locale) {
@@ -854,13 +918,21 @@ export function getMockChatResponse(message, language = 'PT') {
         : ['skills', 'stack', 'tecnologias', 'frontend', 'backend']
     )
   ) {
-    const mainSkills = [...data.specialties[1].tags, 'Vue.js'];
+    const topSkills = getSpecialtyById(data, 'top');
+    const backend = getSpecialtyById(data, 'backend');
+    const ai = getSpecialtyById(data, 'ai');
+    const frontend = getSpecialtyById(data, 'frontend');
+    const tools = getSpecialtyById(data, 'tools');
     return formatChatResponse(
       locale === 'EN' ? 'Main Technologies' : 'Principais Tecnologias',
       [
-        `${locale === 'EN' ? 'Core stack' : 'Stack principal'}\n${formatBulletList(mainSkills)}`,
-        `${locale === 'EN' ? 'Experience in current projects' : 'Experiência nos projetos atuais'}\n${formatBulletList(data.experience[0].technicalSkills.slice(0, 8))}`,
-        `${locale === 'EN' ? 'AI and automation' : 'IA e automação'}\n${formatBulletList(data.specialties[2].tags)}`
+        formatSpacedSections([
+          `${locale === 'EN' ? 'Top Skills' : 'Principais'}\n${formatBulletList(topSkills?.tags ?? [])}`,
+          `${locale === 'EN' ? 'Backend / Architecture' : 'Backend / Arquitetura'}\n${formatBulletList(backend?.tags ?? [])}`,
+          `${locale === 'EN' ? 'AI / Competitive Edge' : 'IA / Diferencial competitivo'}\n${formatBulletList(ai?.tags ?? [])}`,
+          `${locale === 'EN' ? 'Frontend / UI' : 'Frontend / UI'}\n${formatBulletList(frontend?.tags ?? [])}`,
+          `${locale === 'EN' ? 'Tools & Practices' : 'Ferramentas e práticas'}\n${formatBulletList(tools?.tags ?? [])}`
+        ])
       ]
     );
   }
@@ -873,12 +945,12 @@ export function getMockChatResponse(message, language = 'PT') {
         : ['ia', 'inteligencia artificial', 'llm', 'langchain', 'langgraph', 'flowise', 'automacao']
     )
   ) {
-    const ai = data.specialties[2];
+    const ai = getSpecialtyById(data, 'ai');
     return formatChatResponse(
       locale === 'EN' ? 'Artificial Intelligence' : 'Inteligência Artificial',
       [
-        ai.description.join(' '),
-        `${locale === 'EN' ? 'Main topics' : 'Principais temas'}\n${formatBulletList(ai.tags)}`
+        ai?.description.join(' ') ?? '',
+        `${locale === 'EN' ? 'Main topics' : 'Principais temas'}\n${formatBulletList(ai?.tags ?? [])}`
       ]
     );
   }
