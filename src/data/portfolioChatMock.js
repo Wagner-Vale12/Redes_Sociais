@@ -719,8 +719,12 @@ function isClearlyOutOfScope(message, locale) {
 function isLikelyPortugueseMessage(message) {
   const normalized = normalizeMessage(message);
   const portugueseSignals = [
+    'oi',
     'ola',
     'olá',
+    'bom dia',
+    'boa tarde',
+    'boa noite',
     'quem',
     'quais',
     'qual',
@@ -746,10 +750,58 @@ function isLikelyPortugueseMessage(message) {
   return portugueseSignals.some((term) => normalized.includes(normalizeMessage(term)));
 }
 
+function isLikelyEnglishMessage(message) {
+  const normalized = normalizeMessage(message);
+  const englishSignals = [
+    'hello',
+    'hi',
+    'hey',
+    'who is',
+    'about',
+    'experience',
+    'technologies',
+    'projects',
+    'education',
+    'languages',
+    'contact',
+    'location',
+    'age',
+    'marital status',
+    'show me',
+    'tell me',
+    'what',
+    'where',
+    'linkedin',
+    'github'
+  ];
+
+  return englishSignals.some((term) => normalized.includes(normalizeMessage(term)));
+}
+
 export function getMockChatResponse(message, language = 'PT') {
   const locale = language === 'EN' ? 'EN' : 'PT';
   const data = portfolioChatMock[locale];
   const normalizedMessage = normalizeMessage(message);
+
+  if (locale === 'PT' && isLikelyEnglishMessage(message)) {
+    return formatChatResponse('Troque o idioma do site', [
+      'O portfólio está atualmente em português, então eu respondo apenas em português neste modo.',
+      'Para essa pergunta em inglês, troque o idioma do site para EN e tente novamente.'
+    ]);
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? ['hello', 'hi', 'hey']
+        : ['oi', 'ola', 'olá']
+    )
+  ) {
+    return locale === 'EN'
+      ? 'Hello, how are you? How can I help you with information about Wagner?'
+      : 'Oi, tudo bem? O que eu posso te ajudar sobre o Wagner?';
+  }
 
   if (locale === 'EN' && isLikelyPortugueseMessage(message)) {
     return formatChatResponse('Please ask in English', [
