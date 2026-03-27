@@ -806,6 +806,10 @@ function isLikelyPortugueseMessage(message) {
     'localizacao',
     'localização',
     'me fale',
+    'me de',
+    'me dá',
+    'seu',
+    'seus',
     'mostre',
     'voce',
     'você'
@@ -834,9 +838,7 @@ function isLikelyEnglishMessage(message) {
     'show me',
     'tell me',
     'what',
-    'where',
-    'linkedin',
-    'github'
+    'where'
   ];
 
   return englishSignals.some((term) => normalized.includes(normalizeMessage(term)));
