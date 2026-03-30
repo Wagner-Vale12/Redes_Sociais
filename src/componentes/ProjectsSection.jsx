@@ -6,7 +6,7 @@ const projectsContent = {
         id: 'project-1',
         logoImage: 'https://www.google.com/s2/favicons?domain=futuresecure.ai&sz=128',
         title: 'Plataforma de AI',
-        period: ' Nov 2024 - até o momento',
+        period: ' Nov 2024 - Março 2026',
         description: 'Plataforma para orquestrar workflows, integrações e agentes de inteligência artificial/LLMs. Atuei no desenvolvimento e na sustentação do núcleo low-code, permitindo que engenheiros de IA criem agentes, digital coworkers e automações complexas com menos código manual e mais velocidade de entrega.'
       },
       {
@@ -25,7 +25,7 @@ const projectsContent = {
         id: 'project-1',
         logoImage: 'https://www.google.com/s2/favicons?domain=futuresecure.ai&sz=128',
         title: 'AI Platform',
-        period: 'Nov 2024 - Present',
+        period: 'Nov 2024 - March 2026',
         description: 'Platform for orchestrating workflows, integrations, and artificial intelligence/LLM agents. I worked on the development and ongoing support of the low-code core, enabling AI engineers to build agents, digital coworkers, and complex automations with less manual code and faster delivery.'
       },
       {
