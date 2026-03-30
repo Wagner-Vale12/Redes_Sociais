@@ -553,7 +553,18 @@ function normalizeMessage(message) {
 }
 
 function includesAny(message, terms) {
-  return terms.some((term) => message.includes(term));
+  const normalizedMessage = normalizeMessage(message);
+  const tokens = normalizedMessage.split(/[^a-z0-9]+/).filter(Boolean);
+
+  return terms.some((term) => {
+    const normalizedTerm = normalizeMessage(term);
+
+    if (normalizedTerm.length <= 2) {
+      return tokens.includes(normalizedTerm);
+    }
+
+    return normalizedMessage.includes(normalizedTerm);
+  });
 }
 
 function formatList(items) {
@@ -597,37 +608,192 @@ function formatSpacedSections(sections) {
   return sections.filter(Boolean).join('\n\n');
 }
 
+function getMessageFingerprint(message) {
+  return [...normalizeMessage(message)].reduce((acc, char) => acc + char.charCodeAt(0), 0);
+}
+
+function pickVariant(message, variants) {
+  if (!variants.length) {
+    return '';
+  }
+
+  return variants[getMessageFingerprint(message) % variants.length];
+}
+
+function isShortQuestion(message) {
+  const normalized = message.trim();
+  return normalized.length > 0 && normalized.length <= 40;
+}
+
+function isVeryShortPrompt(message) {
+  const normalized = message.trim();
+  return normalized.length > 0 && normalized.length <= 18;
+}
+
+function getRecentConversationState(history, locale) {
+  if (!Array.isArray(history) || !history.length) {
+    return { topic: '', subtopic: '', lastUserMessage: '' };
+  }
+
+  const recentUserMessages = [...history]
+    .reverse()
+    .filter((item) => item?.author === 'user' && typeof item.text === 'string')
+    .slice(0, 5);
+
+  return {
+    topic: inferTopicFromHistory(history, locale),
+    subtopic:
+      recentUserMessages
+        .map((item) => inferSubtopicFromMessage(item.text, locale))
+        .find(Boolean) ?? '',
+    lastUserMessage: recentUserMessages[0]?.text ?? ''
+  };
+}
+
 function getFollowUpPrompt(locale, topic = 'general') {
   const prompts = {
     PT: {
-      general: 'Se quiser, também posso te mostrar experiência, projetos, formação ou links de contato.',
-      skills: 'Se quiser, também posso organizar essas skills por front-end, back-end ou IA.',
-      experience: 'Se quiser, também posso detalhar melhor a atuação atual dele na Future Secure AI.',
-      projects: 'Se quiser, também posso separar os projetos profissionais dos projetos pessoais.',
-      links: 'Se quiser, também posso te passar LinkedIn, GitHub e Instagram em uma única resposta.'
+      general: 'Se quiser, posso continuar com experiência, projetos, formação ou links de contato.',
+      skills: 'Se quiser, posso separar essas skills por front-end, back-end, arquitetura ou IA.',
+      experience: 'Se quiser, posso detalhar melhor a atuação atual dele na Future Secure AI.',
+      projects: 'Se quiser, posso separar os projetos profissionais dos projetos pessoais ou te mostrar um projeto específico.',
+      links: 'Se quiser, posso te passar LinkedIn, GitHub, Instagram e currículo em uma única resposta.'
     },
     EN: {
-      general: 'If you want, I can also show experience, projects, education, or links.',
-      skills: 'If you want, I can also summarize this by front end, back end, or AI.',
-      experience: 'If you want, I can also detail the current experience at Future Secure AI.',
-      projects: 'If you want, I can also separate professional projects from personal ones.',
-      links: 'If you want, I can also send LinkedIn, GitHub, and Instagram in a single response.'
+      general: 'If you want, I can continue with experience, projects, education, or contact links.',
+      skills: 'If you want, I can break these skills down by front end, back end, architecture, or AI.',
+      experience: 'If you want, I can also detail his current work at Future Secure AI.',
+      projects: 'If you want, I can separate professional projects from personal ones or show a specific project.',
+      links: 'If you want, I can also send LinkedIn, GitHub, Instagram, and the resume in one answer.'
     }
   };
 
   return prompts[locale]?.[topic] ?? prompts[locale].general;
 }
 
+function getConversationalLead(locale, variant = 'default') {
+  const leads = {
+    PT: {
+      default: 'Claro. Aqui vai:',
+      detail: 'Claro. Vou detalhar melhor:',
+      current: 'Sim. Hoje o cenário principal é este:',
+      links: 'Claro. Separei os links principais:',
+      resume: 'Claro. Você pode acessar o currículo por aqui:',
+      clarify: 'Posso te ajudar com isso.'
+    },
+    EN: {
+      default: 'Sure. Here it is:',
+      detail: 'Sure. Here is a more detailed view:',
+      current: 'Yes. His current context is this:',
+      links: 'Sure. I separated the main links:',
+      resume: 'Sure. You can access the resume here:',
+      clarify: 'I can help with that.'
+    }
+  };
+
+  return leads[locale]?.[variant] ?? leads[locale].default;
+}
+
+function getNaturalAck(message, locale, tone = 'default') {
+  const variants = {
+    PT: {
+      default: ['Claro.', 'Perfeito.', 'Sem problema.', 'Posso sim.'],
+      detail: ['Claro, vou aprofundar.', 'Perfeito, aqui estão mais detalhes.', 'Sem problema, vou detalhar melhor.'],
+      recruiter: ['Claro, olhando pelo lado profissional:', 'Perfeito, resumindo de forma profissional:', 'Posso sim, trazendo os pontos mais fortes:'],
+      links: ['Claro, seguem os links.', 'Perfeito, separei os links para você.', 'Sem problema, aqui estão os links.']
+    },
+    EN: {
+      default: ['Sure.', 'Absolutely.', 'No problem.', 'Of course.'],
+      detail: ['Sure, I can go deeper.', 'Absolutely, here are more details.', 'No problem, here is a deeper breakdown.'],
+      recruiter: ['Sure, from a professional standpoint:', 'Absolutely, here is the professional summary:', 'Of course, focusing on the strongest points:'],
+      links: ['Sure, here are the links.', 'Absolutely, I separated the links for you.', 'No problem, here are the links.']
+    }
+  };
+
+  return pickVariant(message, variants[locale]?.[tone] ?? variants[locale].default);
+}
+
+function getTopicIntro(message, locale, topic) {
+  const intros = {
+    PT: {
+      experience: [
+        'O ponto mais forte da trajetória dele está nessa combinação de produto, front-end escalável e IA.',
+        'A experiência dele hoje é bem conectada com produto, performance e evolução contínua.',
+        'Esse é um dos blocos mais fortes do perfil dele hoje.'
+      ],
+      skills: [
+        'A stack dele está bem alinhada com desenvolvimento full stack moderno.',
+        'Hoje o perfil técnico dele está bem concentrado em front-end forte, integração backend e IA.',
+        'A base técnica dele conversa bastante com produtos modernos e escaláveis.'
+      ],
+      ai: [
+        'IA realmente é um diferencial importante no perfil dele.',
+        'Essa parte de IA está bem presente na atuação atual dele.',
+        'Hoje IA não aparece só como interesse, mas como experiência aplicada.'
+      ],
+      projects: [
+        'Os projetos ajudam bastante a mostrar o tipo de problema que ele já enfrentou.',
+        'Aqui dá para ver bem a combinação entre prática profissional e projetos próprios.',
+        'Essa parte do portfólio reforça bastante a vivência técnica dele.'
+      ],
+      education: [
+        'A formação dele acompanha bem a base de desenvolvimento de sistemas.',
+        'Na parte acadêmica, o foco é bem alinhado com software e sistemas.',
+        'A formação complementa bem a experiência prática dele.'
+      ],
+      languages: [
+        'Na parte de idiomas, o portfólio deixa isso bem claro.',
+        'Os idiomas estão descritos de forma objetiva no perfil dele.',
+        'Essa parte aparece de forma direta no currículo e no portfólio.'
+      ]
+    },
+    EN: {
+      experience: [
+        'This is one of the strongest parts of his profile.',
+        'His background is especially strong where product work, scalable front end, and AI meet.',
+        'This is where his profile becomes very concrete from a hiring perspective.'
+      ],
+      skills: [
+        'His stack is well aligned with modern full-stack product development.',
+        'Technically, his profile is centered on strong front end, backend integration, and AI.',
+        'His technical base fits well with modern and scalable product environments.'
+      ],
+      ai: [
+        'AI is genuinely one of the strongest differentiators in his profile.',
+        'This AI layer is clearly part of his real work, not just an interest area.',
+        'In his case, AI shows up as applied experience, not only theory.'
+      ],
+      projects: [
+        'The projects help make his profile much more concrete.',
+        'This section shows both professional delivery and hands-on personal practice.',
+        'His portfolio projects reinforce the practical side of his background.'
+      ],
+      education: [
+        'His academic background supports the software foundation well.',
+        'On the academic side, the profile is clearly aligned with systems and software.',
+        'His education complements the hands-on experience well.'
+      ],
+      languages: [
+        'The language section is described quite clearly in the portfolio.',
+        'His language profile is presented in a direct and objective way.',
+        'This part is straightforward in both the portfolio and the resume.'
+      ]
+    }
+  };
+
+  return pickVariant(message, intros[locale]?.[topic] ?? intros[locale].experience);
+}
+
 function getBriefProfileSummary(data, locale) {
   return locale === 'EN'
-    ? 'Wagner is a Mid-Level Full Stack Developer focused on scalable web applications, modern front-end development, and AI-based products.'
-    : 'Wagner é um Desenvolvedor Full Stack Pleno com foco em aplicações web escaláveis, front-end moderno e produtos com Inteligência Artificial.';
+    ? 'Wagner is a Mid-Level Full Stack Developer focused on scalable web applications, modern front-end development, AI products, and backend integrations with Node.js.'
+    : 'Wagner é um Desenvolvedor Full Stack Pleno com foco em aplicações web escaláveis, front-end moderno, produtos com Inteligência Artificial e integrações backend com Node.js.';
 }
 
 function getExperienceIntro(locale) {
   return locale === 'EN'
-    ? 'His experience combines scalable product development, interface evolution, backend integration, and AI platform work.'
-    : 'A experiência dele combina evolução de produto, construção de interfaces escaláveis, integração com backend e atuação em plataformas de IA.';
+    ? 'His background combines product evolution, scalable interfaces, backend integration, and work on AI platforms.'
+    : 'A trajetória dele combina evolução de produto, interfaces escaláveis, integração com backend e atuação em plataformas de IA.';
 }
 
 function getProjectsIntro(locale) {
@@ -665,11 +831,45 @@ function formatPersonalProjects(data) {
     .join('\n\n');
 }
 
+function formatKeyValueLine(label, value) {
+  return `${label}: ${value}`;
+}
+
 function formatExperienceItems(data, locale) {
   return data.experience.map((item) =>
-    locale === 'EN'
-      ? `${item.role} at ${item.company}\nPeriod: ${item.period}\n${item.description}`
-      : `${item.role} na ${item.company}\nPeríodo: ${item.period}\n${item.description}`
+    formatSpacedSections([
+      locale === 'EN' ? `${item.role} at ${item.company}` : `${item.role} na ${item.company}`,
+      formatKeyValueLine(locale === 'EN' ? 'Period' : 'Período', item.period),
+      formatKeyValueLine(locale === 'EN' ? 'Location' : 'Local', item.location),
+      item.description,
+      `${locale === 'EN' ? 'Highlights' : 'Destaques'}\n${formatBulletList(item.details.slice(0, 4))}`
+    ])
+  );
+}
+
+function formatCourseGroups(data) {
+  return data.courses.map((item) =>
+    formatSpacedSections([
+      `${item.provider} (${item.period})`,
+      formatBulletList(item.items.slice(0, 5))
+    ])
+  );
+}
+
+function formatEducationItems(data, locale) {
+  return data.education.map((item) =>
+    formatSpacedSections([
+      item.degree,
+      item.institution,
+      formatKeyValueLine(locale === 'EN' ? 'Period' : 'Período', item.period),
+      item.description
+    ])
+  );
+}
+
+function formatLanguageItems(data) {
+  return data.languages.map((item) =>
+    formatSpacedSections([`${item.name} (${item.level})`, item.description])
   );
 }
 
@@ -933,10 +1133,628 @@ function isLikelyEnglishMessage(message) {
   return englishSignals.some((term) => normalized.includes(normalizeMessage(term)));
 }
 
-export function getMockChatResponse(message, language = 'PT') {
+function inferTopicFromMessage(message, locale) {
+  const normalizedMessage = normalizeMessage(message);
+  const topicMatchers = [
+    {
+      topic: 'resume',
+      terms: locale === 'EN'
+        ? ['resume', 'cv', 'curriculum']
+        : ['curriculo', 'currículo', 'cv']
+    },
+    {
+      topic: 'experience',
+      terms: locale === 'EN'
+        ? ['experience', 'career', 'professional background', 'current role', 'current job']
+        : ['experiencia', 'experiência', 'carreira', 'historico profissional', 'cargo atual', 'trabalho atual']
+    },
+    {
+      topic: 'skills',
+      terms: locale === 'EN'
+        ? ['skills', 'stack', 'technologies', 'frontend', 'backend', 'architecture']
+        : ['skills', 'stack', 'tecnologias', 'frontend', 'backend', 'arquitetura']
+    },
+    {
+      topic: 'ai',
+      terms: locale === 'EN'
+        ? ['ai', 'artificial intelligence', 'llm', 'automation', 'flowise', 'langchain', 'langgraph']
+        : ['ia', 'inteligencia artificial', 'llm', 'automacao', 'flowise', 'langchain', 'langgraph']
+    },
+    {
+      topic: 'projects',
+      terms: locale === 'EN'
+        ? ['projects', 'project', 'portfolio']
+        : ['projetos', 'projeto', 'portfolio', 'portfólio']
+    },
+    {
+      topic: 'education',
+      terms: locale === 'EN'
+        ? ['education', 'college', 'university', 'degree']
+        : ['formacao', 'formação', 'faculdade', 'universidade']
+    },
+    {
+      topic: 'courses',
+      terms: locale === 'EN'
+        ? ['courses', 'course', 'training', 'alura', 'udemy']
+        : ['cursos', 'curso', 'formacao complementar', 'formação complementar', 'alura', 'udemy']
+    },
+    {
+      topic: 'certifications',
+      terms: locale === 'EN'
+        ? ['certification', 'certifications', 'scrum']
+        : ['certificacao', 'certificações', 'certificacoes', 'certificaçao', 'certificaçoes', 'scrum']
+    },
+    {
+      topic: 'languages',
+      terms: locale === 'EN'
+        ? ['languages', 'language', 'english', 'portuguese']
+        : ['idiomas', 'idioma', 'indioma', 'indiomas', 'linguas', 'línguas', 'ingles', 'inglês', 'portugues', 'português']
+    },
+    {
+      topic: 'hobbies',
+      terms: locale === 'EN'
+        ? ['hobbies', 'hobby', 'interests', 'interest']
+        : ['hobbies', 'hobby', 'hobbie', 'interesses', 'passatempos', 'passatempo']
+    },
+    {
+      topic: 'contact',
+      terms: locale === 'EN'
+        ? ['contact', 'email', 'linkedin', 'github', 'instagram', 'links']
+        : ['contato', 'email', 'linkedin', 'github', 'instagram', 'links', 'redes']
+    },
+    {
+      topic: 'profile',
+      terms: locale === 'EN'
+        ? ['who is', 'about wagner', 'introduce', 'summary', 'profile']
+        : ['quem e', 'quem é', 'sobre o wagner', 'apresente', 'perfil', 'resumo']
+    },
+    {
+      topic: 'objective',
+      terms: locale === 'EN'
+        ? ['career objective', 'goal', 'looking for', 'job target', 'objective']
+        : ['objetivo', 'objetivo profissional', 'busca', 'procurando', 'interesse profissional']
+    },
+    {
+      topic: 'seniority',
+      terms: locale === 'EN'
+        ? ['seniority', 'seniority level', 'junior', 'mid-level', 'senior', 'level']
+        : ['senioridade', 'nivel', 'nível', 'junior', 'pleno', 'senior']
+    },
+    {
+      topic: 'strengths',
+      terms: locale === 'EN'
+        ? ['strengths', 'main strengths', 'strong points', 'highlights', 'differential', 'differentiator']
+        : ['pontos fortes', 'ponto forte', 'diferencial', 'diferenciais', 'destaques', 'forcas', 'forças']
+    },
+    {
+      topic: 'hiring',
+      terms: locale === 'EN'
+        ? ['why hire', 'why should we hire', 'why wagner', 'hire him', 'fit for role']
+        : ['por que contratar', 'porque contratar', 'por que o wagner', 'por que contratar ele', 'fit para vaga']
+    }
+  ];
+
+  const matched = topicMatchers.find(({ terms }) =>
+    terms.some((term) => normalizedMessage.includes(normalizeMessage(term)))
+  );
+
+  return matched?.topic ?? '';
+}
+
+function isContinuationRequest(message, locale) {
+  const normalizedMessage = normalizeMessage(message);
+  const terms = locale === 'EN'
+    ? ['tell me more', 'more details', 'go deeper', 'detail more', 'expand', 'what else', 'and what about']
+    : ['fala mais', 'me fale mais', 'mais detalhes', 'detalha mais', 'aprofundar', 'expande', 'e sobre', 'e os', 'e as', 'e o', 'e a', 'e com'];
+
+  return terms.some((term) => normalizedMessage.includes(normalizeMessage(term)));
+}
+
+function inferSubtopicFromMessage(message, locale) {
+  const normalizedMessage = normalizeMessage(message);
+  const matchers = [
+    {
+      subtopic: 'email',
+      terms: locale === 'EN' ? ['email', 'e-mail'] : ['email', 'e-mail']
+    },
+    {
+      subtopic: 'linkedin',
+      terms: locale === 'EN' ? ['linkedin', 'linkedin profile'] : ['linkedin', 'linkdin']
+    },
+    {
+      subtopic: 'github',
+      terms: locale === 'EN' ? ['github', 'github profile'] : ['github']
+    },
+    {
+      subtopic: 'instagram',
+      terms: locale === 'EN' ? ['instagram', 'instagram profile'] : ['instagram']
+    },
+    {
+      subtopic: 'resume-link',
+      terms: locale === 'EN' ? ['resume', 'cv', 'curriculum'] : ['curriculo', 'currículo', 'cv']
+    },
+    {
+      subtopic: 'frontend',
+      terms: locale === 'EN' ? ['frontend', 'front end', 'ui', 'interface'] : ['frontend', 'front-end', 'ui', 'interface']
+    },
+    {
+      subtopic: 'backend',
+      terms: locale === 'EN' ? ['backend', 'back end', 'api', 'apis'] : ['backend', 'back-end', 'api', 'apis']
+    },
+    {
+      subtopic: 'ai',
+      terms: locale === 'EN' ? ['ai', 'llm', 'automation', 'flowise'] : ['ia', 'llm', 'automacao', 'automation', 'flowise']
+    },
+    {
+      subtopic: 'personal-projects',
+      terms: locale === 'EN' ? ['personal projects', 'personal project'] : ['projetos pessoais', 'projeto pessoal']
+    },
+    {
+      subtopic: 'professional-projects',
+      terms: locale === 'EN' ? ['professional projects', 'professional project'] : ['projetos profissionais', 'projeto profissional']
+    },
+    {
+      subtopic: 'current',
+      terms: locale === 'EN' ? ['current', 'today', 'now'] : ['atual', 'hoje', 'agora']
+    }
+  ];
+
+  const matched = matchers.find(({ terms }) =>
+    terms.some((term) => normalizedMessage.includes(normalizeMessage(term)))
+  );
+
+  return matched?.subtopic ?? '';
+}
+
+function inferTopicFromHistory(history, locale) {
+  if (!Array.isArray(history) || !history.length) {
+    return '';
+  }
+
+  const recentUserMessages = [...history]
+    .reverse()
+    .filter((item) => item?.author === 'user' && typeof item.text === 'string')
+    .slice(0, 5);
+
+  for (const item of recentUserMessages) {
+    const topic = inferTopicFromMessage(item.text, locale);
+
+    if (topic) {
+      return topic;
+    }
+  }
+
+  return '';
+}
+
+function getResolvedTopic(message, history, locale) {
+  const directTopic = inferTopicFromMessage(message, locale);
+
+  if (directTopic) {
+    return directTopic;
+  }
+
+  if (isContinuationRequest(message, locale)) {
+    return inferTopicFromHistory(history, locale);
+  }
+
+  return '';
+}
+
+function getResolvedSubtopic(message, history, locale) {
+  const directSubtopic = inferSubtopicFromMessage(message, locale);
+
+  if (directSubtopic) {
+    return directSubtopic;
+  }
+
+  if (isContinuationRequest(message, locale)) {
+    const recentUserMessages = [...(Array.isArray(history) ? history : [])]
+      .reverse()
+      .filter((item) => item?.author === 'user' && typeof item.text === 'string')
+      .slice(0, 5);
+
+    for (const item of recentUserMessages) {
+      const subtopic = inferSubtopicFromMessage(item.text, locale);
+
+      if (subtopic) {
+        return subtopic;
+      }
+    }
+  }
+
+  return '';
+}
+
+function getCurrentWorkResponse(data, locale) {
+  const currentExperience = data.experience[0];
+
+  return formatChatResponse(
+    locale === 'EN' ? 'Current Role' : 'Atuação Atual',
+    [
+      getConversationalLead(locale, 'current'),
+      formatSpacedSections([
+        locale === 'EN'
+          ? `${data.profile.name} currently works at ${currentExperience.company} as ${currentExperience.role}.`
+          : `${data.profile.name} atua hoje na ${currentExperience.company} como ${currentExperience.role}.`,
+        formatKeyValueLine(locale === 'EN' ? 'Period' : 'Período', currentExperience.period),
+        formatKeyValueLine(locale === 'EN' ? 'Focus' : 'Foco', data.profile.focus),
+        `${locale === 'EN' ? 'Main highlights' : 'Principais destaques'}\n${formatBulletList(currentExperience.details.slice(0, 5))}`
+      ]),
+      getFollowUpPrompt(locale, 'experience')
+    ]
+  );
+}
+
+function getResumeResponse(data, locale) {
+  return formatChatResponse(
+    locale === 'EN' ? 'Resume' : 'Currículo',
+    [
+      getConversationalLead(locale, 'resume'),
+      data.links.resume,
+      locale === 'EN'
+        ? 'If you want, I can also summarize the resume by experience, skills, projects, or education.'
+        : 'Se quiser, também posso resumir o currículo por experiência, skills, projetos ou formação.'
+    ]
+  );
+}
+
+function getLinksBundleResponse(data, locale) {
+  return formatChatResponse(
+    locale === 'EN' ? 'Links' : 'Links',
+    [
+      getConversationalLead(locale, 'links'),
+      `${locale === 'EN' ? 'Email' : 'E-mail'}: ${data.profile.email}`,
+      `LinkedIn: ${data.links.linkedin}`,
+      `GitHub: ${data.links.github}`,
+      `Instagram: ${data.links.instagram}`,
+      `${locale === 'EN' ? 'Resume' : 'Currículo'}: ${data.links.resume}`
+    ]
+  );
+}
+
+function getRecruiterSummaryResponse(data, locale, message) {
+  const currentExperience = data.experience[0];
+
+  return formatChatResponse(
+    locale === 'EN' ? 'Professional Summary' : 'Resumo Profissional',
+    [
+      getNaturalAck(message, locale, 'recruiter'),
+      locale === 'EN'
+        ? `${data.profile.name} is a ${data.profile.role} with strong experience in React, Next.js, Node.js, scalable interfaces, and AI-driven products.`
+        : `${data.profile.name} é ${data.profile.role}, com experiência forte em React, Next.js, Node.js, interfaces escaláveis e produtos com IA.`,
+      formatSpacedSections([
+        locale === 'EN' ? 'Current context' : 'Contexto atual',
+        locale === 'EN'
+          ? `He is currently working at ${currentExperience.company}, contributing to the evolution of an AI platform focused on performance, scalability, and user experience.`
+          : `Atua atualmente na ${currentExperience.company}, contribuindo para a evolução de uma plataforma de IA com foco em performance, escalabilidade e experiência do usuário.`
+      ]),
+      `${locale === 'EN' ? 'Main strengths' : 'Principais forças'}\n${formatBulletList([
+        data.profile.focus,
+        locale === 'EN'
+          ? 'Experience with AI workflows, LLM-based systems, and service integrations'
+          : 'Experiência com workflows de IA, sistemas com LLMs e integrações entre serviços',
+        locale === 'EN'
+          ? 'Background in scalable architecture, APIs, distributed systems, and front-end engineering'
+          : 'Vivência com arquitetura escalável, APIs, sistemas distribuídos e engenharia front-end'
+      ])}`,
+      getFollowUpPrompt(locale, 'general')
+    ]
+  );
+}
+
+function getCareerObjectiveResponse(data, locale, message) {
+  return formatChatResponse(
+    locale === 'EN' ? 'Career Objective' : 'Objetivo Profissional',
+    [
+      getNaturalAck(message, locale),
+      locale === 'EN'
+        ? 'Wagner is interested in opportunities as a Full Stack Developer focused on scalable systems, AI applications, automation, and high-performance products.'
+        : 'O Wagner busca oportunidades como Full Stack Developer com foco em sistemas escaláveis, aplicações com IA, automação e produtos de alta performance.',
+      locale === 'EN'
+        ? 'His profile combines modern front-end development, backend integration, and applied AI in real products.'
+        : 'O perfil dele combina front-end moderno, integração com backend e IA aplicada em produtos reais.'
+    ]
+  );
+}
+
+function getSeniorityResponse(data, locale, message) {
+  return formatChatResponse(
+    locale === 'EN' ? 'Seniority' : 'Senioridade',
+    [
+      getNaturalAck(message, locale),
+      locale === 'EN'
+        ? `In the portfolio, Wagner presents himself as a ${data.profile.role}, with hands-on experience in product development, scalable interfaces, backend integration, and AI platforms.`
+        : `No portfólio, o Wagner se apresenta como ${data.profile.role}, com vivência prática em desenvolvimento de produto, interfaces escaláveis, integração backend e plataformas de IA.`,
+      locale === 'EN'
+        ? 'The strongest signal is a mid-level/full-stack profile with solid front-end ownership and growing scope in architecture and AI-driven systems.'
+        : 'O sinal mais forte é de um perfil pleno/full stack, com boa maturidade em front-end e avanço consistente em arquitetura e sistemas com IA.'
+    ]
+  );
+}
+
+function getClarificationResponse(locale) {
+  return locale === 'EN'
+    ? formatChatResponse('How I Can Help', [
+        'I can help with Wagner profile, current role, experience, skills, AI, projects, education, courses, languages, contact links, and resume.',
+        'Try something like: "Tell me about his current role", "What technologies does he use?", "Show me the resume", or "Summarize him for a recruiter".'
+      ])
+    : formatChatResponse('Como Posso Ajudar', [
+        'Posso te ajudar com perfil, atuação atual, experiência, skills, IA, projetos, formação, cursos, idiomas, links de contato e currículo.',
+        'Você pode tentar algo como: "Fale da atuação atual", "Quais tecnologias ele usa?", "Mostre o currículo" ou "Resuma ele para um recrutador".'
+      ]);
+}
+
+function getStrengthsResponse(data, locale, message) {
+  return formatChatResponse(
+    locale === 'EN' ? 'Main Strengths' : 'Principais Pontos Fortes',
+    [
+      getNaturalAck(message, locale, 'recruiter'),
+      locale === 'EN'
+        ? 'The strongest combination in Wagner profile is modern front-end delivery, backend integration, and AI applied to real products.'
+        : 'A combinação mais forte no perfil do Wagner está em front-end moderno, integração backend e IA aplicada em produtos reais.',
+      `${locale === 'EN' ? 'Highlights' : 'Destaques'}\n${formatBulletList([
+        data.profile.focus,
+        locale === 'EN'
+          ? 'Current work on an AI platform with focus on performance, scalability, and user experience'
+          : 'Atuação atual em uma plataforma de IA com foco em performance, escalabilidade e experiência do usuário',
+        locale === 'EN'
+          ? 'Experience with React, Next.js, Node.js, APIs, distributed systems, and technical evolution of products'
+          : 'Experiência com React, Next.js, Node.js, APIs, sistemas distribuídos e evolução técnica de produtos'
+      ])}`
+    ]
+  );
+}
+
+function getHiringPitchResponse(data, locale, message) {
+  return formatChatResponse(
+    locale === 'EN' ? 'Why Hire Wagner' : 'Por Que Contratar o Wagner',
+    [
+      getNaturalAck(message, locale, 'recruiter'),
+      locale === 'EN'
+        ? 'Because he combines practical front-end delivery, full-stack capability, and growing experience in AI-driven systems.'
+        : 'Porque ele combina entrega prática em front-end, capacidade full stack e experiência crescente em sistemas com IA.',
+      `${locale === 'EN' ? 'What stands out for hiring' : 'O que mais chama atenção para contratação'}\n${formatBulletList([
+        locale === 'EN'
+          ? 'Works with scalable interfaces and product evolution in real environments'
+          : 'Atua com interfaces escaláveis e evolução de produto em ambiente real',
+        locale === 'EN'
+          ? 'Strong stack around React, Next.js, Node.js, TypeScript, and service integration'
+          : 'Stack forte em React, Next.js, Node.js, TypeScript e integração entre serviços',
+        locale === 'EN'
+          ? 'Has applied exposure to AI, workflows, LLM-based systems, and technical scalability'
+          : 'Tem vivência aplicada com IA, workflows, sistemas com LLMs e escalabilidade técnica'
+      ])}`,
+      getFollowUpPrompt(locale, 'general')
+    ]
+  );
+}
+
+function getFrontendFocusResponse(data, locale, message) {
+  const frontend = getSpecialtyById(data, 'frontend');
+
+  return formatChatResponse(
+    locale === 'EN' ? 'Front-End Focus' : 'Foco em Front-End',
+    [
+      getNaturalAck(message, locale, 'detail'),
+      locale === 'EN'
+        ? 'On the front end, Wagner profile is centered on modern, responsive, and scalable interfaces.'
+        : 'No front-end, o perfil do Wagner está centrado em interfaces modernas, responsivas e escaláveis.',
+      `${locale === 'EN' ? 'Key points' : 'Pontos principais'}\n${formatBulletList([
+        frontend?.description[0] ?? '',
+        locale === 'EN'
+          ? 'Strong use of React, Next.js, componentization, and interface evolution'
+          : 'Uso forte de React, Next.js, componentização e evolução de interfaces',
+        locale === 'EN'
+          ? 'Focus on clarity, performance, usability, and consistency between product areas'
+          : 'Foco em clareza, performance, usabilidade e consistência entre áreas do produto'
+      ].filter(Boolean))}`
+    ]
+  );
+}
+
+function getBackendFocusResponse(data, locale, message) {
+  const backend = getSpecialtyById(data, 'backend');
+
+  return formatChatResponse(
+    locale === 'EN' ? 'Back-End and Architecture' : 'Back-End e Arquitetura',
+    [
+      getNaturalAck(message, locale, 'detail'),
+      locale === 'EN'
+        ? 'On the backend side, his profile shows API integration, service communication, and scalable architecture foundations.'
+        : 'No lado de back-end, o perfil dele mostra integração de APIs, comunicação entre serviços e base de arquitetura escalável.',
+      `${locale === 'EN' ? 'Key points' : 'Pontos principais'}\n${formatBulletList([
+        backend?.description[0] ?? '',
+        locale === 'EN'
+          ? 'Experience with Node.js, REST APIs, Supabase/PostgreSQL, and system integration'
+          : 'Experiência com Node.js, APIs REST, Supabase/PostgreSQL e integração de sistemas',
+        locale === 'EN'
+          ? 'Exposure to microservices, event-driven processing, and growth-oriented technical decisions'
+          : 'Vivência com microservices, processamento orientado a eventos e decisões técnicas voltadas para crescimento'
+      ].filter(Boolean))}`
+    ]
+  );
+}
+
+function getInterviewStyleResponse(data, locale, message) {
+  return formatChatResponse(
+    locale === 'EN' ? 'Interview Answer' : 'Resposta de Entrevista',
+    [
+      getNaturalAck(message, locale, 'recruiter'),
+      locale === 'EN'
+        ? `${data.profile.name} is a ${data.profile.role} with a profile that combines strong front-end execution, full-stack capability, and applied experience with AI products.`
+        : `${data.profile.name} é ${data.profile.role}, com um perfil que combina execução forte em front-end, capacidade full stack e experiência aplicada com produtos de IA.`,
+      locale === 'EN'
+        ? 'He is currently working on an AI platform and brings a mix of scalable interface work, backend integration, and product evolution in real environments.'
+        : 'Hoje ele atua em uma plataforma de IA e traz uma combinação de interfaces escaláveis, integração backend e evolução de produto em ambientes reais.',
+      locale === 'EN'
+        ? 'For interviews, the strongest narrative is that he can contribute both in product delivery and in technically evolving modern systems.'
+        : 'Para entrevistas, a narrativa mais forte é que ele consegue contribuir tanto na entrega de produto quanto na evolução técnica de sistemas modernos.'
+    ]
+  );
+}
+
+function getBridgeResponse(data, locale, state, message) {
+  if (state.subtopic === 'frontend') {
+    return getFrontendFocusResponse(data, locale, message);
+  }
+
+  if (state.subtopic === 'backend') {
+    return getBackendFocusResponse(data, locale, message);
+  }
+
+  if (state.subtopic === 'ai') {
+    const ai = getSpecialtyById(data, 'ai');
+
+    return formatChatResponse(
+      locale === 'EN' ? 'Artificial Intelligence' : 'Inteligência Artificial',
+      [
+        getNaturalAck(message, locale, 'detail'),
+        ai?.description.join(' ') ?? '',
+        `${locale === 'EN' ? 'Main topics' : 'Principais temas'}\n${formatBulletList(ai?.tags ?? [])}`
+      ]
+    );
+  }
+
+  if (state.subtopic === 'personal-projects') {
+    return formatChatResponse(
+      locale === 'EN' ? 'Personal Projects' : 'Projetos Pessoais',
+      [
+        getNaturalAck(message, locale, 'detail'),
+        formatPersonalProjects(data)
+      ]
+    );
+  }
+
+  if (state.subtopic === 'professional-projects') {
+    return formatChatResponse(
+      locale === 'EN' ? 'Professional Projects' : 'Projetos Profissionais',
+      [
+        getNaturalAck(message, locale, 'detail'),
+        formatProfessionalProjects(data)
+      ]
+    );
+  }
+
+  if (state.topic === 'experience') {
+    return getCurrentWorkResponse(data, locale);
+  }
+
+  if (state.topic === 'skills') {
+    return getFrontendFocusResponse(data, locale, message);
+  }
+
+  if (state.topic === 'projects') {
+    return formatChatResponse(
+      locale === 'EN' ? 'Projects' : 'Projetos',
+      [
+        getNaturalAck(message, locale, 'detail'),
+        formatProjectsByCategory(data, locale)
+      ]
+    );
+  }
+
+  if (state.topic === 'hobbies') {
+    return formatChatResponse(
+      locale === 'EN' ? 'Hobbies and Interests' : 'Hobbies e Interesses',
+      [
+        getNaturalAck(message, locale, 'detail'),
+        formatBulletList(data.hobbies)
+      ]
+    );
+  }
+
+  return getClarificationResponse(locale);
+}
+
+function isThanksMessage(message, locale) {
+  const normalized = normalizeMessage(message);
+  const terms = locale === 'EN'
+    ? ['thanks', 'thank you', 'thx', 'great thanks']
+    : ['obrigado', 'obrigada', 'valeu', 'brigado', 'muito obrigado'];
+
+  return terms.some((term) => normalized.includes(normalizeMessage(term)));
+}
+
+function isSimpleConfirmation(message, locale) {
+  const normalized = normalizeMessage(message);
+  const terms = locale === 'EN'
+    ? ['ok', 'okay', 'nice', 'great', 'cool', 'got it']
+    : ['ok', 'okay', 'blz', 'beleza', 'legal', 'entendi', 'show'];
+
+  return terms.some((term) => normalized === normalizeMessage(term));
+}
+
+function getThanksResponse(message, locale) {
+  return locale === 'EN'
+    ? pickVariant(message, [
+        'You are welcome. If you want, I can keep going with experience, projects, or the resume.',
+        'Glad to help. I can also summarize Wagner for a recruiter or show the resume.',
+        'Anytime. If you want, ask me about his current role, stack, or projects.'
+      ])
+    : pickVariant(message, [
+        'Por nada. Se quiser, eu posso continuar com experiência, projetos ou currículo.',
+        'Que bom ajudar. Também posso resumir o Wagner para recrutador ou mostrar o currículo.',
+        'Sempre que quiser. Você pode me perguntar sobre atuação atual, stack ou projetos.'
+      ]);
+}
+
+function getConfirmationResponse(message, locale, history) {
+  const topic = inferTopicFromHistory(history, locale);
+
+  if (topic === 'experience') {
+    return locale === 'EN'
+      ? 'Great. If you want, I can now detail his current role at Future Secure AI or summarize his experience.'
+      : 'Perfeito. Se quiser, agora eu posso detalhar a atuação atual dele na Future Secure AI ou resumir a experiência.';
+  }
+
+  if (topic === 'projects') {
+    return locale === 'EN'
+      ? 'Nice. I can separate professional projects from personal ones, or open a specific project next.'
+      : 'Legal. Posso separar os projetos profissionais dos pessoais ou abrir um projeto específico na próxima resposta.';
+  }
+
+  if (topic === 'skills') {
+    return locale === 'EN'
+      ? 'Great. I can break the stack down by front end, back end, architecture, or AI.'
+      : 'Perfeito. Posso quebrar a stack por front-end, back-end, arquitetura ou IA.';
+  }
+
+  return locale === 'EN'
+    ? 'Great. I am here if you want to explore any part of the portfolio in more detail.'
+    : 'Perfeito. Estou por aqui se você quiser explorar qualquer parte do portfólio com mais detalhe.';
+}
+
+export function getMockChatResponse(message, language = 'PT', history = []) {
   const locale = language === 'EN' ? 'EN' : 'PT';
   const data = portfolioChatMock[locale];
   const normalizedMessage = normalizeMessage(message);
+  const resolvedTopic = getResolvedTopic(message, history, locale);
+  const resolvedSubtopic = getResolvedSubtopic(message, history, locale);
+  const shortQuestion = isShortQuestion(message);
+  const veryShortPrompt = isVeryShortPrompt(message);
+  const recentState = getRecentConversationState(history, locale);
+
+  if (isThanksMessage(message, locale)) {
+    return getThanksResponse(message, locale);
+  }
+
+  if (isSimpleConfirmation(message, locale)) {
+    return getConfirmationResponse(message, locale, history);
+  }
+
+  if (
+    veryShortPrompt &&
+    !resolvedTopic &&
+    !resolvedSubtopic &&
+    (recentState.subtopic || recentState.topic)
+  ) {
+    return getBridgeResponse(data, locale, {
+      topic: recentState.topic,
+      subtopic: recentState.subtopic,
+      lastUserMessage: recentState.lastUserMessage
+    }, message);
+  }
 
   if (locale === 'PT' && isLikelyEnglishMessage(message)) {
     return formatChatResponse('Troque o idioma do site', [
@@ -954,8 +1772,8 @@ export function getMockChatResponse(message, language = 'PT') {
     )
   ) {
     return locale === 'EN'
-      ? 'Hi! I can help with Wagner profile, experience, technologies, projects, or contact links.'
-      : 'Oi! Posso te ajudar com perfil, experiência, tecnologias, projetos e links de contato do Wagner.';
+      ? 'Hi! I can help with Wagner profile, current role, experience, technologies, AI, projects, education, contact links, or resume.'
+      : 'Oi! Posso te ajudar com perfil, atuação atual, experiência, tecnologias, IA, projetos, formação, links de contato ou currículo do Wagner.';
   }
 
   if (locale === 'EN' && isLikelyPortugueseMessage(message)) {
@@ -994,15 +1812,97 @@ export function getMockChatResponse(message, language = 'PT') {
           ]
     )
   ) {
-    return formatChatResponse(
-      locale === 'EN' ? 'Resume' : 'Currículo',
-      [
-        locale === 'EN'
-          ? 'Here is Wagner resume in PDF:'
-          : 'Aqui está o currículo do Wagner em PDF:',
-        data.links.resume
-      ]
-    );
+    return getResumeResponse(data, locale);
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? ['current role', 'current job', 'where does he work', 'where does wagner work', 'what does he do today', 'what is he doing now']
+        : ['cargo atual', 'trabalho atual', 'onde ele trabalha', 'onde o wagner trabalha', 'o que ele faz hoje', 'o que ele esta fazendo agora', 'empresa atual']
+    )
+  ) {
+    if (shortQuestion) {
+      const currentExperience = data.experience[0];
+      return locale === 'EN'
+        ? `${data.profile.name} currently works at ${currentExperience.company} as ${currentExperience.role}.`
+        : `${data.profile.name} atua atualmente na ${currentExperience.company} como ${currentExperience.role}.`;
+    }
+
+    return getCurrentWorkResponse(data, locale);
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? ['recruiter summary', 'summarize for recruiter', 'professional summary', 'quick summary', 'summary for hiring']
+        : ['resuma para recrutador', 'resumo para recrutador', 'resumo profissional', 'resumo rapido', 'resumo rápido', 'resuma ele']
+    )
+  ) {
+    return getRecruiterSummaryResponse(data, locale, message);
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? ['strengths', 'main strengths', 'strong points', 'differential', 'differentiator', 'highlights']
+        : ['pontos fortes', 'ponto forte', 'diferencial', 'diferenciais', 'destaques', 'forcas', 'forças']
+    )
+  ) {
+    return getStrengthsResponse(data, locale, message);
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? ['why hire', 'why should we hire', 'why wagner', 'hire him', 'fit for role']
+        : ['por que contratar', 'porque contratar', 'por que o wagner', 'por que contratar ele', 'fit para vaga']
+    )
+  ) {
+    return getHiringPitchResponse(data, locale, message);
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? ['interview answer', 'interview summary', 'how to present him in interview', 'talk about him in interview']
+        : ['resposta de entrevista', 'resumo para entrevista', 'como falar dele em entrevista', 'apresentar em entrevista']
+    )
+  ) {
+    return getInterviewStyleResponse(data, locale, message);
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? ['career objective', 'goal', 'what is he looking for', 'what kind of role', 'objective']
+        : ['objetivo profissional', 'objetivo', 'o que ele busca', 'que tipo de vaga', 'que tipo de oportunidade']
+    )
+  ) {
+    return getCareerObjectiveResponse(data, locale, message);
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? ['seniority', 'seniority level', 'is he junior', 'is he senior', 'is he mid-level', 'what level is he']
+        : ['senioridade', 'qual nivel', 'qual nível', 'ele e pleno', 'ele é pleno', 'ele e senior', 'ele é sênior']
+    )
+  ) {
+    if (shortQuestion) {
+      return locale === 'EN'
+        ? `He presents himself as a ${data.profile.role}, with a clear mid-level/full-stack profile.`
+        : `Ele se apresenta como ${data.profile.role}, com um perfil bem claro de pleno/full stack.`;
+    }
+
+    return getSeniorityResponse(data, locale, message);
   }
 
   if (
@@ -1017,8 +1917,18 @@ export function getMockChatResponse(message, language = 'PT') {
       getResponseLead(locale, 'summary'),
       [
         getBriefProfileSummary(data, locale),
-        data.profile.about,
-        data.profile.intro[0],
+        formatSpacedSections([
+          locale === 'EN' ? 'Current focus' : 'Foco atual',
+          data.profile.focus
+        ]),
+        formatSpacedSections([
+          locale === 'EN' ? 'Professional summary' : 'Resumo profissional',
+          data.profile.about
+        ]),
+        formatSpacedSections([
+          locale === 'EN' ? 'What stands out' : 'Principais destaques',
+          formatBulletList(data.profile.intro.slice(0, 3))
+        ]),
         getFollowUpPrompt(locale, 'general')
       ]
     );
@@ -1035,6 +1945,7 @@ export function getMockChatResponse(message, language = 'PT') {
     return formatChatResponse(
       locale === 'EN' ? 'Professional Experience' : 'Experiência Profissional',
       [
+        getTopicIntro(message, locale, 'experience'),
         getExperienceIntro(locale),
         formatSpacedSections(formatExperienceItems(data, locale)),
         getFollowUpPrompt(locale, 'experience')
@@ -1058,6 +1969,7 @@ export function getMockChatResponse(message, language = 'PT') {
     return formatChatResponse(
       locale === 'EN' ? 'Main Technologies' : 'Principais Tecnologias',
       [
+        getTopicIntro(message, locale, 'skills'),
         locale === 'EN'
           ? 'Wagner main stack is centered on full stack development, scalable architecture, and AI applied to products.'
           : 'A base principal do Wagner hoje está em desenvolvimento full stack, arquitetura escalável e IA aplicada a produtos.',
@@ -1085,6 +1997,7 @@ export function getMockChatResponse(message, language = 'PT') {
     return formatChatResponse(
       locale === 'EN' ? 'Artificial Intelligence' : 'Inteligência Artificial',
       [
+        getTopicIntro(message, locale, 'ai'),
         locale === 'EN'
           ? 'AI is one of Wagner strongest differentiators and a central part of his current work.'
           : 'IA é um dos principais diferenciais do Wagner e uma parte central da atuação atual dele.',
@@ -1145,6 +2058,7 @@ export function getMockChatResponse(message, language = 'PT') {
     return formatChatResponse(
       locale === 'EN' ? 'Projects' : 'Projetos',
       [
+        getTopicIntro(message, locale, 'projects'),
         getProjectsIntro(locale),
         formatProfessionalProjects(data),
         getFollowUpPrompt(locale, 'projects')
@@ -1157,7 +2071,7 @@ export function getMockChatResponse(message, language = 'PT') {
       normalizedMessage,
       locale === 'EN'
         ? ['certification', 'certifications', 'scrum']
-        : ['certificacao', 'certificacoes', 'scrum']
+        : ['certificacao', 'certificacoes', 'certificações', 'certificaçao', 'certificaçoes', 'scrum']
     )
   ) {
     return formatChatResponse(
@@ -1185,10 +2099,7 @@ export function getMockChatResponse(message, language = 'PT') {
         locale === 'EN'
           ? 'Wagner keeps his learning active through ongoing technical training.'
           : 'O Wagner mantém a evolução técnica com estudos e formações contínuas.',
-        ...data.courses.map(
-        (item) =>
-          `${item.provider} (${item.period})\n${formatBulletList(item.items.slice(0, 5))}`
-        )
+        ...formatCourseGroups(data)
       ]
     );
   }
@@ -1204,13 +2115,11 @@ export function getMockChatResponse(message, language = 'PT') {
     return formatChatResponse(
       locale === 'EN' ? 'Education' : 'Formação',
       [
+        getTopicIntro(message, locale, 'education'),
         locale === 'EN'
           ? 'His academic background is aligned with systems development and software engineering.'
           : 'A formação acadêmica dele é alinhada com desenvolvimento de sistemas e engenharia de software.',
-        ...data.education.map(
-        (item) =>
-          `${item.degree}\n${item.institution}\n${locale === 'EN' ? 'Period' : 'Período'}: ${item.period}\n${item.description}`
-        )
+        ...formatEducationItems(data, locale)
       ]
     );
   }
@@ -1220,18 +2129,17 @@ export function getMockChatResponse(message, language = 'PT') {
       normalizedMessage,
       locale === 'EN'
         ? ['languages', 'english', 'portuguese']
-        : ['idiomas', 'ingles', 'portugues']
+        : ['idiomas', 'idioma', 'indioma', 'indiomas', 'linguas', 'línguas', 'ingles', 'portugues']
     )
   ) {
     return formatChatResponse(
       locale === 'EN' ? 'Languages' : 'Idiomas',
       [
+        getTopicIntro(message, locale, 'languages'),
         locale === 'EN'
           ? 'These are the languages currently listed in the portfolio:'
           : 'Estes são os idiomas atualmente informados no portfólio:',
-        formatSpacedSections(
-          data.languages.map((item) => `${item.name} (${item.level})\n${item.description}`)
-        )
+        formatSpacedSections(formatLanguageItems(data))
       ]
     );
   }
@@ -1240,8 +2148,8 @@ export function getMockChatResponse(message, language = 'PT') {
     includesAny(
       normalizedMessage,
       locale === 'EN'
-        ? ['hobbies', 'interests']
-        : ['hobbies', 'interesses']
+        ? ['hobbies', 'hobby', 'interests', 'interest']
+        : ['hobbies', 'hobby', 'hobbie', 'interesses', 'passatempos', 'passatempo']
     )
   ) {
     return formatChatResponse(
@@ -1251,6 +2159,23 @@ export function getMockChatResponse(message, language = 'PT') {
           ? 'Outside work, these are some of Wagner interests:'
           : 'Fora do trabalho, estes são alguns interesses do Wagner:',
         formatBulletList(data.hobbies)
+      ]
+    );
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN' ? ['email', 'e-mail'] : ['email', 'e-mail']
+    )
+  ) {
+    return formatChatResponse(
+      locale === 'EN' ? 'Email' : 'E-mail',
+      [
+        locale === 'EN'
+          ? 'Here is Wagner email:'
+          : 'Aqui está o e-mail do Wagner:',
+        data.profile.email
       ]
     );
   }
@@ -1323,10 +2248,149 @@ export function getMockChatResponse(message, language = 'PT') {
         locale === 'EN'
           ? 'These are Wagner main professional and social links:'
           : 'Esses são os principais links profissionais e sociais do Wagner:',
+        `${locale === 'EN' ? 'Email' : 'E-mail'}: ${data.profile.email}`,
         `GitHub: ${data.links.github}`,
         `LinkedIn: ${data.links.linkedin}`,
         `Instagram: ${data.links.instagram}`,
+        `${locale === 'EN' ? 'Resume' : 'Currículo'}: ${data.links.resume}`,
         getFollowUpPrompt(locale, 'links')
+      ]
+    );
+  }
+
+  if (resolvedTopic === 'resume') {
+    return getResumeResponse(data, locale);
+  }
+
+  if (resolvedTopic === 'experience') {
+    return getCurrentWorkResponse(data, locale);
+  }
+
+  if (resolvedSubtopic === 'email') {
+    return formatChatResponse(
+      locale === 'EN' ? 'Email' : 'E-mail',
+      [
+        locale === 'EN'
+          ? 'Here is Wagner email:'
+          : 'Aqui está o e-mail do Wagner:',
+        data.profile.email
+      ]
+    );
+  }
+
+  if (resolvedSubtopic === 'linkedin') {
+    return formatChatResponse(
+      'LinkedIn',
+      [
+        locale === 'EN'
+          ? 'Here is Wagner LinkedIn profile:'
+          : 'Aqui está o LinkedIn do Wagner:',
+        data.links.linkedin
+      ]
+    );
+  }
+
+  if (resolvedSubtopic === 'github') {
+    return formatChatResponse(
+      'GitHub',
+      [
+        locale === 'EN'
+          ? 'Here is Wagner GitHub profile:'
+          : 'Aqui está o GitHub do Wagner:',
+        data.links.github
+      ]
+    );
+  }
+
+  if (resolvedSubtopic === 'instagram') {
+    return formatChatResponse(
+      'Instagram',
+      [
+        locale === 'EN'
+          ? 'Here is Wagner Instagram profile:'
+          : 'Aqui está o Instagram do Wagner:',
+        data.links.instagram
+      ]
+    );
+  }
+
+  if (resolvedSubtopic === 'resume-link') {
+    return getResumeResponse(data, locale);
+  }
+
+  if (resolvedTopic === 'contact') {
+    return getLinksBundleResponse(data, locale);
+  }
+
+  if (resolvedTopic === 'profile') {
+    return getRecruiterSummaryResponse(data, locale, message);
+  }
+
+  if (resolvedTopic === 'objective') {
+    return getCareerObjectiveResponse(data, locale, message);
+  }
+
+  if (resolvedTopic === 'seniority') {
+    return getSeniorityResponse(data, locale, message);
+  }
+
+  if (resolvedTopic === 'strengths') {
+    return getStrengthsResponse(data, locale, message);
+  }
+
+  if (resolvedTopic === 'hiring') {
+    return getHiringPitchResponse(data, locale, message);
+  }
+
+  if (resolvedTopic === 'hobbies') {
+    return formatChatResponse(
+      locale === 'EN' ? 'Hobbies and Interests' : 'Hobbies e Interesses',
+      [
+        getNaturalAck(message, locale, 'detail'),
+        formatBulletList(data.hobbies)
+      ]
+    );
+  }
+
+  if (resolvedSubtopic === 'frontend') {
+    return getFrontendFocusResponse(data, locale, message);
+  }
+
+  if (resolvedSubtopic === 'backend') {
+    return getBackendFocusResponse(data, locale, message);
+  }
+
+  if (resolvedSubtopic === 'ai') {
+    const ai = getSpecialtyById(data, 'ai');
+
+    return formatChatResponse(
+      locale === 'EN' ? 'Artificial Intelligence' : 'Inteligência Artificial',
+      [
+        getNaturalAck(message, locale, 'detail'),
+        ai?.description.join(' ') ?? '',
+        `${locale === 'EN' ? 'Main topics' : 'Principais temas'}\n${formatBulletList(ai?.tags ?? [])}`
+      ]
+    );
+  }
+
+  if (resolvedSubtopic === 'personal-projects') {
+    return formatChatResponse(
+      locale === 'EN' ? 'Personal Projects' : 'Projetos Pessoais',
+      [
+        getNaturalAck(message, locale, 'detail'),
+        formatPersonalProjects(data),
+        getFollowUpPrompt(locale, 'projects')
+      ]
+    );
+  }
+
+  if (resolvedSubtopic === 'professional-projects') {
+    return formatChatResponse(
+      locale === 'EN' ? 'Professional Projects' : 'Projetos Profissionais',
+      [
+        getNaturalAck(message, locale, 'detail'),
+        formatProfessionalProjects(data),
+        getFollowUpPrompt(locale, 'projects')
       ]
     );
   }
@@ -1404,25 +2468,17 @@ export function getMockChatResponse(message, language = 'PT') {
         : ['localizacao', 'localização', 'onde mora', 'cidade', 'estado']
     )
   ) {
-    return formatChatResponse(
-      locale === 'EN' ? 'Location' : 'Localização',
-      [
-        locale === 'EN'
-          ? `Location: ${data.profile.location}`
-          : `Localização: ${data.profile.location}`
+    return shortQuestion
+      ? locale === 'EN'
+        ? `${data.profile.name} is based in ${data.profile.location}.`
+        : `${data.profile.name} está em ${data.profile.location}.`
+      : formatChatResponse(
+          locale === 'EN' ? 'Location' : 'Localização',
+          [
+            locale === 'EN'
+              ? `Location: ${data.profile.location}`
+              : `Localização: ${data.profile.location}`
       ]
-    );
-  }
-
-  if (
-    includesAny(
-      normalizedMessage,
-      locale === 'EN' ? ['email', 'e-mail'] : ['email', 'e-mail']
-    )
-  ) {
-    return formatChatResponse(
-      locale === 'EN' ? 'Email' : 'E-mail',
-      [data.profile.email]
     );
   }
 
@@ -1471,6 +2527,93 @@ export function getMockChatResponse(message, language = 'PT') {
     );
   }
 
+  if (resolvedTopic === 'skills') {
+    const topSkills = getSpecialtyById(data, 'top');
+    const backend = getSpecialtyById(data, 'backend');
+    const ai = getSpecialtyById(data, 'ai');
+    const frontend = getSpecialtyById(data, 'frontend');
+    const tools = getSpecialtyById(data, 'tools');
+
+    return formatChatResponse(
+      locale === 'EN' ? 'Main Technologies' : 'Principais Tecnologias',
+      [
+        getConversationalLead(locale, 'detail'),
+        formatSpacedSections([
+          `${locale === 'EN' ? 'Core stack' : 'Base principal'}\n${formatBulletList(topSkills?.tags ?? [])}`,
+          `${locale === 'EN' ? 'Frontend' : 'Front-end'}\n${formatBulletList(frontend?.tags ?? [])}`,
+          `${locale === 'EN' ? 'Backend and architecture' : 'Back-end e arquitetura'}\n${formatBulletList(backend?.tags ?? [])}`,
+          `${locale === 'EN' ? 'AI' : 'IA'}\n${formatBulletList(ai?.tags ?? [])}`,
+          `${locale === 'EN' ? 'Practices and tools' : 'Práticas e ferramentas'}\n${formatBulletList(tools?.tags ?? [])}`
+        ]),
+        getFollowUpPrompt(locale, 'skills')
+      ]
+    );
+  }
+
+  if (resolvedTopic === 'ai') {
+    const ai = getSpecialtyById(data, 'ai');
+
+    return formatChatResponse(
+      locale === 'EN' ? 'Artificial Intelligence' : 'Inteligência Artificial',
+      [
+        getConversationalLead(locale, 'detail'),
+        ai?.description.join(' ') ?? '',
+        `${locale === 'EN' ? 'Main topics' : 'Principais temas'}\n${formatBulletList(ai?.tags ?? [])}`
+      ]
+    );
+  }
+
+  if (resolvedTopic === 'projects') {
+    return formatChatResponse(
+      locale === 'EN' ? 'Projects' : 'Projetos',
+      [
+        getConversationalLead(locale, 'detail'),
+        formatProjectsByCategory(data, locale),
+        getFollowUpPrompt(locale, 'projects')
+      ]
+    );
+  }
+
+  if (resolvedTopic === 'education') {
+    return formatChatResponse(
+      locale === 'EN' ? 'Education' : 'Formação',
+      [
+        getConversationalLead(locale, 'detail'),
+        ...formatEducationItems(data, locale)
+      ]
+    );
+  }
+
+  if (resolvedTopic === 'courses') {
+    return formatChatResponse(
+      locale === 'EN' ? 'Courses and Learning' : 'Cursos e Formação Complementar',
+      [
+        getConversationalLead(locale, 'detail'),
+        ...formatCourseGroups(data)
+      ]
+    );
+  }
+
+  if (resolvedTopic === 'certifications') {
+    return formatChatResponse(
+      locale === 'EN' ? 'Certifications' : 'Certificações',
+      [
+        getConversationalLead(locale, 'detail'),
+        ...data.certifications.map((item) => `${item.title}\n${item.issuer}\n${item.description}`)
+      ]
+    );
+  }
+
+  if (resolvedTopic === 'languages') {
+    return formatChatResponse(
+      locale === 'EN' ? 'Languages' : 'Idiomas',
+      [
+        getConversationalLead(locale, 'detail'),
+        formatSpacedSections(formatLanguageItems(data))
+      ]
+    );
+  }
+
   const matchedProject = getProjectByTitle(data, message);
 
   if (matchedProject) {
@@ -1481,7 +2624,8 @@ export function getMockChatResponse(message, language = 'PT') {
           ? 'Here is a quick summary of this project:'
           : 'Aqui vai um resumo rápido desse projeto:',
         matchedProject.description,
-        formatProjectLinks(matchedProject, locale)
+        formatProjectLinks(matchedProject, locale),
+        getFollowUpPrompt(locale, 'projects')
       ]
     );
   }
@@ -1492,13 +2636,9 @@ export function getMockChatResponse(message, language = 'PT') {
     return contextualAnswer;
   }
 
-  return locale === 'EN'
-    ? formatChatResponse(getResponseLead(locale, 'unknown'), [
-        'I can help with Wagner profile, experience, technologies, AI, projects, education, certifications, languages, hobbies, and links.',
-        'For example, you can ask: "Tell me about his experience", "What technologies does he use?" or "Show me his personal projects".'
-      ])
-    : formatChatResponse(getResponseLead(locale, 'unknown'), [
-        'Posso te ajudar com perfil, experiência, tecnologias, IA, projetos, formação, certificações, idiomas, hobbies e links.',
-        'Por exemplo, você pode perguntar: "Fale sobre a experiência dele", "Quais tecnologias ele usa?" ou "Mostre os projetos pessoais".'
-      ]);
+  if (isContinuationRequest(message, locale)) {
+    return getClarificationResponse(locale);
+  }
+
+  return getClarificationResponse(locale);
 }

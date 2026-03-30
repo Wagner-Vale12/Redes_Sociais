@@ -1,33 +1,73 @@
 import { useEffect, useRef, useState } from 'react';
 import { getMockChatResponse } from '../data/portfolioChatMock';
 
-function renderMessageText(text) {
+function renderInlineText(text, keyPrefix) {
   const urlPattern = /((?:https?:\/\/|\/)[^\s]+)/g;
-  const lines = text.split('\n');
+  const parts = text.split(urlPattern);
 
-  return lines.map((line, lineIndex) => {
-    const parts = line.split(urlPattern);
+  return parts.map((part, partIndex) =>
+    /^(https?:\/\/|\/)/.test(part) ? (
+      <a
+        key={`${keyPrefix}-part-${partIndex}`}
+        href={part}
+        target="_blank"
+        rel="noreferrer"
+      >
+        {part}
+      </a>
+    ) : (
+      <span key={`${keyPrefix}-part-${partIndex}`}>{part}</span>
+    )
+  );
+}
 
-    return (
-      <span key={`line-${lineIndex}`}>
-        {parts.map((part, partIndex) =>
-          /^(https?:\/\/|\/)/.test(part) ? (
-            <a
-              key={`part-${lineIndex}-${partIndex}`}
-              href={part}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {part}
-            </a>
-          ) : (
-            <span key={`part-${lineIndex}-${partIndex}`}>{part}</span>
-          )
-        )}
-        {lineIndex < lines.length - 1 ? <br /> : null}
-      </span>
-    );
-  });
+function renderMessageText(text) {
+  const normalizedText = text.replace(/\r\n/g, '\n').trim();
+
+  if (!normalizedText) {
+    return null;
+  }
+
+  const blocks = normalizedText.split('\n\n').filter(Boolean);
+  const firstBlockLines = blocks[0]?.split('\n').filter(Boolean) ?? [];
+  const hasHeading = blocks.length > 1 && firstBlockLines.length === 1;
+  const heading = hasHeading ? firstBlockLines[0] : '';
+  const contentBlocks = hasHeading ? blocks.slice(1) : blocks;
+
+  return (
+    <>
+      {heading ? <strong className="assistant-message-title">{heading}</strong> : null}
+      <div className="assistant-message-content">
+        {contentBlocks.map((block, blockIndex) => {
+          const lines = block.split('\n').filter(Boolean);
+          const isBulletList = lines.every((line) => line.trim().startsWith('- '));
+
+          if (isBulletList) {
+            return (
+              <ul key={`block-${blockIndex}`} className="assistant-message-list">
+                {lines.map((line, lineIndex) => (
+                  <li key={`block-${blockIndex}-item-${lineIndex}`}>
+                    {renderInlineText(line.replace(/^- /, ''), `block-${blockIndex}-item-${lineIndex}`)}
+                  </li>
+                ))}
+              </ul>
+            );
+          }
+
+          return (
+            <p key={`block-${blockIndex}`} className="assistant-message-paragraph">
+              {lines.map((line, lineIndex) => (
+                <span key={`block-${blockIndex}-line-${lineIndex}`}>
+                  {renderInlineText(line, `block-${blockIndex}-line-${lineIndex}`)}
+                  {lineIndex < lines.length - 1 ? <br /> : null}
+                </span>
+              ))}
+            </p>
+          );
+        })}
+      </div>
+    </>
+  );
 }
 
 export default function AssistantChatWidget({ content, languageCode = 'PT' }) {
@@ -81,13 +121,13 @@ export default function AssistantChatWidget({ content, languageCode = 'PT' }) {
     };
   }, [isAssistantOpen]);
 
-  async function getAssistantResponse(message) {
+  async function getAssistantResponse(message, history) {
     await new Promise((resolve) => {
       window.setTimeout(resolve, 450);
     });
 
     return {
-      text: getMockChatResponse(message, languageCode)
+      text: getMockChatResponse(message, languageCode, history)
     };
   }
 
@@ -120,7 +160,7 @@ export default function AssistantChatWidget({ content, languageCode = 'PT' }) {
     setIsSubmitting(true);
 
     try {
-      const data = await getAssistantResponse(trimmedInput);
+      const data = await getAssistantResponse(trimmedInput, assistantMessages);
       const assistantReply = {
         id: `assistant-${timestamp + 2}`,
         author: 'assistant',
@@ -239,7 +279,7 @@ export default function AssistantChatWidget({ content, languageCode = 'PT' }) {
                             : ''
                         } ${message.isLoading ? 'assistant-chat-bubble-loading' : ''}`}
                       >
-                        <p>{renderMessageText(message.text)}</p>
+                        <div>{renderMessageText(message.text)}</div>
                       </div>
                     </div>
                   ))
