@@ -59,7 +59,7 @@ const experienceContent = {
         company: 'Projeto freelance • empresa do setor de climatização',
         location: 'São Paulo/SP',
         role: 'Desenvolvedor Front-end',
-        period: 'Maio 2023 - dezembro 2023',
+        period: 'Maio 2023 - Dezembro 2023',
         description: 'Atuei no desenvolvimento front-end de uma solução para uma empresa do segmento de climatização, contribuindo para a construção de uma interface moderna, responsiva e escalável.',
         cta: 'Ver mais',
         collapseLabel: 'Ver menos',

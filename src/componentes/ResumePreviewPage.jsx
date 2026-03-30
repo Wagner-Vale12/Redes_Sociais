@@ -53,7 +53,8 @@ export default function ResumePreviewPage({
         certifications: 'Certificações',
         projects: 'Projetos',
         personalProjects: 'Projetos pessoais',
-        courses: 'Cursos'
+        courses: 'Cursos',
+        hobbies: 'Hobbies'
       }
     : {
         preview: 'Resume preview',
@@ -68,7 +69,8 @@ export default function ResumePreviewPage({
         certifications: 'Certifications',
         projects: 'Projects',
         personalProjects: 'Personal projects',
-        courses: 'Courses'
+        courses: 'Courses',
+        hobbies: 'Hobbies'
       };
 
   const activeSections = new Set(
@@ -255,6 +257,16 @@ export default function ResumePreviewPage({
                   </ul>
                 </article>
               ))}
+            </ResumeSection>
+          ) : null}
+
+          {activeSections.has('hobbies') ? (
+            <ResumeSection title={labels.hobbies}>
+              <ul className="resume-preview-bullet-list is-main">
+                {footerContent.hobbies.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
             </ResumeSection>
           ) : null}
         </div>

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { getMockChatResponse } from '../data/portfolioChatMock';
 
 function renderMessageText(text) {
-  const urlPattern = /(https?:\/\/[^\s]+)/g;
+  const urlPattern = /((?:https?:\/\/|\/)[^\s]+)/g;
   const lines = text.split('\n');
 
   return lines.map((line, lineIndex) => {
@@ -11,7 +11,7 @@ function renderMessageText(text) {
     return (
       <span key={`line-${lineIndex}`}>
         {parts.map((part, partIndex) =>
-          /^https?:\/\//.test(part) ? (
+          /^(https?:\/\/|\/)/.test(part) ? (
             <a
               key={`part-${lineIndex}-${partIndex}`}
               href={part}

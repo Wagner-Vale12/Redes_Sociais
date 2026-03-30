@@ -267,7 +267,8 @@ export const portfolioChatMock = {
     links: {
       github: 'https://github.com/Wagner-Vale12',
       linkedin: 'https://www.linkedin.com/in/wagner12/',
-      instagram: 'https://www.instagram.com/wagner12jesus/'
+      instagram: 'https://www.instagram.com/wagner12jesus/',
+      resume: '/curriculos/Curriculo_Wagner.pdf'
     }
   },
   EN: {
@@ -538,7 +539,8 @@ export const portfolioChatMock = {
     links: {
       github: 'https://github.com/Wagner-Vale12',
       linkedin: 'https://www.linkedin.com/in/wagner12/',
-      instagram: 'https://www.instagram.com/wagner12jesus/'
+      instagram: 'https://www.instagram.com/wagner12jesus/',
+      resume: '/curriculos/Curriculo_Wagner_EN.pdf'
     }
   }
 };
@@ -965,6 +967,42 @@ export function getMockChatResponse(message, language = 'PT') {
 
   if (isClearlyOutOfScope(message, locale)) {
     return getOutOfScopeResponse(locale);
+  }
+
+  if (
+    includesAny(
+      normalizedMessage,
+      locale === 'EN'
+        ? [
+            'resume',
+            'cv',
+            'curriculum',
+            'show me wagner resume',
+            'show me the resume',
+            'send me the resume'
+          ]
+        : [
+            'curriculo',
+            'currículo',
+            'cv',
+            'me mostre o curriculo',
+            'me mostre o currículo',
+            'quero ver o curriculo',
+            'quero ver o currículo',
+            'me manda o curriculo',
+            'me manda o currículo'
+          ]
+    )
+  ) {
+    return formatChatResponse(
+      locale === 'EN' ? 'Resume' : 'Currículo',
+      [
+        locale === 'EN'
+          ? 'Here is Wagner resume in PDF:'
+          : 'Aqui está o currículo do Wagner em PDF:',
+        data.links.resume
+      ]
+    );
   }
 
   if (

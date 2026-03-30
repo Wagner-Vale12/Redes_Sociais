@@ -3,8 +3,8 @@ import { SocialShowcase } from './PortfolioHero';
 
 const resumeDocumentPaths = {
   complete: {
-    PT: '/curriculos/Curriculo-Wagner%20(4).pdf',
-    EN: ''
+    PT: '/curriculos/Curriculo_Wagner.pdf',
+    EN: '/curriculos/Curriculo_Wagner_EN.pdf'
   },
   custom: {
     PT: '',
@@ -17,25 +17,27 @@ const footerContent = {
     footer: {
       hobbiesTitle: 'Hobbies',
       resumeTitle: 'Download do Currículo',
-      resumeButtonLabel: 'Opções e geração do PDF',
+      resumeButtonLabel: 'Opções do currículo',
       pdfLabel: 'PDF',
       resumeLanguagesLabel: 'Idioma do documento',
       resumeModeLabel: 'Modo',
-      resumePreviewLabel: 'Abrir pré-visualização / impressão (PDF)',
-      resumePreviewNote: 'Abra o PDF em uma nova aba para visualizar, baixar ou imprimir.',
-      customSectionsLabel: 'Seções no CV',
+      resumePreviewLabel: 'Abrir currículo / pré-visualização',
+      resumePreviewNote:
+        'No modo Completo, o PDF abre direto em uma nova aba. No modo Personalizado, a pré-visualização é aberta para visualizar, baixar ou imprimir.',
+      customSectionsLabel: 'Seções do currículo personalizado',
       customSectionsHint:
-        'Nome, título, sobre e contatos (e-mail, WhatsApp, localização, LinkedIn, GitHub e portfólio) entram sempre no PDF.',
-      customSectionsOptionsLabel: 'Opções das seções marcadas',
+        'Nome, cargo, resumo, localização, LinkedIn e GitHub entram sempre no currículo personalizado.',
+      customSectionsOptionsLabel: 'Opções extras das seções marcadas',
+      customSectionsOptionsEmpty: 'Nenhuma opção extra disponível para as seções selecionadas.',
       customSectionsEmpty: 'Selecione pelo menos uma seção para abrir o currículo personalizado.',
       resumeModes: {
         complete: {
           title: 'Completo',
-          description: 'Versão completa com todas as informações principais do portfólio.'
+          description: 'Abre o PDF final completo que você deixou pronto.'
         },
         custom: {
           title: 'Personalizado',
-          description: 'Versão ajustada para uma vaga ou objetivo específico.'
+          description: 'Monta uma versão ajustada para uma vaga ou objetivo específico.'
         }
       },
       customSections: {
@@ -73,25 +75,27 @@ const footerContent = {
     footer: {
       hobbiesTitle: 'Hobbies',
       resumeTitle: 'Resume Download',
-      resumeButtonLabel: 'PDF options and generation',
+      resumeButtonLabel: 'Resume options',
       pdfLabel: 'PDF',
       resumeLanguagesLabel: 'Document language',
       resumeModeLabel: 'Mode',
-      resumePreviewLabel: 'Open preview / print (PDF)',
-      resumePreviewNote: 'Open the PDF in a new tab to preview, download, or print it.',
-      customSectionsLabel: 'Sections in the resume',
+      resumePreviewLabel: 'Open resume / preview',
+      resumePreviewNote:
+        'In Complete mode, the final PDF opens directly in a new tab. In Custom mode, a preview opens so you can review, download, or print it.',
+      customSectionsLabel: 'Sections in the custom resume',
       customSectionsHint:
-        'Name, title, summary, and contact details (email, WhatsApp, location, LinkedIn, GitHub, and portfolio) are always included in the PDF.',
-      customSectionsOptionsLabel: 'Options for selected sections',
+        'Name, role, summary, location, LinkedIn, and GitHub are always included in the custom resume.',
+      customSectionsOptionsLabel: 'Extra options for selected sections',
+      customSectionsOptionsEmpty: 'There are no extra options available for the selected sections.',
       customSectionsEmpty: 'Select at least one section to open the custom resume.',
       resumeModes: {
         complete: {
           title: 'Complete',
-          description: 'Full version with all the main portfolio information.'
+          description: 'Opens the final complete PDF you already prepared.'
         },
         custom: {
           title: 'Custom',
-          description: 'Tailored version for a specific role, company, or objective.'
+          description: 'Builds a version tailored to a specific role or objective.'
         }
       },
       customSections: {
@@ -205,7 +209,7 @@ export default function FooterSection({
       return;
     }
 
-    if (selectedResumeMode === 'complete' && selectedResumeLanguage === 'PT' && selectedResumeUrl) {
+    if (selectedResumeMode === 'complete' && selectedResumeUrl && selectedResumeUrl !== '#') {
       window.open(selectedResumeUrl, '_blank', 'noopener,noreferrer');
       return;
     }
@@ -349,7 +353,7 @@ export default function FooterSection({
                       ))}
                     </div>
                   ) : (
-                    <p className="resume-custom-empty">{footer.customSectionsEmpty}</p>
+                    <p className="resume-custom-empty">{footer.customSectionsOptionsEmpty}</p>
                   )}
                 </div>
               </div>
