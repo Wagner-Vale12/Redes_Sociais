@@ -4,7 +4,7 @@ const portfolioHeroContent = {
   PT: {
     hero: {
       name: 'Wagner',
-      role: 'Full Stack Developer | React | Next.js | AI Applications | LLMs | Scalable Systems',
+      role: 'Full Stack Developer | React | Next.js | Node.js | AI & LLMs | Scalable Systems',
       socialHeading: 'Conecte-se comigo',
       assistantTitle: 'Fale com meu assistente',
       assistantGreeting: 'Olá! Como posso te ajudar?',
@@ -82,7 +82,7 @@ const portfolioHeroContent = {
   EN: {
     hero: {
       name: 'Wagner',
-      role: 'Mid-Level Software Engineer | React • Next.js • Node.js | AI & Automation',
+      role: 'Full Stack Developer | React | Next.js | Node.js | AI & LLMs | Scalable Systems',
       socialHeading: 'Connect with me',
       assistantTitle: 'Talk to my assistant',
       assistantGreeting: 'Hi there! How can I help?',
