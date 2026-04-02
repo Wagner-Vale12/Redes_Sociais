@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const personalProjectsContent = {
   PT: {
@@ -12,11 +12,11 @@ const personalProjectsContent = {
     personalProjects: [
       {
         id: 'personal-1',
-        title: 'Carrinho de Compras',
-        description: 'Desenvolvi uma aplicação de carrinho de compras utilizando HTML, CSS e JavaScript puro, com foco em manipulação eficiente do DOM e construção de uma interface interativa. A aplicação permite gerenciamento dinâmico de produtos, incluindo adição, remoção, atualização de quantidades e cálculo automático do total em tempo real. Foram aplicados conceitos de responsividade, organização de código e boas práticas de desenvolvimento front-end, visando performance e experiência do usuário.',
-        github: 'https://github.com/Wagner-Vale12/Carrinho-de-Compras',
-        site: 'https://carrinho-de-compras-snowy.vercel.app/',
-        stars: '2 estrelas',
+        title: 'Personal-finance-dashboard',
+        description: 'Aplicação fullstack para controle de finanças pessoais com autenticação por usuário, gestão de transações e dívidas, dashboard responsivo e exportação de relatório em PDF.',
+        github: 'https://github.com/Wagner-Vale12/personal-finance-dashboard',
+        site: 'https://wagner-vale-financas.vercel.app/',
+        stars: '5 estrelas',
         updated: 'Atualizado recentemente'
       },
       {
@@ -80,11 +80,11 @@ const personalProjectsContent = {
     personalProjects: [
       {
         id: 'personal-1',
-        title: 'Shopping Cart',
-        description: 'I built a shopping cart application using pure HTML, CSS, and JavaScript, with a focus on efficient DOM manipulation and an interactive interface. The application supports dynamic product management, including adding, removing, updating quantities, and automatically calculating the total in real time. I applied responsive design concepts, code organization, and front-end best practices to improve performance and user experience.',
-        github: 'https://github.com/Wagner-Vale12/Carrinho-de-Compras',
-        site: 'https://carrinho-de-compras-snowy.vercel.app/',
-        stars: '2 stars',
+        title: 'Personal Finance Dashboard',
+        description: 'Full-stack application for personal finance management with user authentication, transaction and debt tracking, a responsive dashboard, and PDF report export.',
+        github: 'https://github.com/Wagner-Vale12/personal-finance-dashboard',
+        site: 'https://wagner-vale-financas.vercel.app/',
+        stars: '5 stars',
         updated: 'Updated recently'
       },
       {
@@ -146,6 +146,37 @@ export function getPersonalProjectsContent(languageCode) {
 
 function PersonalProjectCard({ project, labels }) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [hasOverflow, setHasOverflow] = useState(false);
+  const descriptionRef = useRef(null);
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      const descriptionElement = descriptionRef.current;
+
+      if (!descriptionElement) {
+        return;
+      }
+
+      const wasExpanded = descriptionElement.classList.contains('is-expanded');
+
+      if (wasExpanded) {
+        descriptionElement.classList.remove('is-expanded');
+      }
+
+      setHasOverflow(descriptionElement.scrollHeight > descriptionElement.clientHeight);
+
+      if (wasExpanded) {
+        descriptionElement.classList.add('is-expanded');
+      }
+    };
+
+    checkOverflow();
+    window.addEventListener('resize', checkOverflow);
+
+    return () => {
+      window.removeEventListener('resize', checkOverflow);
+    };
+  }, [project.description]);
 
   return (
     <article className="personal-project-card">
@@ -155,15 +186,19 @@ function PersonalProjectCard({ project, labels }) {
       </div>
 
       <div className="project-divider" aria-hidden="true" />
-      <p className={isExpanded ? 'is-expanded' : ''}>{project.description}</p>
+      <p ref={descriptionRef} className={isExpanded ? 'is-expanded' : ''}>
+        {project.description}
+      </p>
 
-      <button
-        type="button"
-        className="personal-project-toggle"
-        onClick={() => setIsExpanded((current) => !current)}
-      >
-        {isExpanded ? labels.seeLessLabel : labels.seeMoreLabel}
-      </button>
+      {hasOverflow ? (
+        <button
+          type="button"
+          className="personal-project-toggle"
+          onClick={() => setIsExpanded((current) => !current)}
+        >
+          {isExpanded ? labels.seeLessLabel : labels.seeMoreLabel}
+        </button>
+      ) : null}
 
       <div className="personal-links">
         <a href={project.github} target="_blank" rel="noreferrer">
