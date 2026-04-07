@@ -10,11 +10,10 @@ const experienceContent = {
         location: 'São Paulo/SP',
         role: 'Full Stack Developer | React | Next.js | AI Applications | LLMs | Scalable Systems',
         period: 'Novembro 2024 - Março 2026',
-        description: 'Atuo como Full Stack Developer no desenvolvimento e evolução da interface principal de uma plataforma de Inteligência Artificial, com foco em performance, escalabilidade e experiência do usuário.',
+        description: 'Atuei como Full Stack Developer no desenvolvimento e evolução da interface principal de uma plataforma de Inteligência Artificial, com foco em performance, escalabilidade e experiência do usuário.',
         cta: 'Ver mais',
         collapseLabel: 'Ver menos',
         details: [
-          'Desenvolvimento e evolução da interface principal de uma plataforma de Inteligência Artificial, com foco em performance, escalabilidade e experiência do usuário.',
           'Integração de múltiplos projetos e módulos, como Flowise e Aiflow, dentro de um ecossistema unificado.',
           'Construção de aplicações utilizando React, Next.js, TypeScript e Node.js.',
           'Integração com banco de dados Supabase (PostgreSQL) e serviços backend.',
@@ -104,7 +103,6 @@ const experienceContent = {
         cta: 'See more',
         collapseLabel: 'See less',
         details: [
-          'Development and evolution of the main interface of an Artificial Intelligence platform, focusing on performance, scalability, and user experience.',
           'Integration of multiple projects and modules, such as Flowise and Aiflow, within a unified ecosystem.',
           'Building applications using React, Next.js, TypeScript, and Node.js.',
           'Integration with Supabase (PostgreSQL) and backend services.',
