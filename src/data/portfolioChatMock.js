@@ -653,18 +653,18 @@ function getRecentConversationState(history, locale) {
 function getFollowUpPrompt(locale, topic = 'general') {
   const prompts = {
     PT: {
-      general: 'Se quiser, posso continuar com experiência, projetos, formação ou links de contato.',
-      skills: 'Se quiser, posso separar essas skills por front-end, back-end, arquitetura ou IA.',
-      experience: 'Se quiser, posso detalhar melhor a atuação atual dele na Future Secure AI.',
-      projects: 'Se quiser, posso separar os projetos profissionais dos projetos pessoais ou te mostrar um projeto específico.',
-      links: 'Se quiser, posso te passar LinkedIn, GitHub, Instagram e currículo em uma única resposta.'
+      general: 'Se quiser, eu também posso seguir por experiência, projetos, formação ou links de contato.',
+      skills: 'Se quiser, eu separo isso por front-end, back-end, arquitetura, IA ou até soft skills.',
+      experience: 'Se quiser, eu posso detalhar melhor a atuação atual dele na Future Secure AI.',
+      projects: 'Se quiser, eu posso separar os projetos profissionais dos pessoais ou destacar um projeto específico.',
+      links: 'Se quiser, eu junto LinkedIn, GitHub, Instagram e currículo em uma única resposta.'
     },
     EN: {
-      general: 'If you want, I can continue with experience, projects, education, or contact links.',
-      skills: 'If you want, I can break these skills down by front end, back end, architecture, or AI.',
-      experience: 'If you want, I can also detail his current work at Future Secure AI.',
-      projects: 'If you want, I can separate professional projects from personal ones or show a specific project.',
-      links: 'If you want, I can also send LinkedIn, GitHub, Instagram, and the resume in one answer.'
+      general: 'If you want, I can also continue with experience, projects, education, or contact links.',
+      skills: 'If you want, I can break this down by front end, back end, architecture, AI, or even soft skills.',
+      experience: 'If you want, I can also go deeper into his current work at Future Secure AI.',
+      projects: 'If you want, I can separate professional projects from personal ones or highlight a specific project.',
+      links: 'If you want, I can bundle LinkedIn, GitHub, Instagram, and the resume in one answer.'
     }
   };
 
@@ -674,19 +674,19 @@ function getFollowUpPrompt(locale, topic = 'general') {
 function getConversationalLead(locale, variant = 'default') {
   const leads = {
     PT: {
-      default: 'Claro. Aqui vai:',
-      detail: 'Claro. Vou detalhar melhor:',
-      current: 'Sim. Hoje o cenário principal é este:',
-      links: 'Claro. Separei os links principais:',
-      resume: 'Claro. Você pode acessar o currículo por aqui:',
+      default: 'Claro, vamos lá:',
+      detail: 'Claro, te explico de um jeito mais direto:',
+      current: 'Sim, hoje o contexto principal é este:',
+      links: 'Claro, deixei os links principais aqui:',
+      resume: 'Claro, você pode acessar o currículo por aqui:',
       clarify: 'Posso te ajudar com isso.'
     },
     EN: {
-      default: 'Sure. Here it is:',
-      detail: 'Sure. Here is a more detailed view:',
-      current: 'Yes. His current context is this:',
-      links: 'Sure. I separated the main links:',
-      resume: 'Sure. You can access the resume here:',
+      default: 'Sure, here is the overview:',
+      detail: 'Sure, here is a more natural breakdown:',
+      current: 'Yes, his current context looks like this:',
+      links: 'Sure, I pulled the main links together here:',
+      resume: 'Sure, you can access the resume here:',
       clarify: 'I can help with that.'
     }
   };
@@ -698,13 +698,13 @@ function getNaturalAck(message, locale, tone = 'default') {
   const variants = {
     PT: {
       default: ['Claro.', 'Perfeito.', 'Sem problema.', 'Posso sim.'],
-      detail: ['Claro, vou aprofundar.', 'Perfeito, aqui estão mais detalhes.', 'Sem problema, vou detalhar melhor.'],
-      recruiter: ['Claro, olhando pelo lado profissional:', 'Perfeito, resumindo de forma profissional:', 'Posso sim, trazendo os pontos mais fortes:'],
+      detail: ['Claro, vou detalhar isso melhor.', 'Perfeito, deixo isso mais claro para você.', 'Sem problema, aqui vai uma visão mais completa.'],
+      recruiter: ['Claro, olhando pelo lado profissional:', 'Perfeito, resumindo de forma mais profissional:', 'Posso sim, focando nos pontos mais fortes:'],
       links: ['Claro, seguem os links.', 'Perfeito, separei os links para você.', 'Sem problema, aqui estão os links.']
     },
     EN: {
       default: ['Sure.', 'Absolutely.', 'No problem.', 'Of course.'],
-      detail: ['Sure, I can go deeper.', 'Absolutely, here are more details.', 'No problem, here is a deeper breakdown.'],
+      detail: ['Sure, I can break that down more clearly.', 'Absolutely, here is a more complete answer.', 'No problem, here is the fuller picture.'],
       recruiter: ['Sure, from a professional standpoint:', 'Absolutely, here is the professional summary:', 'Of course, focusing on the strongest points:'],
       links: ['Sure, here are the links.', 'Absolutely, I separated the links for you.', 'No problem, here are the links.']
     }
@@ -782,6 +782,49 @@ function getTopicIntro(message, locale, topic) {
   };
 
   return pickVariant(message, intros[locale]?.[topic] ?? intros[locale].experience);
+}
+
+function getSkillsResponse(data, locale, message, options = {}) {
+  const topSkills = getSpecialtyById(data, 'top');
+  const backend = getSpecialtyById(data, 'backend');
+  const ai = getSpecialtyById(data, 'ai');
+  const frontend = getSpecialtyById(data, 'frontend');
+  const tools = getSpecialtyById(data, 'tools');
+  const { introMode = 'topic', includeFollowUp = true } = options;
+
+  const introLine =
+    introMode === 'lead'
+      ? getConversationalLead(locale, 'detail')
+      : getTopicIntro(message, locale, 'skills');
+
+  const summaryLine =
+    locale === 'EN'
+      ? 'In practice, his profile mixes strong front-end delivery, backend integration, scalable architecture, and AI applied to real products.'
+      : 'Na prática, o perfil dele combina front-end forte, integração com back-end, arquitetura escalável e IA aplicada a produtos reais.';
+
+  const softSkillsLine =
+    locale === 'EN'
+      ? 'Even when the question is about soft skills or qualifications, the strongest answer is this mix of communication, ownership, continuous learning, and technical depth.'
+      : 'Mesmo quando a pergunta vem como soft skills ou qualificações, a melhor leitura do perfil dele é essa combinação de comunicação, senso de dono, aprendizado contínuo e profundidade técnica.';
+
+  const sections = [
+    `${locale === 'EN' ? 'Core stack' : 'Base principal'}\n${formatBulletList(topSkills?.tags ?? [])}`,
+    `${locale === 'EN' ? 'Frontend' : 'Front-end'}\n${formatBulletList(frontend?.tags ?? [])}`,
+    `${locale === 'EN' ? 'Backend and architecture' : 'Back-end e arquitetura'}\n${formatBulletList(backend?.tags ?? [])}`,
+    `${locale === 'EN' ? 'AI and automation' : 'IA e automação'}\n${formatBulletList(ai?.tags ?? [])}`,
+    `${locale === 'EN' ? 'Tools and engineering practices' : 'Ferramentas e práticas de engenharia'}\n${formatBulletList(tools?.tags ?? [])}`
+  ];
+
+  const parts = [introLine, summaryLine, softSkillsLine, formatSpacedSections(sections)];
+
+  if (includeFollowUp) {
+    parts.push(getFollowUpPrompt(locale, 'skills'));
+  }
+
+  return formatChatResponse(
+    locale === 'EN' ? 'Technical Skills and Specialties' : 'Competências Técnicas e Especialidades',
+    parts
+  );
 }
 
 function getBriefProfileSummary(data, locale) {
@@ -1151,8 +1194,44 @@ function inferTopicFromMessage(message, locale) {
     {
       topic: 'skills',
       terms: locale === 'EN'
-        ? ['skills', 'stack', 'technologies', 'frontend', 'backend', 'architecture']
-        : ['skills', 'stack', 'tecnologias', 'frontend', 'backend', 'arquitetura']
+        ? [
+            'skills',
+            'soft skills',
+            'technical skills',
+            'hard skills',
+            'stack',
+            'technologies',
+            'specialties',
+            'speciality',
+            'specialization',
+            'qualifications',
+            'qualification',
+            'frontend',
+            'backend',
+            'architecture'
+          ]
+        : [
+            'skills',
+            'soft skills',
+            'hard skills',
+            'competencias tecnicas',
+            'competências técnicas',
+            'habilidades tecnicas',
+            'habilidades técnicas',
+            'stack',
+            'tecnologias',
+            'especialidades',
+            'especialidade',
+            'especializacao',
+            'especialização',
+            'qualificacoes',
+            'qualificações',
+            'qualificacao',
+            'qualificação',
+            'frontend',
+            'backend',
+            'arquitetura'
+          ]
     },
     {
       topic: 'ai',
@@ -1957,32 +2036,41 @@ export function getMockChatResponse(message, language = 'PT', history = []) {
     includesAny(
       normalizedMessage,
       locale === 'EN'
-        ? ['skills', 'stack', 'technologies', 'frontend', 'backend']
-        : ['skills', 'stack', 'tecnologias', 'frontend', 'backend']
+        ? [
+            'skills',
+            'soft skills',
+            'technical skills',
+            'hard skills',
+            'stack',
+            'technologies',
+            'specialties',
+            'qualification',
+            'qualifications',
+            'frontend',
+            'backend'
+          ]
+        : [
+            'skills',
+            'soft skills',
+            'hard skills',
+            'competencias tecnicas',
+            'competências técnicas',
+            'habilidades tecnicas',
+            'habilidades técnicas',
+            'stack',
+            'tecnologias',
+            'especialidades',
+            'especialidade',
+            'qualificacoes',
+            'qualificações',
+            'qualificacao',
+            'qualificação',
+            'frontend',
+            'backend'
+          ]
     )
   ) {
-    const topSkills = getSpecialtyById(data, 'top');
-    const backend = getSpecialtyById(data, 'backend');
-    const ai = getSpecialtyById(data, 'ai');
-    const frontend = getSpecialtyById(data, 'frontend');
-    const tools = getSpecialtyById(data, 'tools');
-    return formatChatResponse(
-      locale === 'EN' ? 'Main Technologies' : 'Principais Tecnologias',
-      [
-        getTopicIntro(message, locale, 'skills'),
-        locale === 'EN'
-          ? 'Wagner main stack is centered on full stack development, scalable architecture, and AI applied to products.'
-          : 'A base principal do Wagner hoje está em desenvolvimento full stack, arquitetura escalável e IA aplicada a produtos.',
-        formatSpacedSections([
-          `${locale === 'EN' ? 'Top Skills' : 'Principais'}\n${formatBulletList(topSkills?.tags ?? [])}`,
-          `${locale === 'EN' ? 'Backend / Architecture' : 'Backend / Arquitetura'}\n${formatBulletList(backend?.tags ?? [])}`,
-          `${locale === 'EN' ? 'AI / Competitive Edge' : 'IA / Diferencial competitivo'}\n${formatBulletList(ai?.tags ?? [])}`,
-          `${locale === 'EN' ? 'Frontend / UI' : 'Frontend / UI'}\n${formatBulletList(frontend?.tags ?? [])}`,
-          `${locale === 'EN' ? 'Tools & Practices' : 'Ferramentas e práticas'}\n${formatBulletList(tools?.tags ?? [])}`
-        ]),
-        getFollowUpPrompt(locale, 'skills')
-      ]
-    );
+    return getSkillsResponse(data, locale, message, { introMode: 'topic', includeFollowUp: true });
   }
 
   if (
@@ -2528,26 +2616,7 @@ export function getMockChatResponse(message, language = 'PT', history = []) {
   }
 
   if (resolvedTopic === 'skills') {
-    const topSkills = getSpecialtyById(data, 'top');
-    const backend = getSpecialtyById(data, 'backend');
-    const ai = getSpecialtyById(data, 'ai');
-    const frontend = getSpecialtyById(data, 'frontend');
-    const tools = getSpecialtyById(data, 'tools');
-
-    return formatChatResponse(
-      locale === 'EN' ? 'Main Technologies' : 'Principais Tecnologias',
-      [
-        getConversationalLead(locale, 'detail'),
-        formatSpacedSections([
-          `${locale === 'EN' ? 'Core stack' : 'Base principal'}\n${formatBulletList(topSkills?.tags ?? [])}`,
-          `${locale === 'EN' ? 'Frontend' : 'Front-end'}\n${formatBulletList(frontend?.tags ?? [])}`,
-          `${locale === 'EN' ? 'Backend and architecture' : 'Back-end e arquitetura'}\n${formatBulletList(backend?.tags ?? [])}`,
-          `${locale === 'EN' ? 'AI' : 'IA'}\n${formatBulletList(ai?.tags ?? [])}`,
-          `${locale === 'EN' ? 'Practices and tools' : 'Práticas e ferramentas'}\n${formatBulletList(tools?.tags ?? [])}`
-        ]),
-        getFollowUpPrompt(locale, 'skills')
-      ]
-    );
+    return getSkillsResponse(data, locale, message, { introMode: 'lead', includeFollowUp: true });
   }
 
   if (resolvedTopic === 'ai') {
