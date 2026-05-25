@@ -14,12 +14,13 @@ export const portfolioChatMock = {
       gender: 'Masculino',
       maritalStatus: 'Casado',
       about:
-        'Wagner é Desenvolvedor Full Stack, com experiência na construção de aplicações web escaláveis e no desenvolvimento de plataformas baseadas em Inteligência Artificial. Atua com foco em front-end moderno utilizando React, Next.js e Vue.js, aliado à integração de APIs e serviços backend em Node.js.',
+        'Wagner é Desenvolvedor Full Stack com experiência na construção de aplicações web escaláveis e plataformas baseadas em Inteligência Artificial. Atua com foco em front-end moderno utilizando React.js, Next.js e Vue.js, aliado ao desenvolvimento e integração de serviços backend com Node.js, Python e tecnologias do ecossistema .NET.',
       intro: [
-        'Possui experiência no desenvolvimento de sistemas que utilizam Large Language Models (LLMs), automação de workflows e integração entre serviços, contribuindo para a criação de soluções inteligentes e orientadas a dados.',
-        'Atua em ambientes com arquiteturas de microservices, sistemas distribuídos e processamento orientado a eventos, participando da construção de aplicações preparadas para alta escalabilidade, performance e evolução contínua.',
-        'Tem vivência em desenvolvimento de interfaces escaláveis e responsivas, integração de APIs e serviços backend, automação de processos com IA, arquitetura de sistemas distribuídos e observabilidade de aplicações.',
-        'Busca oportunidades como Full Stack Developer com foco em sistemas escaláveis, aplicações com IA e soluções envolvendo automação e alta performance.'
+        'Possui experiência no desenvolvimento de sistemas utilizando Large Language Models (LLMs), automação de workflows e integração entre APIs e serviços distribuídos, contribuindo para soluções inteligentes, orientadas a dados e preparadas para ambientes de produção.',
+        'Tem vivência em arquiteturas de microservices, sistemas distribuídos e processamento orientado a eventos, participando da construção de aplicações com foco em escalabilidade, performance, manutenção e evolução contínua.',
+        'Tem vivência em desenvolvimento de interfaces escaláveis e responsivas, desenvolvimento e integração de APIs REST, backend com Node.js, Python e C#/.NET, automação de processos utilizando IA e LLMs, arquitetura de sistemas distribuídos e microservices, observabilidade e monitoramento de aplicações, além de integração entre serviços e aplicações escaláveis.',
+        'Busca oportunidades como Full Stack Developer, atuando em soluções escaláveis, aplicações com Inteligência Artificial, automação de processos e sistemas de alta performance.',
+        'Está aberto a conexões e trocas sobre desenvolvimento de software, arquitetura de sistemas, IA e tecnologias escaláveis.'
       ]
     },
     specialties: [
@@ -286,12 +287,13 @@ export const portfolioChatMock = {
       gender: 'Male',
       maritalStatus: 'Married',
       about:
-        'Full Stack Developer with experience building scalable web applications and developing Artificial Intelligence-based platforms. Focused on modern front-end development using React, Next.js, and Vue.js, combined with API integration and backend services in Node.js.',
+        'Full Stack Developer with experience building scalable web applications and Artificial Intelligence-based platforms. Focused on modern front-end development using React.js, Next.js, and Vue.js, combined with the development and integration of backend services using Node.js, Python, and technologies from the .NET ecosystem.',
       intro: [
-        'He has experience developing systems that use Large Language Models (LLMs), workflow automation, and service integrations, contributing to the creation of intelligent, data-driven solutions.',
-        'He works in environments with microservices architectures, distributed systems, and event-driven processing, contributing to applications designed for high scalability, performance, and continuous evolution.',
-        'He has experience with scalable and responsive interface development, API and backend service integration, AI process automation, distributed systems architecture, and application observability.',
-        'He is interested in opportunities as a Full Stack Developer focused on scalable systems, AI applications, and solutions involving automation and high performance.'
+        'He has experience developing systems using Large Language Models (LLMs), workflow automation, and integration between APIs and distributed services, contributing to intelligent, data-driven solutions prepared for production environments.',
+        'He has a background in microservices architectures, distributed systems, and event-driven processing, contributing to the development of applications focused on scalability, performance, maintainability, and continuous evolution.',
+        'He has experience with scalable and responsive interface development, REST API development and integration, backend development with Node.js, Python, and C#/.NET, process automation using AI and LLMs, distributed systems and microservices architecture, application observability and monitoring, and integration between services and scalable applications.',
+        'He is interested in opportunities as a Full Stack Developer, working on scalable solutions, Artificial Intelligence applications, process automation, and high-performance systems.',
+        'He is open to connections and exchanges about software development, systems architecture, AI, and scalable technologies.'
       ]
     },
     specialties: [
