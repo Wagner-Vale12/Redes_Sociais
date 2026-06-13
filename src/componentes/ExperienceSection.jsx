@@ -1,183 +1,287 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const experienceContent = {
   PT: {
-    sectionTitle: 'Experiência',
+    sectionTitle: "Experiência",
     experiences: [
       {
-        id: 'exp-1',
-        company: 'Future Secure AI',
-        location: 'São Paulo/SP',
-        role: 'Full Stack Developer | React | Next.js | AI Applications | LLMs | Scalable Systems',
-        period: 'Novembro 2024 - Março 2026',
-        description: 'Atuei como Full Stack Developer no desenvolvimento e evolução da interface principal de uma plataforma de Inteligência Artificial, com foco em performance, escalabilidade e experiência do usuário.',
-        cta: 'Ver mais',
-        collapseLabel: 'Ver menos',
+        id: "exp-1",
+        company: "Future Secure AI",
+        location: "São Paulo/SP",
+        role: "Full Stack Developer | React | Next.js | AI Applications | LLMs | Scalable Systems",
+        period: "Novembro 2024 - Março 2026",
+        description:
+          "Atuei como Full Stack Developer no desenvolvimento e evolução da interface principal de uma plataforma de Inteligência Artificial, com foco em performance, escalabilidade e experiência do usuário.",
+        cta: "Ver mais",
+        collapseLabel: "Ver menos",
         details: [
-          'Integração de múltiplos projetos e módulos, como Flowise e Aiflow, dentro de um ecossistema unificado.',
-          'Construção de aplicações utilizando React, Next.js, TypeScript e Node.js.',
-          'Integração com banco de dados Supabase (PostgreSQL) e serviços backend.',
-          'Utilização de Docker para padronização de ambientes e suporte à escalabilidade.',
-          'Atuação na sustentação da aplicação, incluindo debugging, correção de bugs e melhorias contínuas.',
-          'Colaboração na definição de boas práticas de engenharia, organização de código e evolução do produto.',
-          'Contribuição na construção de uma plataforma escalável de IA com múltiplos módulos integrados.',
-          'Melhoria da consistência visual e funcional entre diferentes aplicações do ecossistema.',
-          'Evolução contínua da performance e estabilidade da aplicação.',
-          'Participação na estruturação de um ambiente de desenvolvimento mais padronizado e escalável.'
+          "Atuei no desenvolvimento de uma plataforma de automação baseada em Inteligência Artificial, responsável pela execução de workflows inteligentes, integração de sistemas e orquestração de agentes de IA.",
+          "Participei da construção de APIs, motores de execução e arquiteturas distribuídas voltadas para escalabilidade, alta disponibilidade e confiabilidade operacional.",
+          "Integração de Large Language Models (LLMs) em processos automatizados, potencializando capacidades de automação inteligente.",
+          "Implementação de mecanismos de versionamento e rollback de agentes de IA, permitindo que os próprios usuários restaurassem versões anteriores de forma segura e imediata, sem dependência do suporte técnico.",
+          "Essa funcionalidade de versionamento reduziu o tempo de recuperação de incidentes de minutos ou horas para segundos, aumentando significativamente a confiabilidade das publicações em produção.",
+          "Atuação na sustentação de ambientes produtivos, contribuindo para o cumprimento consistente de SLAs e resolução de incidentes críticos.",
+          "Atuação full stack tanto no backend quanto no frontend, apoiando diferentes frentes de atendimento e desenvolvimento.",
+          "Aceleração da entrega de soluções através da redução de dependências entre equipes e maior eficiência operacional.",
+          "Evolução contínua da plataforma com foco em escalabilidade, performance e confiabilidade operacional.",
         ],
-        technicalSkillsLabel: 'Competências técnicas',
+        technicalSkillsLabel: "Competências técnicas",
         technicalSkills: [
-          'React',
-          'TypeScript',
-          'Next.js',
-          'Node.js',
-          'Tailwind CSS',
-          'JavaScript (ES6+)',
-          'Supabase',
-          'PostgreSQL',
-          'Docker',
-          'APIs REST',
-          'Integração de sistemas',
-          'Arquitetura de aplicações web',
-          'Escalabilidade',
+          "APIs REST e Microsserviços",
+          "Arquitetura de Sistemas Distribuídos",
+          "Large Language Models (LLMs)",
+          "Automação e Orquestração",
+          "Versionamento e Rollback",
+          "React",
+          "Node.js",
+          "TypeScript",
+          "Docker",
+          "Kubernetes",
+          "PostgreSQL",
+          "Escalabilidade",
+          "Alta Disponibilidade",
         ],
 
-        behaviorSkillsLabel: 'Competências comportamentais',
+        behaviorSkillsLabel: "Competências comportamentais",
         behaviorSkills: [
-          'Colaboração em times cross-funcionais',
-          'Análise técnica e resolução de problemas',
-          'Pensamento crítico',
-          'Melhoria contínua',
-          'Proatividade',
-          'Comunicação técnica',
-          'Ownership e responsabilidade compartilhada'
-        ]
+          "Resolução de problemas críticos",
+          "Pensamento sistêmico",
+          "Ownership e responsabilidade",
+          "Colaboração cross-funcional",
+          "Análise técnica profunda",
+          "Melhoria contínua",
+          "Comunicação técnica clara",
+          "Proatividade na sustentação",
+        ],
       },
       {
-        id: 'exp-2',
-        company: 'Projeto freelance • empresa do setor de climatização',
-        location: 'São Paulo/SP',
-        role: 'Desenvolvedor Front-end',
-        period: 'Maio 2021 - Dezembro 2023',
-        description: 'Atuei no desenvolvimento front-end de uma solução para uma empresa do segmento de climatização, contribuindo para a construção de uma interface moderna, responsiva e escalável.',
-        cta: 'Ver mais',
-        collapseLabel: 'Ver menos',
+        id: "exp-2",
+        company: "ARENA CONSULTORIA",
+        location: "São Paulo/SP",
+        role: "Desenvolvedor Full Stack",
+        period: "Maio 2020 - Dezembro 2024",
+        description:
+          "Atuei no desenvolvimento front-end de uma solução para uma empresa do segmento de climatização, contribuindo para a construção de uma interface moderna, responsiva e escalável.",
+        cta: "Ver mais",
+        collapseLabel: "Ver menos",
         details: [
-          'O projeto foi desenvolvido com React, Next.js, Node.js e Tailwind CSS, com foco em uma interface moderna, organizada e responsiva.',
-          'Também houve integração com banco de dados PostgreSQL, priorizando boa estrutura de código, usabilidade e performance da aplicação.',
-          'Contribuí para a construção de uma experiência consistente e escalável, alinhando front-end, regras de negócio e organização da aplicação.'
+          "Atuei no desenvolvimento de soluções para monitoramento de performance de varejistas e indústrias, participando da construção de integrações, processamento de dados e aplicações voltadas para análise de resultados comerciais.",
+          "Fui responsável pela integração de APIs de terceiros para captura e consolidação de dados de vendas, disponibilizando informações para dashboards utilizados na tomada de decisão de clientes.",
+          "Participei do desenvolvimento de aplicações backend utilizando .NET e Node.js, além da construção de interfaces em React.js para visualização e gestão dos dados processados.",
+          "Atuação full stack, participando desde a especificação técnica até a entrega de APIs, integrações e dashboards personalizados para diferentes clientes.",
+          "Automação da captura e consolidação diária de dados de vendas de múltiplos varejistas e indústrias.",
+          "Implementação de processos de limpeza e reprocessamento de dados, aumentando a confiabilidade dos indicadores apresentados aos clientes.",
+          "Desenvolvimento de APIs e integrações personalizadas para consumo de dados em plataformas próprias dos clientes.",
+          "Construção de dashboards voltados ao acompanhamento de vendas, performance comercial e indicadores de negócio.",
         ],
-        technicalSkillsLabel: 'Competências técnicas',
+        technicalSkillsLabel: "Competências técnicas",
         technicalSkills: [
-          'React',
-          'Next.js',
-          'Node.js',
-          'Tailwind CSS',
-          'JavaScript',
-          'PostgreSQL',
-          'Front-end development',
-          'Responsividade',
-          'Performance'
+          "APIs REST",
+          "Integração de Sistemas",
+          ".NET",
+          "Node.js",
+          "React.js",
+          "Processamento de Dados",
+          "Dashboards",
+          "PostgreSQL",
+          "Consolidação de Dados",
+          "Automação",
+          "Limpeza de Dados",
+          "JavaScript",
         ],
-        behaviorSkillsLabel: 'Competências comportamentais',
+        behaviorSkillsLabel: "Competências comportamentais",
         behaviorSkills: [
-          'Organização de código',
-          'Atenção à usabilidade',
-          'Foco em qualidade',
-          'Autonomia',
-          'Entrega orientada a resultado'
-        ]
-      }
-    ]
+          "Análise de requisitos",
+          "Integração de sistemas",
+          "Foco em entrega",
+          "Proatividade",
+          "Atenção a detalhe",
+          "Resolução de problemas",
+          "Comunicação clara",
+          "Ownership",
+        ],
+      },
+      {
+        id: "exp-3",
+        company: "Profissional de Operações e Gestão",
+        location: "São Paulo/SP",
+        role: "Operações e Gestão | Logística | Controle de Estoque | Transporte",
+        period: "Agosto 2006 - Outubro 2019",
+        description:
+          "Profissional com mais de uma década de experiência em funções ligadas à logística, gestão operacional e transporte, desenvolvendo competências fundamentais que contribuem para minha carreira em tecnologia.",
+        cta: "Ver mais",
+        collapseLabel: "Ver menos",
+        details: [
+          "Atuação em funções ligadas à logística, gestão operacional e transporte, exercendo atividades como controle de estoque, gestão de equipes operacionais e transporte de passageiros e cargas.",
+          "Desenvolvimento de competências fundamentais como responsabilidade operacional, organização e resolução de problemas que levo para minha carreira em tecnologia até hoje.",
+          "Experiência em tomada de decisão sob pressão, foco na entrega de resultados e gestão eficiente de recursos.",
+          "Transição para a área de Tecnologia da Informação iniciada em 2020, ingressando profissionalmente no desenvolvimento de software.",
+          "Trajetória de evolução contínua, passando de Desenvolvedor Júnior a Desenvolvedor Pleno através de dedicação e aprendizado contínuo.",
+          "Aplicação de princípios operacionais aprendidos em logística para otimização de processos técnicos e eficiência de projetos de software.",
+        ],
+        technicalSkillsLabel: "Competências técnicas",
+        technicalSkills: [
+          "Controle de Estoque",
+          "Logística",
+          "Gestão de Recursos",
+          "Operações",
+          "Transporte",
+          "Organização de Processos",
+        ],
+        behaviorSkillsLabel: "Competências comportamentais",
+        behaviorSkills: [
+          "Responsabilidade operacional",
+          "Organização e planejamento",
+          "Resolução de problemas",
+          "Tomada de decisão sob pressão",
+          "Foco em resultados",
+          "Gestão de equipes",
+          "Liderança operacional",
+          "Adaptabilidade",
+        ],
+      },
+    ],
   },
   EN: {
-    sectionTitle: 'Experience',
+    sectionTitle: "Experience",
     experiences: [
       {
-        id: 'exp-1',
-        company: 'Future Secure AI',
-        location: 'Sao Paulo/SP',
-        role: 'Full Stack Developer | React | Next.js | AI Applications | LLMs | Scalable Systems',
-        period: 'November 2024 - March 2026',
-        description: 'I work as a Full Stack Developer on the development and evolution of the main interface of an Artificial Intelligence platform, focusing on performance, scalability, and user experience.',
-        cta: 'See more',
-        collapseLabel: 'See less',
+        id: "exp-1",
+        company: "Future Secure AI",
+        location: "Sao Paulo/SP",
+        role: "Full Stack Developer | React | Next.js | AI Applications | LLMs | Scalable Systems",
+        period: "November 2024 - March 2026",
+        description:
+          "I work as a Full Stack Developer on the development and evolution of the main interface of an Artificial Intelligence platform, focusing on performance, scalability, and user experience.",
+        cta: "See more",
+        collapseLabel: "See less",
         details: [
-          'Integration of multiple projects and modules, such as Flowise and Aiflow, within a unified ecosystem.',
-          'Building applications using React, Next.js, TypeScript, and Node.js.',
-          'Integration with Supabase (PostgreSQL) and backend services.',
-          'Use of Docker to standardize environments and support scalability.',
-          'Support of the application, including debugging, bug fixing, and continuous improvements.',
-          'Collaboration in defining engineering best practices, code organization, and product evolution.',
-          'Contribution to building a scalable AI platform with multiple integrated modules.',
-          'Improved visual and functional consistency across different applications in the ecosystem.',
-          'Continuous evolution of application performance and stability.',
-          'Participation in structuring a more standardized and scalable development environment.'
+          "I worked on developing an AI-based automation platform responsible for executing intelligent workflows, integrating systems, and orchestrating AI agents.",
+          "I participated in building APIs, execution engines, and distributed architectures focused on scalability, high availability, and operational reliability.",
+          "Integration of Large Language Models (LLMs) in automated processes, enhancing intelligent automation capabilities.",
+          "Implementation of versioning and rollback mechanisms for AI agents, enabling users to safely and immediately restore previous versions without technical support dependency.",
+          "This versioning functionality reduced incident recovery time from minutes or hours to seconds, significantly increasing the reliability of production deployments.",
+          "Work in supporting production environments, contributing to consistent SLA compliance and resolution of critical incidents.",
+          "Full-stack work in both backend and frontend, supporting different support and development fronts.",
+          "Acceleration of solution delivery through reduced team dependencies and greater operational efficiency.",
+          "Continuous platform evolution with focus on scalability, performance, and operational reliability.",
         ],
-        technicalSkillsLabel: 'Technical skills',
+        technicalSkillsLabel: "Technical skills",
         technicalSkills: [
-          'React',
-          'TypeScript',
-          'Next.js',
-          'Node.js',
-          'Tailwind CSS',
-          'JavaScript (ES6+)',
-          'Supabase',
-          'PostgreSQL',
-          'Docker',
-          'REST APIs',
-          'Systems integration',
-          'Web application architecture',
-          'Scalability'
+          "REST APIs and Microservices",
+          "Distributed Systems Architecture",
+          "Large Language Models (LLMs)",
+          "Automation and Orchestration",
+          "Versioning and Rollback",
+          "React",
+          "Node.js",
+          "TypeScript",
+          "Docker",
+          "Kubernetes",
+          "PostgreSQL",
+          "Scalability",
+          "High Availability",
         ],
-        behaviorSkillsLabel: 'Behavioral skills',
+        behaviorSkillsLabel: "Behavioral skills",
         behaviorSkills: [
-          'Cross-functional collaboration',
-          'Technical analysis and problem solving',
-          'Critical thinking',
-          'Continuous improvement',
-          'Proactivity',
-          'Technical communication',
-          'Ownership and shared responsibility'
-        ]
+          "Critical problem solving",
+          "Systems thinking",
+          "Ownership and accountability",
+          "Cross-functional collaboration",
+          "In-depth technical analysis",
+          "Continuous improvement",
+          "Clear technical communication",
+          "Proactive support mindset",
+        ],
       },
       {
-        id: 'exp-2',
-        company: 'Freelance project • air conditioning company',
-        location: 'Sao Paulo/SP',
-        role: 'Front-end Developer',
-        period: 'May 2021 - December 2023',
-        description: 'I worked on the front-end development of a solution for a company in the air conditioning sector, contributing to a modern, responsive, and scalable interface.',
-        cta: 'See more',
-        collapseLabel: 'See less',
+        id: "exp-2",
+        company: "ARENA CONSULTORIA",
+        location: "Sao Paulo/SP",
+        role: "Full Stack Developer",
+        period: "May 2020 - December 2024",
+        description:
+          "I worked on developing solutions for monitoring the performance of retailers and industries, participating in building integrations, data processing, and applications focused on analyzing commercial results.",
+        cta: "See more",
+        collapseLabel: "See less",
         details: [
-          'The project was developed with React, Next.js, Node.js, and Tailwind CSS, with a focus on a modern, well-structured, and responsive interface.',
-          'It also included PostgreSQL database integration, prioritizing clean code structure, usability, and application performance.',
-          'I contributed to building a consistent and scalable experience, aligning front-end implementation, business rules, and overall application organization.'
+          "I worked on developing solutions for monitoring the performance of retailers and industries, participating in building integrations, data processing, and applications focused on analyzing commercial results.",
+          "I was responsible for integrating third-party APIs to capture and consolidate sales data, providing information for dashboards used in customer decision-making.",
+          "I participated in developing backend applications using .NET and Node.js, as well as building interfaces in React.js for visualizing and managing processed data.",
+          "Full-stack work, participating from technical specification to delivery of APIs, integrations, and personalized dashboards for different clients.",
+          "Automation of daily capture and consolidation of sales data from multiple retailers and industries.",
+          "Implementation of data cleaning and reprocessing processes, increasing the reliability of indicators presented to clients.",
+          "Development of custom APIs and integrations for data consumption on client platforms.",
+          "Building dashboards focused on sales monitoring, commercial performance, and business indicators.",
         ],
-        technicalSkillsLabel: 'Technical skills',
+        technicalSkillsLabel: "Technical skills",
         technicalSkills: [
-          'React',
-          'Next.js',
-          'Node.js',
-          'Tailwind CSS',
-          'JavaScript',
-          'PostgreSQL',
-          'Front-end development',
-          'Responsiveness',
-          'Performance'
+          "REST APIs",
+          "Systems Integration",
+          ".NET",
+          "Node.js",
+          "React.js",
+          "Data Processing",
+          "Dashboards",
+          "PostgreSQL",
+          "Data Consolidation",
+          "Automation",
+          "Data Cleaning",
+          "JavaScript",
         ],
-        behaviorSkillsLabel: 'Behavioral skills',
+        behaviorSkillsLabel: "Behavioral skills",
         behaviorSkills: [
-          'Code organization',
-          'Attention to usability',
-          'Quality focus',
-          'Autonomy',
-          'Results-driven delivery'
-        ]
-      }
-    ]
-  }
+          "Requirements analysis",
+          "Systems integration",
+          "Focus on delivery",
+          "Proactivity",
+          "Attention to detail",
+          "Problem-solving",
+          "Clear communication",
+          "Ownership",
+        ],
+      },
+      {
+        id: "exp-3",
+        company: "Operations and Management Professional",
+        location: "Sao Paulo/SP",
+        role: "Operations and Management | Logistics | Inventory Control | Transportation",
+        period: "August 2006 - October 2019",
+        description:
+          "Professional with over a decade of experience in logistics, operational management, and transportation roles, developing fundamental competencies that contribute to my technology career.",
+        cta: "See more",
+        collapseLabel: "See less",
+        details: [
+          "Experience in roles linked to logistics, operational management, and transportation, exercising activities such as inventory control, operational team management, and passenger and cargo transportation.",
+          "Development of fundamental competencies such as operational responsibility, organization, and problem-solving that I carry forward in my technology career today.",
+          "Experience in decision-making under pressure, focus on delivering results, and efficient resource management.",
+          "Transition to Information Technology initiated in 2020, professionally entering software development.",
+          "Continuous evolution trajectory, progressing from Junior Developer to Senior Developer through dedication and continuous learning.",
+          "Application of operational principles learned in logistics to optimize technical processes and improve software project efficiency.",
+        ],
+        technicalSkillsLabel: "Technical skills",
+        technicalSkills: [
+          "Inventory Control",
+          "Logistics",
+          "Resource Management",
+          "Operations",
+          "Transportation",
+          "Process Organization",
+        ],
+        behaviorSkillsLabel: "Behavioral skills",
+        behaviorSkills: [
+          "Operational responsibility",
+          "Organization and planning",
+          "Problem-solving",
+          "Decision-making under pressure",
+          "Results-focused mindset",
+          "Team management",
+          "Operational leadership",
+          "Adaptability",
+        ],
+      },
+    ],
+  },
 };
 
 export function getExperienceContent(languageCode) {
@@ -190,7 +294,7 @@ function ExperienceCard({ experience, index }) {
   return (
     <article
       className="experience-item"
-      style={{ '--experience-delay': `${0.16 + index * 0.28}s` }}
+      style={{ "--experience-delay": `${0.16 + index * 0.28}s` }}
     >
       <div className="experience-card">
         <h3>{experience.company}</h3>
@@ -259,11 +363,14 @@ export default function ExperienceSection({
     <section
       id="experiencia"
       ref={experienceRef}
-      className={`experience-section ${isVisible ? 'is-visible' : ''} ${
-        isActive ? 'is-active-section' : ''
+      className={`experience-section ${isVisible ? "is-visible" : ""} ${
+        isActive ? "is-active-section" : ""
       }`}
     >
-      <header key={`experience-heading-${replayToken}`} className="section-heading section-heading-animated">
+      <header
+        key={`experience-heading-${replayToken}`}
+        className="section-heading section-heading-animated"
+      >
         <span className="section-heading-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
             <path d="M9 7V5.75C9 4.78 9.78 4 10.75 4h2.5C14.22 4 15 4.78 15 5.75V7" />
@@ -276,12 +383,16 @@ export default function ExperienceSection({
 
       <div
         key={`experience-timeline-${replayToken}`}
-        className={`experience-timeline ${isVisible ? 'is-visible' : ''}`}
+        className={`experience-timeline ${isVisible ? "is-visible" : ""}`}
       >
         <div className="experience-track" aria-hidden="true" />
 
         {content.experiences.map((experience, index) => (
-          <ExperienceCard key={experience.id} experience={experience} index={index} />
+          <ExperienceCard
+            key={experience.id}
+            experience={experience}
+            index={index}
+          />
         ))}
       </div>
     </section>
