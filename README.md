@@ -27,11 +27,25 @@ Hoje ele reúne:
 - download e visualização de currículo completo ou personalizado
 
 ## Stack
-
-- React
-- Vite
 - JavaScript
+- React
+- Angular
+- Vue.JS
+- C#
+- Node
+- Next
+- .NET
+- SQLServer
+- PostgreSQL
+- Supabase
+- Docker
+- Vite
+- AI
+- LLM
+- Automation
 - CSS
+- Tailwind
+- Bootstrap
 - HTML
 
 ## Principais recursos
