@@ -6,8 +6,7 @@ Portfólio desenvolvido para apresentar minha trajetória profissional, experiê
 
 https://wagner-vale-dev.vercel.app/
 
-<img width="1897" height="933" alt="image" src="<img width="1790" height="916" alt="image" src="https://github.com/user-attachments/assets/391106d6-b279-4a51-97ce-95c892824653" />
-" />
+<img width="1695" height="942" alt="Captura de tela 2026-08-03 201304" src="https://github.com/user-attachments/assets/44c7f968-3c66-4006-9790-784b30ed0ee8" />
 
 ## Visão geral
 
@@ -79,13 +78,13 @@ Hoje ele reúne:
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/Wagner-Vale12/rede_sociais.git
+git clone https://github.com/Wagner-Vale12/Meu_Portfolio.git
 ```
 
 ### 2. Entre na pasta do projeto
 
 ```bash
-cd rede_sociais
+cd Meu_Portfolio
 ```
 
 ### 3. Instale as dependências
