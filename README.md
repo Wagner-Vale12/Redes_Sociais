@@ -6,7 +6,8 @@ Portfólio desenvolvido para apresentar minha trajetória profissional, experiê
 
 https://wagner-vale-dev.vercel.app/
 
-<img width="1897" height="933" alt="image" src="https://github.com/user-attachments/assets/2602061f-1c67-43c7-9fda-7352c975f00d" />
+<img width="1897" height="933" alt="image" src="<img width="1790" height="916" alt="image" src="https://github.com/user-attachments/assets/391106d6-b279-4a51-97ce-95c892824653" />
+" />
 
 ## Visão geral
 
